@@ -856,12 +856,40 @@ html[dir="rtl"] .fleet-item .img-block .corner-label { left: auto; right: 24px; 
   text-transform: uppercase;
 }
 .map-canvas {
-  /* Match the cropped OSM background image (620 x 1024) */
-  aspect-ratio: 620 / 1024;
+  /* Match the cropped CartoDB background image (875 x 1382) */
+  aspect-ratio: 875 / 1382;
   position: relative;
   background: linear-gradient(180deg, #ebe3d3 0%, #ddd3bf 100%);
   overflow: hidden;
   border: 1px solid var(--rule);
+  /* CSS custom property used by JS scroll fallback to drive the zoom */
+  --map-zoom: 1;
+}
+
+/* Inner layer that contains everything that should zoom together */
+.map-canvas .lake-zoom {
+  position: absolute;
+  inset: 0;
+  transform: scale(var(--map-zoom));
+  transform-origin: 50% 60%; /* slightly south of centre — focuses the lake */
+  transition: transform 0.15s linear;
+  will-change: transform;
+}
+
+/* Modern browsers: scroll-driven animation drives the zoom directly. The JS
+   fallback updates --map-zoom on scroll for browsers without view-timeline. */
+@supports (animation-timeline: view()) {
+  .map-canvas .lake-zoom {
+    animation: lake-flyin linear both;
+    animation-timeline: view();
+    animation-range: cover 0% cover 100%;
+    transition: none;
+  }
+  @keyframes lake-flyin {
+    0%   { transform: scale(1.00); }
+    50%  { transform: scale(1.45); }
+    100% { transform: scale(1.00); }
+  }
 }
 .map-canvas .top-meta {
   position: absolute;

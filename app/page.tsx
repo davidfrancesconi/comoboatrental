@@ -58,9 +58,11 @@ function RichText({ text }: { text: string }) {
 // === Lake Como map — real OSM background + pin overlay ===
 type Pin = { id: string; name: string; note: string; type: string; lat: number; lng: number };
 
-// Bounding box of /public/images/lake-como-map.jpg (cropped from OSM zoom-11 tiles).
-// Lat is non-linear in Web Mercator, so we convert lat → mercator y for accurate placement.
-const MAP_BBOX = { north: 46.1950, south: 45.7062, west: 9.0198, east: 9.4455 };
+// Bounding box of /public/images/lake-como-map.jpg.
+// Composed from CartoDB Positron zoom-12 tiles (clean, no ferry routes), cropped to
+// focus on the tour-area shoreline. Lat is non-linear in Web Mercator, so we convert
+// lat → mercator y for accurate pin placement.
+const MAP_BBOX = { north: 46.1123, south: 45.7823, west: 9.0105, east: 9.3109 };
 
 function latToMercY(lat: number) {
   const rad = (lat * Math.PI) / 180;
@@ -81,7 +83,7 @@ function LakeComoMap({ pins, activeId, onActivate }: {
   onActivate: (id: string) => void;
 }) {
   return (
-    <>
+    <div className="lake-zoom">
       {/* Background: real OSM-derived map of Lake Como */}
       <img
         src="/images/lake-como-map.jpg"
@@ -149,7 +151,7 @@ function LakeComoMap({ pins, activeId, onActivate }: {
           <path d="M 20 6 L 24 24 L 20 20 L 16 24 Z" fill="#c9a36a" />
         </svg>
       </div>
-    </>
+    </div>
   );
 }
 
@@ -168,14 +170,34 @@ export default function Home() {
     document.documentElement.dir = isRtl ? "rtl" : "ltr";
   }, [locale, isRtl]);
 
-  // Nav scroll state + hero parallax
+  // Nav scroll state + hero parallax + map fly-in zoom (fallback for browsers
+  // without `animation-timeline: view()` — modern browsers use the CSS-only path).
   useEffect(() => {
+    const supportsScrollTimeline =
+      typeof CSS !== "undefined" && CSS.supports("animation-timeline: view()");
+
+    const mapCanvas = supportsScrollTimeline
+      ? null
+      : (document.querySelector(".map-canvas") as HTMLElement | null);
+
     const onScroll = () => {
       setScrolled(window.scrollY > 80);
-      // hero parallax
+
+      // Hero parallax
       const y = window.scrollY;
       if (heroImgRef.current && y < window.innerHeight) {
         heroImgRef.current.style.transform = `translateY(${y * 0.18}px) scale(${1.05 + y * 0.0001})`;
+      }
+
+      // Map zoom fallback — peak when section centre crosses viewport centre
+      if (mapCanvas) {
+        const rect = mapCanvas.getBoundingClientRect();
+        const vh = window.innerHeight;
+        const centerOffset =
+          (rect.top + rect.height / 2 - vh / 2) / (vh / 2 + rect.height / 2);
+        const proximity = 1 - Math.min(1, Math.abs(centerOffset));
+        const scale = 1 + 0.45 * proximity;
+        mapCanvas.style.setProperty("--map-zoom", scale.toFixed(3));
       }
     };
     window.addEventListener("scroll", onScroll, { passive: true });
