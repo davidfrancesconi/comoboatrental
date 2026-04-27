@@ -60,9 +60,10 @@ type Pin = { id: string; name: string; note: string; type: string; lat: number; 
 
 // Bounding box of /public/images/lake-como-map.jpg.
 // Composed from CartoDB Positron zoom-12 tiles (clean, no ferry routes), cropped to
-// focus on the tour-area shoreline. Lat is non-linear in Web Mercator, so we convert
+// the tour area, then recoloured pixel-by-pixel to a 2-tone editorial palette
+// (navy land + cream water). Lat is non-linear in Web Mercator, so we convert
 // lat → mercator y for accurate pin placement.
-const MAP_BBOX = { north: 46.1123, south: 45.7823, west: 9.0105, east: 9.3109 };
+const MAP_BBOX = { north: 46.1123, south: 45.7713, west: 9.0105, east: 9.3109 };
 
 function latToMercY(lat: number) {
   const rad = (lat * Math.PI) / 180;
@@ -123,7 +124,11 @@ function LakeComoMap({ pins, activeId, onActivate }: {
         {pins.map((pin) => {
           const pos = pinPos(pin.lat, pin.lng);
           const isActive = pin.id === activeId;
-          const labelLeft = pin.lng < (MAP_BBOX.west + MAP_BBOX.east) / 2 + 0.07;
+          // Place the label on the side of the pin that has more room
+          // — east-half pins get labels to their LEFT, west-half pins
+          // get labels to their RIGHT, so labels never extend past the
+          // map's edge.
+          const labelLeft = pin.lng > (MAP_BBOX.west + MAP_BBOX.east) / 2;
           return (
             <button
               key={pin.id}
@@ -170,15 +175,9 @@ export default function Home() {
     document.documentElement.dir = isRtl ? "rtl" : "ltr";
   }, [locale, isRtl]);
 
-  // Nav scroll state + hero parallax + map fly-in zoom (fallback for browsers
-  // without `animation-timeline: view()` — modern browsers use the CSS-only path).
+  // Nav scroll state + hero parallax + map fly-in zoom on scroll.
   useEffect(() => {
-    const supportsScrollTimeline =
-      typeof CSS !== "undefined" && CSS.supports("animation-timeline: view()");
-
-    const mapCanvas = supportsScrollTimeline
-      ? null
-      : (document.querySelector(".map-canvas") as HTMLElement | null);
+    const mapCanvas = document.querySelector(".map-canvas") as HTMLElement | null;
 
     const onScroll = () => {
       setScrolled(window.scrollY > 80);
@@ -189,14 +188,18 @@ export default function Home() {
         heroImgRef.current.style.transform = `translateY(${y * 0.18}px) scale(${1.05 + y * 0.0001})`;
       }
 
-      // Map zoom fallback — peak when section centre crosses viewport centre
+      // Map fly-in zoom — peak when the section's centre crosses the
+      // viewport centre. Linear distance from centre maps 1:1 to the
+      // amount of zoom applied.
       if (mapCanvas) {
         const rect = mapCanvas.getBoundingClientRect();
         const vh = window.innerHeight;
         const centerOffset =
           (rect.top + rect.height / 2 - vh / 2) / (vh / 2 + rect.height / 2);
         const proximity = 1 - Math.min(1, Math.abs(centerOffset));
-        const scale = 1 + 0.45 * proximity;
+        // Scale 1.00 (far away) → 1.45 (centred). Easing curve: smooth-step.
+        const eased = proximity * proximity * (3 - 2 * proximity);
+        const scale = 1 + 0.45 * eased;
         mapCanvas.style.setProperty("--map-zoom", scale.toFixed(3));
       }
     };

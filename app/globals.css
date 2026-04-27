@@ -856,13 +856,13 @@ html[dir="rtl"] .fleet-item .img-block .corner-label { left: auto; right: 24px; 
   text-transform: uppercase;
 }
 .map-canvas {
-  /* Match the cropped CartoDB background image (875 x 1382) */
-  aspect-ratio: 875 / 1382;
+  /* Match the cropped 2-tone background image (875 x 1428) */
+  aspect-ratio: 875 / 1428;
   position: relative;
-  background: linear-gradient(180deg, #ebe3d3 0%, #ddd3bf 100%);
+  background: var(--ink);
   overflow: hidden;
   border: 1px solid var(--rule);
-  /* CSS custom property used by JS scroll fallback to drive the zoom */
+  /* JS scroll handler writes this each frame to drive the fly-in zoom */
   --map-zoom: 1;
 }
 
@@ -871,25 +871,9 @@ html[dir="rtl"] .fleet-item .img-block .corner-label { left: auto; right: 24px; 
   position: absolute;
   inset: 0;
   transform: scale(var(--map-zoom));
-  transform-origin: 50% 60%; /* slightly south of centre — focuses the lake */
-  transition: transform 0.15s linear;
+  transform-origin: 50% 55%;
+  transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
   will-change: transform;
-}
-
-/* Modern browsers: scroll-driven animation drives the zoom directly. The JS
-   fallback updates --map-zoom on scroll for browsers without view-timeline. */
-@supports (animation-timeline: view()) {
-  .map-canvas .lake-zoom {
-    animation: lake-flyin linear both;
-    animation-timeline: view();
-    animation-range: cover 0% cover 100%;
-    transition: none;
-  }
-  @keyframes lake-flyin {
-    0%   { transform: scale(1.00); }
-    50%  { transform: scale(1.45); }
-    100% { transform: scale(1.00); }
-  }
 }
 .map-canvas .top-meta {
   position: absolute;
@@ -901,15 +885,15 @@ html[dir="rtl"] .fleet-item .img-block .corner-label { left: auto; right: 24px; 
   font-family: var(--mono);
   font-size: 10px;
   letter-spacing: 0.15em;
-  color: var(--ink-soft);
+  color: var(--cream);
   text-transform: uppercase;
   opacity: 0.85;
   pointer-events: none;
   z-index: 4;
-  text-shadow: 0 1px 2px rgba(245, 239, 228, 0.8);
+  text-shadow: 0 1px 2px rgba(13, 24, 32, 0.9);
 }
 
-/* OSM background image — tinted to match editorial cream/sepia palette */
+/* 2-tone editorial map (already navy + cream) — no filter needed */
 .map-canvas .lake-bg {
   position: absolute;
   inset: 0;
@@ -917,16 +901,8 @@ html[dir="rtl"] .fleet-item .img-block .corner-label { left: auto; right: 24px; 
   height: 100%;
   object-fit: cover;
   object-position: center;
-  filter: sepia(0.35) saturate(0.7) hue-rotate(-8deg) brightness(1.04) contrast(0.95);
 }
-.map-canvas .lake-tint {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(180deg, rgba(235, 227, 211, 0.18) 0%, rgba(221, 211, 191, 0.10) 100%);
-  pointer-events: none;
-  mix-blend-mode: multiply;
-}
+.map-canvas .lake-tint { display: none; }
 
 /* Route line SVG overlay */
 .map-canvas .lake-route {
@@ -990,15 +966,23 @@ html[dir="rtl"] .fleet-item .img-block .corner-label { left: auto; right: 24px; 
   top: 50%;
   white-space: nowrap;
   font-family: var(--display);
-  font-size: 14px;
-  color: var(--ink);
-  text-shadow: 0 0 4px rgba(245, 239, 228, 0.9), 0 0 8px rgba(245, 239, 228, 0.7);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--cream);
+  /* Heavy outline so the cream label reads clearly over both the navy land
+     AND the cream water — the navy halo wins where the label crosses water,
+     and the inner cream stroke crisp on dark backgrounds. */
+  text-shadow:
+    0 0 3px rgba(13, 24, 32, 0.95),
+    0 0 6px rgba(13, 24, 32, 0.85),
+    0 1px 2px rgba(13, 24, 32, 0.9);
   pointer-events: none;
   transform: translateY(-50%);
-  opacity: 0.92;
+  letter-spacing: -0.005em;
 }
-.lake-pin.label-right .name { left: 16px; }
-.lake-pin.label-left  .name { right: 16px; }
+.lake-pin.label-right .name { left: 18px; }
+.lake-pin.label-left  .name { right: 18px; }
+.lake-pin.active .name { color: #fff; }
 
 .lake-pin:hover .halo,
 .lake-pin.active .halo {
@@ -1018,12 +1002,12 @@ html[dir="rtl"] .lake-pin .name {
 /* Compass */
 .lake-compass {
   position: absolute;
-  top: 16px;
+  top: 40px;
   right: 16px;
   width: 44px;
   height: 56px;
   z-index: 4;
-  opacity: 0.55;
+  opacity: 0.7;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1031,10 +1015,11 @@ html[dir="rtl"] .lake-pin .name {
 .lake-compass .compass-label {
   font-family: var(--mono);
   font-size: 10px;
-  color: var(--ink);
+  color: var(--cream);
   margin-bottom: 2px;
 }
 .lake-compass svg { width: 100%; height: 40px; }
+.lake-compass svg circle { stroke: var(--cream) !important; stroke-opacity: 0.5 !important; }
 
 @media (max-width: 600px) {
   .lake-pin .name { font-size: 12px; }
