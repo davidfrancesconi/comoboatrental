@@ -856,8 +856,8 @@ html[dir="rtl"] .fleet-item .img-block .corner-label { left: auto; right: 24px; 
   text-transform: uppercase;
 }
 .map-canvas {
-  /* Match the cropped 2-tone background image (875 x 1428) */
-  aspect-ratio: 875 / 1428;
+  /* Match the recoloured 3-tone background image (706 x 993) */
+  aspect-ratio: 706 / 993;
   position: relative;
   background: var(--ink);
   overflow: hidden;
@@ -866,12 +866,16 @@ html[dir="rtl"] .fleet-item .img-block .corner-label { left: auto; right: 24px; 
   --map-zoom: 1;
 }
 
-/* Inner layer that contains everything that should zoom together */
+/* Inner layer that contains everything that should zoom together.
+   transform-origin is set roughly to the centroid of the Como ↔ Varenna
+   corridor, so as the section enters the viewport the camera "drones in"
+   on the tour area while keeping both Como (south-west) and Varenna
+   (centre-north) inside the frame at peak zoom. */
 .map-canvas .lake-zoom {
   position: absolute;
   inset: 0;
   transform: scale(var(--map-zoom));
-  transform-origin: 50% 55%;
+  transform-origin: 35% 65%;
   transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
   will-change: transform;
 }

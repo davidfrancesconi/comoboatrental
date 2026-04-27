@@ -59,11 +59,13 @@ function RichText({ text }: { text: string }) {
 type Pin = { id: string; name: string; note: string; type: string; lat: number; lng: number };
 
 // Bounding box of /public/images/lake-como-map.jpg.
-// Composed from CartoDB Positron zoom-12 tiles (clean, no ferry routes), cropped to
-// the tour area, then recoloured pixel-by-pixel to a 2-tone editorial palette
-// (navy land + cream water). Lat is non-linear in Web Mercator, so we convert
-// lat → mercator y for accurate pin placement.
-const MAP_BBOX = { north: 46.1123, south: 45.7713, west: 9.0105, east: 9.3109 };
+// Composed from CartoDB Positron zoom-11 tiles covering the FULL lake (Colico
+// in the north → Como SW arm + Lecco SE arm), then post-processed in PIL to a
+// 3-colour editorial palette: navy land, cream water, gold coastline. Only the
+// largest connected water body (Lake Como itself) is kept — small lakes,
+// rivers and label artefacts are flooded with land. Lat is non-linear in Web
+// Mercator, so we convert lat → mercator y for accurate pin placement.
+const MAP_BBOX = { north: 46.1855, south: 45.7115, west: 8.9909, east: 9.4757 };
 
 function latToMercY(lat: number) {
   const rad = (lat * Math.PI) / 180;
@@ -197,9 +199,11 @@ export default function Home() {
         const centerOffset =
           (rect.top + rect.height / 2 - vh / 2) / (vh / 2 + rect.height / 2);
         const proximity = 1 - Math.min(1, Math.abs(centerOffset));
-        // Scale 1.00 (far away) → 1.45 (centred). Easing curve: smooth-step.
+        // Scale 1.00 (far away — full inverted-Y lake visible) →
+        //       1.85 (centred — zoomed in on the Como → Varenna corridor).
+        // Smooth-step easing keeps the motion gentle.
         const eased = proximity * proximity * (3 - 2 * proximity);
-        const scale = 1 + 0.45 * eased;
+        const scale = 1 + 0.85 * eased;
         mapCanvas.style.setProperty("--map-zoom", scale.toFixed(3));
       }
     };
