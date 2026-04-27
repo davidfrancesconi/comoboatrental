@@ -97,33 +97,9 @@ function LakeComoMap({ pins, activeId, onActivate }: {
       {/* Tint overlay to match editorial palette */}
       <div className="lake-tint" />
 
-      {/* Route line — SVG positioned absolutely on top of the image */}
-      <svg
-        className="lake-route"
-        viewBox="0 0 100 100"
-        preserveAspectRatio="none"
-        aria-hidden
-      >
-        <polyline
-          points={pins
-            .map((p) => {
-              const xPct = ((p.lng - MAP_BBOX.west) / (MAP_BBOX.east - MAP_BBOX.west)) * 100;
-              const yPct = ((Y_TOP - latToMercY(p.lat)) / (Y_TOP - Y_BOT)) * 100;
-              return `${xPct},${yPct}`;
-            })
-            .join(" ")}
-          fill="none"
-          stroke="#c9a36a"
-          strokeWidth="0.4"
-          strokeDasharray="0.8 1.2"
-          opacity="0.85"
-          vectorEffect="non-scaling-stroke"
-        />
-      </svg>
-
       {/* Pins overlay */}
       <div className="lake-pins">
-        {pins.map((pin) => {
+        {pins.map((pin, i) => {
           const pos = pinPos(pin.lat, pin.lng);
           const isActive = pin.id === activeId;
           // Place the label on the side of the pin that has more room
@@ -142,22 +118,20 @@ function LakeComoMap({ pins, activeId, onActivate }: {
               onClick={() => onActivate(pin.id)}
               aria-label={pin.name}
             >
-              <span className="halo" />
               <span className="dot" />
-              <span className="name">{pin.name}</span>
+              <span className="name">
+                <span className="num">{String(i + 1).padStart(2, "0")}</span>
+                <span>{pin.name}</span>
+              </span>
             </button>
           );
         })}
       </div>
 
-      {/* Compass — simple, decorative */}
-      <div className="lake-compass" aria-hidden>
-        <span className="compass-label">N</span>
-        <svg viewBox="0 0 40 40">
-          <circle cx="20" cy="20" r="18" fill="none" stroke="#0a1218" strokeOpacity="0.4" strokeWidth="0.7" />
-          <path d="M 20 6 L 24 24 L 20 20 L 16 24 Z" fill="#c9a36a" />
-        </svg>
-      </div>
+      {/* Region labels — small mono caps, decorative, like an old hand-drawn chart */}
+      <div className="region-label region-north" aria-hidden>Alpi · Lepontine</div>
+      <div className="region-label region-south" aria-hidden>Pianura · Padana</div>
+      <div className="region-label region-west"  aria-hidden>Ramo di Como</div>
     </div>
   );
 }
@@ -455,7 +429,7 @@ export default function Home() {
             <div className="map-canvas reveal reveal-delay-1">
               <div className="top-meta">
                 <span>Lago di Como</span>
-                <span>1:120,000</span>
+                <span>46.0°N · 9.2°E</span>
               </div>
               <LakeComoMap
                 pins={t.map.pins}

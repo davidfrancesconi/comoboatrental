@@ -234,7 +234,7 @@ export const translations: Record<Locale, Translation> = {
       title: "Where we <em>cruise.</em>",
       right: "From the southern tip at Como to Bellagio at the centre and beyond — every villa, hidden cove and waterfall on a single map.",
       sideTitle: "Iconic <em>destinations.</em>",
-      sideBody: "Hover or tap a destination to locate it on the lake. Your captain weaves them into a single private itinerary tailored to your day.",
+      sideBody: "Nine stops, traced south to north along the lake's most photographed shoreline. Your captain weaves them into one private itinerary — at your pace.",
       pins: buildPins(["Departure", "15 min", "Clooney", "Waterfall", "Mid-lake", "Iconic", "Tremezzo", "The Pearl", "East shore"]),
     },
     experiences: {
@@ -365,7 +365,7 @@ export const translations: Record<Locale, Translation> = {
       title: "Dove <em>navighiamo.</em>",
       right: "Dalla punta sud di Como fino a Bellagio al centro e oltre — ogni villa, caletta nascosta e cascata su una sola mappa.",
       sideTitle: "Destinazioni <em>iconiche.</em>",
-      sideBody: "Passa il mouse o tocca una destinazione per individuarla sul lago. Il tuo skipper le intreccia in un unico itinerario privato cucito sulla tua giornata.",
+      sideBody: "Nove tappe, da sud a nord lungo la sponda più fotografata del lago. Il tuo skipper le intreccia in un unico itinerario privato — al tuo ritmo.",
       pins: buildPins(["Partenza", "15 min", "Clooney", "Cascata", "Centro lago", "Iconica", "Tremezzo", "La Perla", "Sponda est"]),
     },
     experiences: {
@@ -496,7 +496,7 @@ export const translations: Record<Locale, Translation> = {
       title: "Где <em>мы плаваем.</em>",
       right: "От южной оконечности у Комо до Белладжо в центре и далее — каждая вилла, скрытая бухта и водопад на одной карте.",
       sideTitle: "Знаковые <em>места.</em>",
-      sideBody: "Наведите курсор или коснитесь точки, чтобы найти её на озере. Капитан соберёт их в единый частный маршрут под ваш день.",
+      sideBody: "Девять остановок, прослеженных с юга на север вдоль самого фотографируемого берега озера. Капитан собирает их в единый частный маршрут — в вашем темпе.",
       pins: buildPins(["Отправление", "15 мин", "Клуни", "Водопад", "Центр озера", "Знаковая", "Тремеццо", "Жемчужина", "Восточный берег"]),
     },
     experiences: {
@@ -627,7 +627,7 @@ export const translations: Record<Locale, Translation> = {
       title: "أين <em>نُبحر.</em>",
       right: "من الطرف الجنوبي عند كومو إلى بيلاجيو في الوسط وما بعدها — كل فيلا وخليج خفي وشلال على خريطة واحدة.",
       sideTitle: "وجهات <em>أيقونية.</em>",
-      sideBody: "مرّر فوق وجهة أو انقرها لتحديدها على البحيرة. يربطها قبطانك في مسار خاص واحد مفصَّل ليومك.",
+      sideBody: "تسع محطات، متتبَّعة من الجنوب إلى الشمال على طول أكثر شواطئ البحيرة تصويراً. يضفّرها قبطانك في مسار خاص واحد — بإيقاعك.",
       pins: buildPins(["انطلاق", "15 دقيقة", "كلوني", "شلال", "وسط البحيرة", "أيقونية", "تريميتزو", "اللؤلؤة", "الضفة الشرقية"]),
     },
     experiences: {
