@@ -989,25 +989,33 @@ html[dir="rtl"] .fleet-item .img-block .corner-label { left: auto; right: 24px; 
   top: 50%;
   display: inline-flex;
   align-items: baseline;
-  gap: 8px;
+  gap: 7px;
   white-space: nowrap;
   background: #fff;
   border: 1px solid var(--ink);
-  padding: 4px 10px 4px 8px;
+  padding: 3px 9px 3px 7px;
   font-family: var(--display);
-  font-size: 14px;
+  font-size: 13px;
   color: var(--ink);
   pointer-events: none;
   transform: translateY(-50%);
 }
 .lake-pin .name .num {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 9px;
   letter-spacing: 0.1em;
   color: var(--muted);
 }
-.lake-pin.label-right .name { left: 16px; }
-.lake-pin.label-left  .name { right: 16px; }
+.lake-pin.label-right .name { left: 14px; }
+.lake-pin.label-left  .name { right: 14px; }
+
+/* Stagger labels vertically inside the dense northern cluster
+   (Balbianello / Carlotta / Bellagio / Varenna) so the boxes don't overlap.
+   Each pin gets a small offset above or below its dot, alternating. */
+.lake-pin[data-id="balbianello"] .name { top: calc(50% + 16px); }
+.lake-pin[data-id="carlotta"]    .name { top: calc(50% - 16px); }
+.lake-pin[data-id="bellagio"]    .name { top: calc(50% + 16px); }
+.lake-pin[data-id="varenna"]     .name { top: calc(50% - 16px); }
 
 .lake-pin:hover .dot,
 .lake-pin.active .dot {

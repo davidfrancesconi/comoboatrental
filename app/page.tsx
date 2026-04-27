@@ -111,6 +111,7 @@ function LakeComoMap({ pins, activeId, onActivate }: {
             <button
               key={pin.id}
               type="button"
+              data-id={pin.id}
               className={`lake-pin lake-pin-${pin.type} ${isActive ? "active" : ""} ${labelLeft ? "label-left" : "label-right"}`}
               style={pos}
               onMouseEnter={() => onActivate(pin.id)}
