@@ -56,6 +56,7 @@ type Translation = {
     ctaPrimary: string;
     ctaWhatsapp: string;
     scroll: string;
+    trust: string[];
   };
   intro: { eyebrow: string; title: string; body: string };
   tours: {
@@ -97,6 +98,10 @@ type Translation = {
     countLabel: string;
     title: string;
     right: string;
+    score: string;        // e.g. "4.9"
+    scoreOutOf: string;   // e.g. "/ 5"
+    reviewCount: string;  // e.g. "87 Google reviews"
+    reviewLink: string;   // e.g. "Read all on Google →"
     items: Review[];
   };
   ourBase: {
@@ -156,6 +161,7 @@ export const translations: Record<Locale, Translation> = {
       ctaPrimary: "Discover the tours",
       ctaWhatsapp: "Chat on WhatsApp",
       scroll: "Scroll",
+      trust: ["Fully insured", "Certified captains", "Since 2018", "★ 4.9 / 87 reviews"],
     },
     intro: {
       eyebrow: "Como Boat Rental — Est. on the Lake",
@@ -251,6 +257,10 @@ export const translations: Record<Locale, Translation> = {
       indexLabel: "(05) — Guests", countLabel: "★★★★★ Google",
       title: "What people <em>say.</em>",
       right: "Reviews collected from Google — verified guests of Como Boat Rental.",
+      score: "4.9",
+      scoreOutOf: "/ 5",
+      reviewCount: "87 Google reviews",
+      reviewLink: "Read all on Google",
       items: [
         { quote: "The tour was absolutely amazing. Lake Como is stunning, and the boat ride made the experience unforgettable. Highly recommend to anyone visiting Como.", author: "Dima", date: "August 2025 · Google" },
         { quote: "Great experience renting a private boat for 2 hours. Giacomo was very easy to deal with, clear with the explanation, and reassuring for someone who had never driven a boat before. Grazie Giacomo, till next time!", author: "William Lau", date: "October 2024 · Google" },
@@ -288,6 +298,7 @@ export const translations: Record<Locale, Translation> = {
       ctaPrimary: "Scopri i tour",
       ctaWhatsapp: "Scrivici su WhatsApp",
       scroll: "Scorri",
+      trust: ["Tutto assicurato", "Skipper certificati", "Dal 2018", "★ 4.9 / 87 recensioni"],
     },
     intro: {
       eyebrow: "Como Boat Rental — Sul Lago dal 2010",
@@ -382,6 +393,10 @@ export const translations: Record<Locale, Translation> = {
       indexLabel: "(05) — Ospiti", countLabel: "★★★★★ Google",
       title: "Cosa <em>dicono di noi.</em>",
       right: "Recensioni raccolte da Google — ospiti verificati di Como Boat Rental.",
+      score: "4,9",
+      scoreOutOf: "/ 5",
+      reviewCount: "87 recensioni Google",
+      reviewLink: "Leggi tutto su Google",
       items: [
         { quote: "Tour assolutamente fantastico. Il Lago di Como è stupendo e il giro in barca ha reso l'esperienza indimenticabile. Lo consiglio a chiunque visiti Como.", author: "Dima", date: "Agosto 2025 · Google" },
         { quote: "Bellissima esperienza con una barca privata per 2 ore. Giacomo è stato chiarissimo nelle spiegazioni e rassicurante per chi non aveva mai guidato una barca. Grazie Giacomo, alla prossima!", author: "William Lau", date: "Ottobre 2024 · Google" },
@@ -419,6 +434,7 @@ export const translations: Record<Locale, Translation> = {
       ctaPrimary: "Открыть туры",
       ctaWhatsapp: "Написать в WhatsApp",
       scroll: "Прокрутка",
+      trust: ["Полная страховка", "Сертифицированные капитаны", "С 2018 года", "★ 4.9 / 87 отзывов"],
     },
     intro: {
       eyebrow: "Como Boat Rental — На озере",
@@ -513,6 +529,10 @@ export const translations: Record<Locale, Translation> = {
       indexLabel: "(05) — Гости", countLabel: "★★★★★ Google",
       title: "Что <em>говорят о нас.</em>",
       right: "Отзывы с Google — проверенные гости Como Boat Rental.",
+      score: "4,9",
+      scoreOutOf: "/ 5",
+      reviewCount: "87 отзывов Google",
+      reviewLink: "Читать все на Google",
       items: [
         { quote: "Тур был абсолютно потрясающим. Озеро Комо великолепно, а прогулка на лодке сделала впечатления незабываемыми. Очень рекомендую всем.", author: "Дима", date: "Август 2025 · Google" },
         { quote: "Отличный сервис!", author: "Ксения Кутусов", date: "Июль 2024 · Google" },
@@ -550,6 +570,7 @@ export const translations: Record<Locale, Translation> = {
       ctaPrimary: "اكتشف الجولات",
       ctaWhatsapp: "تواصل عبر واتساب",
       scroll: "تمرير",
+      trust: ["تأمين شامل", "قباطنة معتمدون", "منذ 2018", "★ 4.9 / 87 تقييماً"],
     },
     intro: {
       eyebrow: "Como Boat Rental — على البحيرة",
@@ -644,6 +665,10 @@ export const translations: Record<Locale, Translation> = {
       indexLabel: "(05) — الضيوف", countLabel: "★★★★★ Google",
       title: "ماذا <em>يقولون.</em>",
       right: "مراجعات من Google — ضيوف موثَّقون لـ Como Boat Rental.",
+      score: "4.9",
+      scoreOutOf: "/ 5",
+      reviewCount: "87 تقييماً على Google",
+      reviewLink: "اقرأ الكل على Google",
       items: [
         { quote: "كانت الجولة رائعة تماماً. بحيرة كومو خلابة، ورحلة القارب جعلت التجربة لا تُنسى. أوصي بها لكل من يزور كومو.", author: "ديما", date: "أغسطس 2025 · Google" },
         { quote: "تجربة رائعة لاستئجار قارب خاص لساعتين. كان جياكومو واضحاً جداً ومطمئناً. شكراً يا جياكومو، إلى المرة القادمة!", author: "ويليام لاو", date: "أكتوبر 2024 · Google" },

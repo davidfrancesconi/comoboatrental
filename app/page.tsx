@@ -283,6 +283,13 @@ export default function Home() {
           <span>{t.hero.scroll}</span>
           <span className="bar"></span>
         </div>
+        {/* Trust strip — small mono caps along the bottom of the hero,
+            with a gold dot before each entry. Hidden on phones. */}
+        <div className="hero-trust">
+          {t.hero.trust.map((line, i) => (
+            <span key={i}><span className="dot" />{line}</span>
+          ))}
+        </div>
       </section>
 
       {/* INTRO */}
@@ -485,10 +492,29 @@ export default function Home() {
             <div className="right">{t.testimonials.right}</div>
           </div>
 
+          {/* Aggregate rating block — sits above the testimonial grid */}
+          <div className="test-rating reveal">
+            <div className="test-score">
+              {t.testimonials.score}<span className="out">{t.testimonials.scoreOutOf}</span>
+            </div>
+            <div className="test-stars">★ ★ ★ ★ ★</div>
+            <div className="test-count">
+              {t.testimonials.reviewCount}
+              <a
+                className="test-google-link"
+                href="https://www.google.com/maps/place/Como+Boat+Rental/@45.8108,9.0908,17z"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t.testimonials.reviewLink} →
+              </a>
+            </div>
+          </div>
+
           <div className="test-grid">
             {t.testimonials.items.map((rev, i) => (
               <article key={i} className={`test-card reveal ${i > 0 ? `reveal-delay-${i}` : ""}`}>
-                <div className="stars">★ ★ ★ ★ ★</div>
+                <span className="quote-mark" aria-hidden>“</span>
                 <p className="quote">{rev.quote}</p>
                 <div className="author">{rev.author}</div>
                 <div className="test-meta">{rev.date}</div>

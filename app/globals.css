@@ -403,6 +403,37 @@ html[dir="rtl"] .btn:hover .arrow { transform: scaleX(-1) translateX(4px); }
   color: var(--ink);
 }
 
+/* Trust strip — small mono labels along the bottom of the hero */
+.hero-trust {
+  position: absolute;
+  bottom: 32px;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  gap: clamp(20px, 4vw, 60px);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(245, 239, 228, 0.62);
+}
+.hero-trust span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.hero-trust .dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+@media (max-width: 740px) {
+  .hero-trust { display: none; }
+}
+
 .hero .scroll-indicator {
   position: absolute;
   bottom: 30px;
@@ -660,15 +691,29 @@ html[dir="rtl"] .tour-card .number { right: auto; left: 16px; }
 }
 html[dir="rtl"] .tour-card .fact .val { text-align: left; }
 
-/* Multi-line "Stops" value — each stop on its own right-aligned line */
+/* Stops value — comma list with gold → arrows between, single line if it fits */
 .tour-card .fact-multiline .val {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 3px;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 6px 4px;
+  text-transform: none;
+  letter-spacing: 0.04em;
 }
-.tour-card .fact-multiline .val .line { display: block; }
-html[dir="rtl"] .tour-card .fact-multiline .val { align-items: flex-start; }
+.tour-card .fact-multiline .val .line {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.tour-card .fact-multiline .val .line:not(:last-child)::after {
+  content: "→";
+  color: var(--accent);
+  font-size: 12px;
+  margin-left: 2px;
+}
+html[dir="rtl"] .tour-card .fact-multiline .val { justify-content: flex-start; }
+html[dir="rtl"] .tour-card .fact-multiline .val .line:not(:last-child)::after { content: "←"; }
 
 /* ===== FLEET ===== */
 .fleet {
@@ -1115,28 +1160,94 @@ html[dir="rtl"] .lake-pin .name {
   gap: 40px;
 }
 @media (max-width: 900px) { .test-grid { grid-template-columns: 1fr; } }
+/* Aggregate rating block: big serif score + stars + Google review count link */
+.test-rating {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(16px, 3vw, 32px);
+  flex-wrap: wrap;
+  padding-bottom: 32px;
+  margin-bottom: 56px;
+  border-bottom: 1px solid var(--rule);
+}
+.test-score {
+  font-family: var(--display);
+  font-size: clamp(48px, 5vw, 64px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+.test-score .out {
+  color: var(--muted);
+  font-size: 0.42em;
+  margin-left: 4px;
+}
+.test-stars {
+  color: var(--accent);
+  font-size: 16px;
+  letter-spacing: 0.18em;
+}
+.test-count {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 16px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-left: auto;
+}
+.test-google-link {
+  color: var(--ink);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 1px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.test-google-link:hover {
+  color: var(--accent-dark, var(--accent));
+  border-bottom-color: var(--accent);
+}
+html[dir="rtl"] .test-count { margin-left: 0; margin-right: auto; }
+
 .test-card {
-  padding: 36px 0;
+  padding: 36px 0 0;
   border-top: 1px solid var(--rule);
   position: relative;
 }
-.test-card .stars {
+
+/* Oversized italic gold quote mark anchored to the top of each testimonial card */
+.test-card .quote-mark {
+  display: block;
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 64px;
+  line-height: 0.4;
   color: var(--accent);
-  font-size: 14px;
-  letter-spacing: 0.2em;
-  margin-bottom: 24px;
+  position: absolute;
+  top: 24px;
+  left: -2px;
+  user-select: none;
+  pointer-events: none;
 }
+html[dir="rtl"] .test-card .quote-mark { left: auto; right: -2px; }
 .test-card .quote {
   font-family: var(--display);
-  font-size: 22px;
+  font-style: italic;
+  font-size: 21px;
   font-weight: 400;
-  line-height: 1.35;
+  line-height: 1.45;
   color: var(--ink);
-  margin-bottom: 28px;
+  margin: 32px 0 28px;
+  padding-left: 22px;
   text-wrap: pretty;
 }
-.test-card .quote::before { content: "“"; color: var(--accent); margin-right: 4px; }
-.test-card .quote::after  { content: "”"; color: var(--accent); margin-left: 2px; }
+.test-card .author,
+.test-card .test-meta { padding-left: 22px; }
+html[dir="rtl"] .test-card .quote,
+html[dir="rtl"] .test-card .author,
+html[dir="rtl"] .test-card .test-meta { padding-left: 0; padding-right: 22px; }
 .test-card .author {
   font-family: var(--display);
   font-size: 18px;
