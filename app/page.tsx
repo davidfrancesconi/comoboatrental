@@ -27,6 +27,18 @@ const FLEET_IMGS = ["/images/taxi-boat.jpg", "/images/luxury-caddy.jpg"];
 const EXP_IMGS = ["/images/wedding.jpg", "/images/photoshoot.jpg", "/images/tour-experience.jpg"];
 const CONTACT_BG = "/images/lake-como-discover.jpg";
 
+// Static curated grid that mimics the WordPress Smash Balloon Instagram feed
+// from the legacy site. Each tile links to the live Instagram profile.
+// To swap for a real auto-updating feed, see README "Instagram feed" section.
+const INSTAGRAM_TILES = [
+  "/images/hero-1.jpg",
+  "/images/balbianello.jpg",
+  "/images/bellagio.jpg",
+  "/images/luxury-cruise.jpg",
+  "/images/hero-sunset.jpg",
+  "/images/wedding.jpg",
+];
+
 // Render <em>...</em> as italic accent inside a heading without dangerouslySetInnerHTML.
 function RichText({ text }: { text: string }) {
   // Splits on <em>...</em> and <br/>; nothing else
@@ -635,6 +647,53 @@ export default function Home() {
                 </cite>
               </figure>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* INSTAGRAM — static curated grid linking to the live profile.
+          NOTE for the dev: this is intentionally NOT a live feed. To pull the
+          real Instagram feed, drop in a Behold.so / LightWidget / Elfsight
+          embed inside `.ig-grid` and remove the static tiles. See README. */}
+      <section className="instagram" id="instagram">
+        <div className="container-x">
+          <div className="section-head reveal">
+            <div className="label">
+              <span className="eyebrow">{t.instagram.indexLabel}</span>
+              <p className="lead">{t.instagram.lead}</p>
+            </div>
+            <div className="title">
+              <h3 className="display"><RichText text={t.instagram.title} /></h3>
+              <p>{t.instagram.right}</p>
+            </div>
+          </div>
+
+          <div className="ig-grid reveal">
+            {INSTAGRAM_TILES.map((src, i) => (
+              <a
+                key={i}
+                className="ig-tile"
+                href={INSTAGRAM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Open @comoboatrental on Instagram (post ${i + 1})`}
+              >
+                <img src={src} alt="" loading="lazy" />
+                <span className="ig-overlay" aria-hidden>
+                  <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <rect x="3" y="3" width="18" height="18" rx="5" />
+                    <circle cx="12" cy="12" r="4" />
+                    <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+                  </svg>
+                </span>
+              </a>
+            ))}
+          </div>
+
+          <div className="ig-cta reveal reveal-delay-1">
+            <a className="btn light" href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">
+              {t.instagram.cta} <span className="arrow">→</span>
+            </a>
           </div>
         </div>
       </section>

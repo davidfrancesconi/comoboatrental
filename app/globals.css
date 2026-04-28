@@ -1135,6 +1135,59 @@ html[dir="rtl"] .testi .quote-mark { left: auto; right: -2px; }
   color: var(--ink-mute);
 }
 
+/* ===== INSTAGRAM — static curated grid that links to the live profile ===== */
+.instagram {
+  padding: var(--pad-section) 0;
+  background: var(--bg-alt);
+}
+.ig-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+}
+@media (max-width: 900px) {
+  .ig-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 600px) {
+  .ig-grid { grid-template-columns: repeat(2, 1fr); }
+}
+.ig-tile {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  display: block;
+  background: var(--ink);
+}
+.ig-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+.ig-tile:hover img { transform: scale(1.06); }
+.ig-tile .ig-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(26, 31, 36, 0);
+  color: var(--bg);
+  opacity: 0;
+  transition: opacity 0.3s ease, background 0.3s ease;
+  pointer-events: none;
+}
+.ig-tile:hover .ig-overlay,
+.ig-tile:focus-visible .ig-overlay {
+  opacity: 1;
+  background: rgba(26, 31, 36, 0.5);
+}
+.ig-cta {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+}
+
 /* ===== OUR BASE — Google Maps embed ===== */
 .our-base {
   padding: 140px 0;

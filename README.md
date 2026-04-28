@@ -286,9 +286,26 @@ opens the Instagram profile.
   + payment), that's a backend integration that doesn't exist yet.
   The static site doesn't preclude it — Vercel functions or a separate
   booking widget (e.g. FareHarbor, Bokun) drop in cleanly.
-- **Instagram feed.** The site links out to the Instagram profile but
-  doesn't embed the feed. A dev could embed `@comoboatrental`'s most
-  recent posts via the official embed iframe or a third-party widget.
+- **Live Instagram feed.** The Instagram section is a **static
+  curated grid of 6 thumbnails** (`INSTAGRAM_TILES` in `page.tsx`)
+  that all link out to the live profile. The legacy site used the
+  WordPress Smash Balloon plugin to auto-pull posts — that plugin
+  obviously doesn't apply here. To restore the live feed, the
+  cleanest options are:
+   - **[Behold.so](https://behold.so)** — free for one widget, one
+     `<script>` tag and a `<div data-behold-id="...">` in place of
+     `.ig-grid` and the static tiles. Updates hourly.
+   - **[LightWidget](https://lightwidget.com)** or
+     **[Elfsight](https://elfsight.com/instagram-feed-instashow/)** —
+     similar iframe-embed widgets, mostly free.
+   - **Official Instagram Embed** — manual per-post, but reliable
+     and has no third-party badge.
+   - **Instagram Graph API** — official auto-feed, but requires a
+     Facebook Business account, App, long-lived access token, and
+     server-side refresh logic. Overkill for a static site unless
+     the client already has Meta Business set up.
+  When the live feed lands, drop the `INSTAGRAM_TILES` array and the
+  `.ig-grid` markup; replace with the widget's snippet.
 - **Form / mailing list.** Out of scope for this build.
 - **Cookie banner.** None. The site uses no cookies and no analytics.
   If analytics are added (Plausible, Simple Analytics, GA4), check

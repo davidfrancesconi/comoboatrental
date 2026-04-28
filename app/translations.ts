@@ -107,6 +107,13 @@ type Translation = {
     reviewLink: string;     // e.g. "Read all on Google →"
     items: Review[];
   };
+  instagram: {
+    indexLabel: string;
+    lead: string;
+    title: string;
+    right: string;
+    cta: string;
+  };
   ourBase: {
     indexLabel: string;
     countLabel: string;
@@ -278,8 +285,15 @@ export const translations: Record<Locale, Translation> = {
         { quote: "What a fantastic experience being taken on a boat with the captain. The trip was incredible.", author: "Dana Walfisz", date: "June 2024 · Google" },
       ],
     },
+    instagram: {
+      indexLabel: "(06) — Follow",
+      lead: "@comoboatrental",
+      title: "Lake Como, <em>every day.</em>",
+      right: "From sunrise photoshoots to sunset proposals, follow along on Instagram.",
+      cta: "Follow on Instagram",
+    },
     ourBase: {
-      indexLabel: "(06) — Our Base",
+      indexLabel: "(07) — Our Base",
       countLabel: "45.81°N · 9.09°E",
       title: "Where you'll <em>find us.</em>",
       body: "Our pontoon sits on the Lungolago Viale Geno in Como, a five-minute walk from Como city centre. Boarding, departures and pick-ups happen here.",
@@ -287,7 +301,7 @@ export const translations: Record<Locale, Translation> = {
       directionsCta: "Open in Google Maps",
     },
     contact: {
-      indexLabel: "(07) — Reservations",
+      indexLabel: "(08) — Reservations",
       lead: "We reply within an hour, every day, 9–20.",
       hoursLabel: "Hours",
       title: "Plan your <em>boat experience.</em>",
@@ -424,8 +438,15 @@ export const translations: Record<Locale, Translation> = {
         { quote: "Esperienza bellissima. La consiglio molto. Giacomo ragazzo simpaticissimo, numero uno!", author: "Giulia Primiceri", date: "Settembre 2024 · Google" },
       ],
     },
+    instagram: {
+      indexLabel: "(06) — Seguici",
+      lead: "@comoboatrental",
+      title: "Il Lago di Como, <em>ogni giorno.</em>",
+      right: "Dai servizi fotografici all'alba alle proposte al tramonto, seguici su Instagram.",
+      cta: "Segui su Instagram",
+    },
     ourBase: {
-      indexLabel: "(06) — La nostra base",
+      indexLabel: "(07) — La nostra base",
       countLabel: "45,81°N · 9,09°E",
       title: "Dove ci <em>trovi.</em>",
       body: "Il nostro pontile si trova sul Lungolago Viale Geno a Como, a cinque minuti a piedi dal centro città. Imbarco, partenze e pick-up avvengono qui.",
@@ -433,7 +454,7 @@ export const translations: Record<Locale, Translation> = {
       directionsCta: "Apri in Google Maps",
     },
     contact: {
-      indexLabel: "(07) — Prenotazioni",
+      indexLabel: "(08) — Prenotazioni",
       lead: "Rispondiamo entro un'ora, tutti i giorni, 9–20.",
       hoursLabel: "Orari",
       title: "Pianifica la tua <em>esperienza in barca.</em>",
@@ -570,8 +591,15 @@ export const translations: Record<Locale, Translation> = {
         { quote: "Идеальная прогулка на лодке! Замечательный гид. Очень рекомендую.", author: "Анастасия Чуньюкина", date: "Июнь 2024 · Google" },
       ],
     },
+    instagram: {
+      indexLabel: "(06) — Подписаться",
+      lead: "@comoboatrental",
+      title: "Озеро Комо, <em>каждый день.</em>",
+      right: "От рассветных фотосессий до закатных предложений — следите в Instagram.",
+      cta: "Подписаться в Instagram",
+    },
     ourBase: {
-      indexLabel: "(06) — Наша база",
+      indexLabel: "(07) — Наша база",
       countLabel: "45,81°N · 9,09°E",
       title: "Где <em>нас найти.</em>",
       body: "Наш причал находится на набережной Lungolago Viale Geno в Комо, в пяти минутах ходьбы от центра города. Посадка, отправление и трансферы, здесь.",
@@ -579,7 +607,7 @@ export const translations: Record<Locale, Translation> = {
       directionsCta: "Открыть в Google Maps",
     },
     contact: {
-      indexLabel: "(07) — Бронирование",
+      indexLabel: "(08) — Бронирование",
       lead: "Отвечаем в течение часа, каждый день, 9–20.",
       hoursLabel: "Часы",
       title: "Спланируйте <em>опыт на воде.</em>",
@@ -716,8 +744,15 @@ export const translations: Record<Locale, Translation> = {
         { quote: "تجربة رائعة على متن القارب مع القبطان. كانت رحلة لا تصدق.", author: "دانا والفيش", date: "يونيو 2024 · Google" },
       ],
     },
+    instagram: {
+      indexLabel: "(06) — تابعنا",
+      lead: "@comoboatrental",
+      title: "بحيرة كومو، <em>كل يوم.</em>",
+      right: "من جلسات تصوير الفجر إلى عروض الزواج عند الغروب، تابعنا على إنستغرام.",
+      cta: "تابعنا على إنستغرام",
+    },
     ourBase: {
-      indexLabel: "(06) — قاعدتنا",
+      indexLabel: "(07) — قاعدتنا",
       countLabel: "45.81°N · 9.09°E",
       title: "أين <em>تجدنا.</em>",
       body: "يقع رصيفنا على Lungolago Viale Geno في كومو، على بُعد خمس دقائق سيراً من وسط المدينة. الصعود والمغادرة والاستقبال يتم هنا.",
@@ -725,7 +760,7 @@ export const translations: Record<Locale, Translation> = {
       directionsCta: "فتح في خرائط Google",
     },
     contact: {
-      indexLabel: "(07) — الحجوزات",
+      indexLabel: "(08) — الحجوزات",
       lead: "نرد خلال ساعة، كل يوم، 9–20.",
       hoursLabel: "ساعات",
       title: "خطّط <em>تجربتك على القارب.</em>",
