@@ -13,7 +13,8 @@
   --muted: #6b7a83;
   --rule: rgba(10, 18, 24, 0.12);
   --rule-light: rgba(245, 239, 228, 0.14);
-  --accent: #c9a36a;
+  /* Darker gold for readability — was #c9a36a, too light against cream backgrounds */
+  --accent: #8c6a3f;
   --lake: #2a4a5a;
   --display: var(--font-display), "Times New Roman", serif;
   --sans: var(--font-body), -apple-system, system-ui, sans-serif;
@@ -866,34 +867,32 @@ html[dir="rtl"] .fleet-item .img-block .corner-label { left: auto; right: 24px; 
   background: var(--cream);
   position: relative;
 }
+/* Two-column map section: left = scrolling itinerary list, right = sticky map.
+   The map column sticks while the list scrolls past it. */
 .map-wrap {
   display: grid;
-  grid-template-columns: 1fr 1.4fr;
+  grid-template-columns: 1fr 1.05fr;
   gap: 64px;
-  align-items: stretch;
+  align-items: start;
 }
 @media (max-width: 900px) {
-  .map-wrap { grid-template-columns: 1fr; }
+  .map-wrap { grid-template-columns: 1fr; gap: 40px; }
+  .map-canvas { position: relative; top: 0; aspect-ratio: 4 / 3; }
 }
-.map-side h3 {
-  font-family: var(--display);
-  font-size: clamp(36px, 4.5vw, 56px);
-  font-weight: 300;
-  line-height: 1.0;
-  letter-spacing: -0.01em;
-  margin-bottom: 28px;
+.map-side {
+  display: flex;
+  flex-direction: column;
 }
-.map-side h3 em { font-style: italic; color: var(--accent); }
-/* Italic serif intro paragraph above the numbered list, matching the reference */
-.map-side p {
+/* Italic-serif lede above the numbered list */
+.map-side .map-intro {
   font-family: var(--display);
   font-style: italic;
   font-weight: 400;
-  font-size: 22px;
-  line-height: 1.45;
-  color: var(--ink);
-  margin-bottom: 36px;
-  max-width: 32ch;
+  font-size: 19px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin: 0 0 28px;
+  max-width: 38ch;
 }
 
 /* Numbered itinerary list: number — name — descriptor, with a full-width
@@ -935,194 +934,60 @@ html[dir="rtl"] .fleet-item .img-block .corner-label { left: auto; right: 24px; 
   color: var(--ink-soft);
   text-transform: uppercase;
 }
+/* Map canvas — wraps the Leaflet container. Sticks to the viewport while
+   the side list scrolls past it. */
 .map-canvas {
-  /* Match the recoloured background image (706 x 993) */
-  aspect-ratio: 706 / 993;
-  position: relative;
-  background-color: var(--cream);
-  /* Subtle horizontal contour-line texture suggesting topography */
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent 21px,
-    rgba(42, 57, 67, 0.07) 21px,
-    rgba(42, 57, 67, 0.07) 22px
-  );
+  position: sticky;
+  top: 32px;
+  aspect-ratio: 4 / 5;
+  background: var(--cream-soft);
   overflow: hidden;
   border: 1px solid var(--rule);
-  /* JS scroll handler writes this each frame to drive the fly-in zoom */
-  --map-zoom: 1;
+}
+.map-canvas .lake-map {
+  width: 100%;
+  height: 100%;
+  background: #c8dceb;
 }
 
-/* Inner layer that contains everything that should zoom together.
-   transform-origin is set roughly to the centroid of the Como ↔ Varenna
-   corridor, so as the section enters the viewport the camera "drones in"
-   on the tour area while keeping both Como (south-west) and Varenna
-   (centre-north) inside the frame at peak zoom. */
-.map-canvas .lake-zoom {
-  position: absolute;
-  inset: 0;
-  transform: scale(var(--map-zoom));
-  transform-origin: 35% 65%;
-  transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
-  will-change: transform;
+/* Permanent name tooltip on each pin. White card, dark border, serif. */
+.leaflet-tooltip.stop-label {
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid var(--ink-soft);
+  border-radius: 3px;
+  padding: 3px 8px;
+  font-family: var(--display);
+  font-size: 12px;
+  color: var(--ink);
+  box-shadow: 0 1px 3px rgba(13, 24, 32, 0.18);
+  transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+  white-space: nowrap;
+}
+.leaflet-tooltip.stop-label::before { display: none; }
+.leaflet-tooltip.stop-label.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  font-weight: 600;
+  transform: scale(1.1);
 }
 
-/* Region labels — small mono caps positioned in the land area, decorative */
-.map-canvas .region-label {
-  position: absolute;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-  opacity: 0.55;
-  pointer-events: none;
-  z-index: 4;
+/* Animated boat marker — wrapper styling */
+.leaflet-marker-icon.boat-marker {
+  background: transparent;
+  border: none;
 }
-.map-canvas .region-north { top: 8%; left: 0; right: 0; text-align: center; }
-.map-canvas .region-south { bottom: 5%; left: 0; right: 0; text-align: center; }
-.map-canvas .region-west {
-  top: 50%; left: 14px;
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
+.leaflet-marker-icon.boat-marker svg {
+  width: 40px;
+  height: 60px;
+  filter: drop-shadow(0 2px 4px rgba(13, 24, 32, 0.4));
+  transition: transform 0.4s ease-out;
   transform-origin: center;
 }
-/* Top-meta strip: bordered card in the upper-left, like the reference */
-.map-canvas .top-meta {
-  position: absolute;
-  top: 18px;
-  left: 18px;
-  display: inline-flex;
-  gap: 24px;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  color: var(--ink);
-  text-transform: uppercase;
-  background: var(--cream);
-  border: 1px solid var(--ink);
-  padding: 6px 12px;
-  pointer-events: none;
-  z-index: 4;
-}
 
-/* 2-tone editorial map (already navy + cream) — no filter needed */
-.map-canvas .lake-bg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
-.map-canvas .lake-tint { display: none; }
-
-/* Route line SVG overlay */
-.map-canvas .lake-route {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 2;
-}
-
-/* Pin overlay layer */
-.map-canvas .lake-pins {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-}
-
-/* Each pin = a button positioned by lat/lng → percentage */
-.lake-pin {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  background: transparent;
-  border: 0;
-  padding: 0;
-  cursor: pointer;
-  font: inherit;
-  color: inherit;
-}
-.lake-pin .halo { display: none; }
-
-/* Open circle dot, thick dark outline, white fill — sits on the coastline */
-.lake-pin .dot {
-  position: relative;
-  display: block;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: 1.6px solid var(--ink);
-  background: #fff;
-  transition: width 0.2s ease, height 0.2s ease, border-width 0.2s ease;
-}
-
-/* Boxed label: mono number + serif place name inside a thin-bordered card */
-.lake-pin .name {
-  position: absolute;
-  top: 50%;
-  display: inline-flex;
-  align-items: baseline;
-  gap: 7px;
-  white-space: nowrap;
-  background: #fff;
-  border: 1px solid var(--ink);
-  padding: 3px 9px 3px 7px;
-  font-family: var(--display);
-  font-size: 13px;
-  color: var(--ink);
-  pointer-events: none;
-  transform: translateY(-50%);
-}
-.lake-pin .name .num {
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 0.1em;
-  color: var(--muted);
-}
-.lake-pin.label-right .name { left: 14px; }
-.lake-pin.label-left  .name { right: 14px; }
-
-/* Stagger labels vertically inside the dense northern cluster
-   (Balbianello / Carlotta / Bellagio / Varenna) so the boxes don't overlap.
-   Each pin gets a small offset above or below its dot, alternating. */
-.lake-pin[data-id="balbianello"] .name { top: calc(50% + 16px); }
-.lake-pin[data-id="carlotta"]    .name { top: calc(50% - 16px); }
-.lake-pin[data-id="bellagio"]    .name { top: calc(50% + 16px); }
-.lake-pin[data-id="varenna"]     .name { top: calc(50% - 16px); }
-
-.lake-pin:hover .dot,
-.lake-pin.active .dot {
-  width: 14px;
-  height: 14px;
-  border-width: 2px;
-}
-.lake-pin.active .name { background: var(--accent); border-color: var(--ink); }
-.lake-pin.active .name .num { color: var(--ink); }
-
-.lake-pin:hover .halo,
-.lake-pin.active .halo {
-  opacity: 0.4;
-  transform: scale(1);
-}
-.lake-pin:hover .dot,
-.lake-pin.active .dot {
-  width: 14px;
-  height: 14px;
-}
-
-html[dir="rtl"] .lake-pin .name {
-  font-family: var(--font-arabic), var(--display);
-}
-
-.lake-compass { display: none; }
-
-@media (max-width: 600px) {
-  .lake-pin .name { font-size: 12px; }
-}
+/* Hide Leaflet's built-in zoom UI / attribution since we provide our own
+   chrome and the map isn't user-controllable. */
+.leaflet-control-attribution { display: none !important; }
 
 /* ===== EXPERIENCES ===== */
 .experiences {

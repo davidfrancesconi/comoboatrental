@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import "leaflet/dist/leaflet.css";
 import { translations, locales, rtlLocales, type Locale } from "./translations";
 
 // === Site constants (locale-independent) ===
@@ -55,86 +56,212 @@ function RichText({ text }: { text: string }) {
   return <>{parts}</>;
 }
 
-// === Lake Como map — real OSM background + pin overlay ===
+// === Lake Como map — interactive Leaflet with CartoDB Voyager tiles ===
 type Pin = { id: string; name: string; note: string; type: string; lat: number; lng: number };
 
-// Bounding box of /public/images/lake-como-map.jpg.
-// Composed from CartoDB Positron zoom-11 tiles covering the FULL lake (Colico
-// in the north → Como SW arm + Lecco SE arm), then post-processed in PIL to a
-// 3-colour editorial palette: navy land, cream water, gold coastline. Only the
-// largest connected water body (Lake Como itself) is kept — small lakes,
-// rivers and label artefacts are flooded with land. Lat is non-linear in Web
-// Mercator, so we convert lat → mercator y for accurate pin placement.
-const MAP_BBOX = { north: 46.1855, south: 45.7115, west: 8.9909, east: 9.4757 };
+const INITIAL_VIEW: [number, number] = [45.95, 9.25];
+const INITIAL_ZOOM = 10;
 
-function latToMercY(lat: number) {
-  const rad = (lat * Math.PI) / 180;
-  return Math.log(Math.tan(rad) + 1 / Math.cos(rad));
-}
-const Y_TOP = latToMercY(MAP_BBOX.north);
-const Y_BOT = latToMercY(MAP_BBOX.south);
-
-function pinPos(lat: number, lng: number) {
-  const xPct = ((lng - MAP_BBOX.west) / (MAP_BBOX.east - MAP_BBOX.west)) * 100;
-  const yPct = ((Y_TOP - latToMercY(lat)) / (Y_TOP - Y_BOT)) * 100;
-  return { left: `${xPct}%`, top: `${yPct}%` };
-}
-
-function LakeComoMap({ pins, activeId, onActivate }: {
+function LakeComoMap({ pins, activeId, onActivate, sectionRef }: {
   pins: Pin[];
   activeId: string;
   onActivate: (id: string) => void;
+  sectionRef: React.RefObject<HTMLElement | null>;
 }) {
-  return (
-    <div className="lake-zoom">
-      {/* Background: real OSM-derived map of Lake Como */}
-      <img
-        src="/images/lake-como-map.jpg"
-        alt="Lake Como map"
-        className="lake-bg"
-        draggable={false}
-      />
-      {/* Tint overlay to match editorial palette */}
-      <div className="lake-tint" />
+  const containerRef = useRef<HTMLDivElement>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const mapRef = useRef<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const markersRef = useRef<Record<string, any>>({});
 
-      {/* Pins overlay */}
-      <div className="lake-pins">
-        {pins.map((pin, i) => {
-          const pos = pinPos(pin.lat, pin.lng);
-          const isActive = pin.id === activeId;
-          // Place the label on the side of the pin that has more room
-          // — east-half pins get labels to their LEFT, west-half pins
-          // get labels to their RIGHT, so labels never extend past the
-          // map's edge.
-          const labelLeft = pin.lng > (MAP_BBOX.west + MAP_BBOX.east) / 2;
-          return (
-            <button
-              key={pin.id}
-              type="button"
-              data-id={pin.id}
-              className={`lake-pin lake-pin-${pin.type} ${isActive ? "active" : ""} ${labelLeft ? "label-left" : "label-right"}`}
-              style={pos}
-              onMouseEnter={() => onActivate(pin.id)}
-              onFocus={() => onActivate(pin.id)}
-              onClick={() => onActivate(pin.id)}
-              aria-label={pin.name}
-            >
-              <span className="dot" />
-              <span className="name">
-                <span className="num">{String(i + 1).padStart(2, "0")}</span>
-                <span>{pin.name}</span>
-              </span>
-            </button>
-          );
-        })}
-      </div>
+  // Init map once
+  useEffect(() => {
+    if (!containerRef.current || mapRef.current) return;
 
-      {/* Region labels — small mono caps, decorative, like an old hand-drawn chart */}
-      <div className="region-label region-north" aria-hidden>Alpi · Lepontine</div>
-      <div className="region-label region-south" aria-hidden>Pianura · Padana</div>
-      <div className="region-label region-west"  aria-hidden>Ramo di Como</div>
-    </div>
-  );
+    let cancelled = false;
+    (async () => {
+      const L = (await import("leaflet")).default;
+      if (cancelled || !containerRef.current) return;
+
+      const map = L.map(containerRef.current, {
+        scrollWheelZoom: false,
+        zoomControl: false,
+        dragging: false,
+        touchZoom: false,
+        doubleClickZoom: false,
+        boxZoom: false,
+        keyboard: false,
+        attributionControl: false,
+      }).setView(INITIAL_VIEW, INITIAL_ZOOM);
+
+      L.tileLayer(
+        "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
+        { subdomains: "abcd", maxZoom: 19 }
+      ).addTo(map);
+
+      // Polyline route (dashed, ink) connecting all pins in order
+      L.polyline(
+        pins.map((p) => [p.lat, p.lng] as [number, number]),
+        { color: "#2a3943", weight: 1.6, opacity: 0.55, dashArray: "4, 6" }
+      ).addTo(map);
+
+      // Circle markers + permanent name tooltips
+      pins.forEach((pin) => {
+        const m = L.circleMarker([pin.lat, pin.lng], {
+          radius: 6,
+          fillColor: "#fff",
+          color: "#2a3943",
+          weight: 2,
+          opacity: 1,
+          fillOpacity: 0.95,
+        }).addTo(map);
+        m.bindTooltip(pin.name, {
+          direction: "top",
+          offset: [0, -10],
+          permanent: true,
+          className: "stop-label",
+        });
+        m.on("mouseover", () => onActivate(pin.id));
+        m.on("click", () => onActivate(pin.id));
+        markersRef.current[pin.id] = m;
+      });
+
+      // Animated boat marker (Riva-style mahogany, top-down)
+      const boatIcon = L.divIcon({
+        className: "boat-marker",
+        html: `<svg viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="20" cy="56" rx="10" ry="2" fill="#fff" opacity="0.55"/>
+          <ellipse cx="20" cy="52" rx="6" ry="1.4" fill="#fff" opacity="0.4"/>
+          <path d="M20 4 C 28 12, 30 22, 30 36 L 30 46 C 30 50, 26 52, 20 52 C 14 52, 10 50, 10 46 L 10 36 C 10 22, 12 12, 20 4 Z" fill="#5a2a14" stroke="#2a1208" stroke-width="0.6"/>
+          <path d="M13 30 C 15 22, 17 14, 20 8" stroke="#3d1c0d" stroke-width="0.4" fill="none" opacity="0.6"/>
+          <path d="M27 30 C 25 22, 23 14, 20 8" stroke="#3d1c0d" stroke-width="0.4" fill="none" opacity="0.6"/>
+          <path d="M20 14 C 25 20, 26 28, 26 36 L 26 44 C 26 47, 23 48, 20 48 C 17 48, 14 47, 14 44 L 14 36 C 14 28, 15 20, 20 14 Z" fill="#EFEBE1" stroke="#8a4a2a" stroke-width="0.4"/>
+          <path d="M15 26 Q 20 23, 25 26 L 24 29 Q 20 27, 16 29 Z" fill="#a8c5d6" stroke="#333" stroke-width="0.4"/>
+          <rect x="15.5" y="32" width="3.5" height="5" rx="0.6" fill="#c9a878" stroke="#5a2a14" stroke-width="0.3"/>
+          <rect x="21" y="32" width="3.5" height="5" rx="0.6" fill="#c9a878" stroke="#5a2a14" stroke-width="0.3"/>
+          <rect x="15" y="40" width="10" height="4" rx="0.6" fill="#c9a878" stroke="#5a2a14" stroke-width="0.3"/>
+          <circle cx="20" cy="9" r="0.9" fill="#d4d4d4" stroke="#333" stroke-width="0.3"/>
+        </svg>`,
+        iconSize: [40, 60],
+        iconAnchor: [20, 30],
+      });
+      const boat = L.marker([pins[0].lat, pins[0].lng], { icon: boatIcon, interactive: false }).addTo(map);
+
+      // Bearing helper
+      const bearing = (from: [number, number], to: [number, number]) => {
+        const dLng = ((to[1] - from[1]) * Math.PI) / 180;
+        const lat1 = (from[0] * Math.PI) / 180;
+        const lat2 = (to[0] * Math.PI) / 180;
+        const y = Math.sin(dLng) * Math.cos(lat2);
+        const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLng);
+        return (Math.atan2(y, x) * 180) / Math.PI;
+      };
+      const rotate = (deg: number) => {
+        const svg = boat.getElement()?.querySelector("svg") as SVGElement | null;
+        if (svg) svg.style.transform = `rotate(${deg}deg)`;
+      };
+
+      // Animation: cruise leg-by-leg, pause at each, loop
+      const LEG_MS = 3500;
+      const PAUSE_MS = 700;
+      let legIdx = 0;
+      let legStart = performance.now();
+      let pausing = false;
+      let pauseUntil = 0;
+      const coords = pins.map((p) => [p.lat, p.lng] as [number, number]);
+      let curBearing = bearing(coords[0], coords[1]);
+
+      const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+      const step = (now: number) => {
+        if (pausing) {
+          if (now >= pauseUntil) {
+            pausing = false;
+            legIdx = (legIdx + 1) % (coords.length - 1 || 1);
+            legStart = now;
+            curBearing = bearing(coords[legIdx], coords[(legIdx + 1) % coords.length]);
+            rotate(curBearing);
+          }
+        } else {
+          const from = coords[legIdx];
+          const to = coords[(legIdx + 1) % coords.length];
+          const t = Math.min((now - legStart) / LEG_MS, 1);
+          boat.setLatLng([lerp(from[0], to[0], t), lerp(from[1], to[1], t)]);
+          rotate(curBearing);
+          if (t >= 1) {
+            pausing = true;
+            pauseUntil = now + PAUSE_MS;
+            if (legIdx >= coords.length - 1) legIdx = -1;
+          }
+        }
+        rafId = requestAnimationFrame(step);
+      };
+      let rafId = requestAnimationFrame(step);
+      setTimeout(() => rotate(curBearing), 0);
+
+      mapRef.current = map;
+
+      // Intersection observer on the section: fly to fit-bounds when in view,
+      // fly back to wide initial view when out
+      const sec = sectionRef.current;
+      if (sec) {
+        const bounds = L.latLngBounds(coords);
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                map.flyToBounds(bounds, { animate: true, duration: 2, padding: [40, 40] });
+              } else {
+                map.flyTo(INITIAL_VIEW, INITIAL_ZOOM, { animate: true, duration: 1.5 });
+              }
+            });
+          },
+          { threshold: 0.4 }
+        );
+        io.observe(sec);
+        // Cleanup
+        return () => {
+          io.disconnect();
+          cancelAnimationFrame(rafId);
+        };
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+      if (mapRef.current) {
+        mapRef.current.remove();
+        mapRef.current = null;
+        markersRef.current = {};
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Re-bind tooltip text when locale changes (pin names are translated)
+  useEffect(() => {
+    pins.forEach((pin) => {
+      const m = markersRef.current[pin.id];
+      if (m) m.setTooltipContent(pin.name);
+    });
+  }, [pins]);
+
+  // Apply active styling on the marker corresponding to activeId
+  useEffect(() => {
+    Object.entries(markersRef.current).forEach(([id, m]) => {
+      const tip = m.getTooltip()?.getElement?.();
+      if (id === activeId) {
+        m.setStyle({ fillColor: "#8c6a3f", radius: 9 });
+        tip?.classList.add("active");
+        m.setLatLng(m.getLatLng()); // nudge tooltip reposition
+        if (mapRef.current) mapRef.current.panTo(m.getLatLng(), { animate: true, duration: 0.6 });
+      } else {
+        m.setStyle({ fillColor: "#fff", radius: 6 });
+        tip?.classList.remove("active");
+      }
+    });
+  }, [activeId]);
+
+  return <div className="lake-map" ref={containerRef} />;
 }
 
 export default function Home() {
@@ -143,6 +270,7 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activePin, setActivePin] = useState<string>("bellagio");
   const heroImgRef = useRef<HTMLDivElement>(null);
+  const mapSectionRef = useRef<HTMLElement>(null);
   const t = translations[locale];
   const isRtl = rtlLocales.includes(locale);
 
@@ -152,34 +280,15 @@ export default function Home() {
     document.documentElement.dir = isRtl ? "rtl" : "ltr";
   }, [locale, isRtl]);
 
-  // Nav scroll state + hero parallax + map fly-in zoom on scroll.
+  // Nav scroll state + hero parallax. The map fly-in zoom is now driven by
+  // Leaflet's flyToBounds / flyTo via an IntersectionObserver inside the
+  // LakeComoMap component, so we no longer manage --map-zoom ourselves.
   useEffect(() => {
-    const mapCanvas = document.querySelector(".map-canvas") as HTMLElement | null;
-
     const onScroll = () => {
       setScrolled(window.scrollY > 80);
-
-      // Hero parallax
       const y = window.scrollY;
       if (heroImgRef.current && y < window.innerHeight) {
         heroImgRef.current.style.transform = `translateY(${y * 0.18}px) scale(${1.05 + y * 0.0001})`;
-      }
-
-      // Map fly-in zoom — peak when the section's centre crosses the
-      // viewport centre. Linear distance from centre maps 1:1 to the
-      // amount of zoom applied.
-      if (mapCanvas) {
-        const rect = mapCanvas.getBoundingClientRect();
-        const vh = window.innerHeight;
-        const centerOffset =
-          (rect.top + rect.height / 2 - vh / 2) / (vh / 2 + rect.height / 2);
-        const proximity = 1 - Math.min(1, Math.abs(centerOffset));
-        // Scale 1.00 (far away — full inverted-Y lake visible) →
-        //       1.85 (centred — zoomed in on the Como → Varenna corridor).
-        // Smooth-step easing keeps the motion gentle.
-        const eased = proximity * proximity * (3 - 2 * proximity);
-        const scale = 1 + 0.85 * eased;
-        mapCanvas.style.setProperty("--map-zoom", scale.toFixed(3));
       }
     };
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -363,8 +472,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* MAP — between Tours and Fleet, per v2 design */}
-      <section className="map-section" id="map">
+      {/* MAP — between Tours and Fleet, per v2 design.
+          Sticky two-column layout: scrolling list on the left, sticky
+          interactive Leaflet map on the right. The map fly-zooms to fit the
+          itinerary when the section enters the viewport. */}
+      <section className="map-section" id="map" ref={mapSectionRef}>
         <div className="container-x">
           <div className="section-head reveal" style={{ marginBottom: 60 }}>
             <div>
@@ -379,8 +491,7 @@ export default function Home() {
 
           <div className="map-wrap">
             <div className="map-side reveal">
-              <h3 className="display"><RichText text={t.map.sideTitle} /></h3>
-              <p>{t.map.sideBody}</p>
+              <p className="map-intro">{t.map.sideBody}</p>
               <div className="map-pin-list">
                 {t.map.pins.map((pin, i) => (
                   <div
@@ -398,14 +509,11 @@ export default function Home() {
             </div>
 
             <div className="map-canvas reveal reveal-delay-1">
-              <div className="top-meta">
-                <span>Lago di Como</span>
-                <span>46.0°N · 9.2°E</span>
-              </div>
               <LakeComoMap
                 pins={t.map.pins}
                 activeId={activePin}
                 onActivate={setActivePin}
+                sectionRef={mapSectionRef}
               />
             </div>
           </div>
