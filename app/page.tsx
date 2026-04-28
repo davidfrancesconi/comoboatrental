@@ -3,6 +3,24 @@
 import { useEffect, useRef, useState } from "react";
 import "leaflet/dist/leaflet.css";
 import { translations, locales, rtlLocales, type Locale } from "./translations";
+import { copyVariants, mergeVariant, variants, type Variant } from "./copy-variants";
+
+// Five interchangeable colour palettes — defined in app/globals.css under
+// html[data-palette="A|B|C|D|E"]. The toggle just sets the attribute;
+// every CSS rule consumes the same tokens and re-paints automatically.
+type Palette = "A" | "B" | "C" | "D" | "E";
+const PALETTES: { code: Palette; label: string; tagline: string }[] = [
+  { code: "A", label: "Parchment",  tagline: "Warm cream + ink" },
+  { code: "B", label: "Fog",        tagline: "Cool grey-green" },
+  { code: "C", label: "Terracotta", tagline: "Warm Mediterranean" },
+  { code: "D", label: "Mono",       tagline: "Near-monochrome" },
+  { code: "E", label: "Dusk",       tagline: "Dark mode · sunset" },
+];
+
+const DEFAULT_VARIANT: Variant = "A";
+const DEFAULT_PALETTE: Palette = "A";
+const VARIANT_LS_KEY = "cbr.variant";
+const PALETTE_LS_KEY = "cbr.palette";
 
 // === Site constants (locale-independent) ===
 const PHONE_1_DISP = "+39 340 6487574";
@@ -287,13 +305,45 @@ function LakeComoMap({ pins, activeId, onActivate, sectionRef }: {
 
 export default function Home() {
   const [locale, setLocale] = useState<Locale>("en");
+  const [variant, setVariant] = useState<Variant>(DEFAULT_VARIANT);
+  const [palette, setPalette] = useState<Palette>(DEFAULT_PALETTE);
+  const [togglePanelOpen, setTogglePanelOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activePin, setActivePin] = useState<string>("bellagio");
   const heroImgRef = useRef<HTMLDivElement>(null);
   const mapSectionRef = useRef<HTMLElement>(null);
-  const t = translations[locale];
+
+  // Apply variant copy override on top of the active locale. Variant copy
+  // is English-only — for IT/RU/AR the standard translation passes through
+  // unchanged. (See app/copy-variants.ts for the rationale.)
+  const baseT = translations[locale];
+  const t = locale === "en" ? mergeVariant(baseT, copyVariants[variant]) : baseT;
   const isRtl = rtlLocales.includes(locale);
+
+  // Hydrate variant + palette from localStorage on mount (no SSR mismatch
+  // because we wait until after first render).
+  useEffect(() => {
+    try {
+      const v = window.localStorage.getItem(VARIANT_LS_KEY);
+      const p = window.localStorage.getItem(PALETTE_LS_KEY);
+      if (v === "A" || v === "B" || v === "C") setVariant(v);
+      if (p === "A" || p === "B" || p === "C" || p === "D" || p === "E") setPalette(p);
+    } catch {
+      /* ignore — Safari private mode etc. */
+    }
+  }, []);
+
+  // Persist + apply palette to <html data-palette="X">
+  useEffect(() => {
+    document.documentElement.setAttribute("data-palette", palette);
+    try { window.localStorage.setItem(PALETTE_LS_KEY, palette); } catch { /* noop */ }
+  }, [palette]);
+
+  // Persist variant
+  useEffect(() => {
+    try { window.localStorage.setItem(VARIANT_LS_KEY, variant); } catch { /* noop */ }
+  }, [variant]);
 
   // Update <html lang> and dir
   useEffect(() => {
@@ -336,6 +386,65 @@ export default function Home() {
 
   return (
     <>
+      {/* Editorial toggle — copy variant + palette switcher. Floating in the
+          top-right, collapsed by default. Persists choices in localStorage.
+          For client review only; no impact on SEO (the metadata in
+          app/layout.tsx is baked at build time and is variant-independent). */}
+      <div className={`vp-toggle ${togglePanelOpen ? "open" : ""}`} aria-label="Editorial preview controls">
+        <button
+          className="vp-toggle-pill"
+          onClick={() => setTogglePanelOpen((v) => !v)}
+          aria-expanded={togglePanelOpen}
+        >
+          <span className="vp-dot" />
+          <span className="vp-pill-label">
+            <span>Variant {variant}</span>
+            <span className="vp-sep">·</span>
+            <span>Palette {palette}</span>
+          </span>
+          <span className="vp-caret">{togglePanelOpen ? "×" : "▾"}</span>
+        </button>
+        {togglePanelOpen && (
+          <div className="vp-panel" role="dialog">
+            <div className="vp-row">
+              <div className="vp-row-label">Copy</div>
+              <div className="vp-row-options">
+                {variants.map((v) => (
+                  <button
+                    key={v.code}
+                    className={`vp-chip ${variant === v.code ? "active" : ""}`}
+                    onClick={() => setVariant(v.code)}
+                    title={v.tagline}
+                  >
+                    <span className="vp-chip-code">{v.code}</span>
+                    <span className="vp-chip-label">{v.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="vp-row">
+              <div className="vp-row-label">Palette</div>
+              <div className="vp-row-options">
+                {PALETTES.map((p) => (
+                  <button
+                    key={p.code}
+                    className={`vp-chip ${palette === p.code ? "active" : ""}`}
+                    onClick={() => setPalette(p.code)}
+                    title={p.tagline}
+                  >
+                    <span className="vp-chip-code">{p.code}</span>
+                    <span className="vp-chip-label">{p.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="vp-foot">
+              English copy only · SEO baked in regardless
+            </div>
+          </div>
+        )}
+      </div>
+
       <nav className={`top ${scrolled ? "scrolled" : ""} ${menuOpen ? "menu-open" : ""}`} id="topnav">
         <a href="#top" className="logo">
           <span className="mark"></span>Como Boat Rental

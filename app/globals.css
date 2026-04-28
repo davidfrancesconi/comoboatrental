@@ -33,6 +33,100 @@
   --gutter:      clamp(20px, 3vw, 40px);
 }
 
+/* ===== Palette overrides =====
+   Five interchangeable colour palettes from the SEO Copy & Palette doc.
+   Switched at runtime via [data-palette="A|B|C|D|E"] on <html>.
+   Palette A is the default (matches :root above) and is also defined
+   here so the toggle can return to it after a different palette has
+   been applied. Each palette redefines the SAME small set of tokens
+   that the rest of the stylesheet consumes — no other CSS needs to
+   know which palette is active. */
+
+/* A — Parchment & Ink (default editorial scheme) */
+html[data-palette="A"] {
+  --bg:         #f5efe4;
+  --bg-alt:     #ece4d4;
+  --cream:      #f5efe4;
+  --ink:        #1a1f24;
+  --ink-soft:   #4a5560;
+  --ink-mute:   #7a8590;
+  --rule:       rgba(26, 31, 36, 0.14);
+  --rule-light: rgba(245, 239, 228, 0.14);
+  --gold:       #b08a4a;
+  --gold-deep:  #8c6b32;
+  --gold-light: #e8c987;
+  --accent:      var(--gold);
+  --accent-dark: var(--gold-deep);
+}
+
+/* B — Lake Fog (cool grey-green editorial, restrained) */
+html[data-palette="B"] {
+  --bg:         #eff1f0;
+  --bg-alt:     #dde2e0;
+  --cream:      #eff1f0;
+  --ink:        #161b1f;
+  --ink-soft:   #3d484f;
+  --ink-mute:   #6c7780;
+  --rule:       rgba(22, 27, 31, 0.14);
+  --rule-light: rgba(239, 241, 240, 0.14);
+  --gold:       #3d5a66;        /* "water" — used wherever gold accent sits */
+  --gold-deep:  #2a4250;
+  --gold-light: #9aa6a0;        /* silver highlight on dark backgrounds */
+  --accent:      var(--gold);
+  --accent-dark: var(--gold-deep);
+}
+
+/* C — Terracotta (warm Mediterranean, slightly bolder) */
+html[data-palette="C"] {
+  --bg:         #f4ebde;
+  --bg-alt:     #e9d8c0;
+  --cream:      #f4ebde;
+  --ink:        #2a1f18;
+  --ink-soft:   #5a4638;
+  --ink-mute:   #8a7560;
+  --rule:       rgba(42, 31, 24, 0.14);
+  --rule-light: rgba(244, 235, 222, 0.14);
+  --gold:       #b95c3a;        /* terracotta accent */
+  --gold-deep:  #8a3f24;
+  --gold-light: #6b7a3f;        /* olive highlight on dark backgrounds */
+  --accent:      var(--gold);
+  --accent-dark: var(--gold-deep);
+}
+
+/* D — Editorial Mono (near-monochrome, brass for italics) */
+html[data-palette="D"] {
+  --bg:         #f8f7f3;
+  --bg-alt:     #ebe9e2;
+  --cream:      #f8f7f3;
+  --ink:        #0a0c0e;
+  --ink-soft:   #5a5e62;
+  --ink-mute:   #8e9296;
+  --rule:       rgba(10, 12, 14, 0.14);
+  --rule-light: rgba(248, 247, 243, 0.14);
+  --gold:       #c49a5a;
+  --gold-deep:  #9a7740;
+  --gold-light: #d8b478;
+  --accent:      var(--gold);
+  --accent-dark: var(--gold-deep);
+}
+
+/* E — Dusk (dark mode — sunset over the lake) */
+html[data-palette="E"] {
+  --bg:         #1a1d2a;
+  --bg-alt:     #262a3a;
+  --cream:      #1a1d2a;
+  --ink:        #f0e6d2;
+  --ink-soft:   #c8c0ac;
+  --ink-mute:   #8a8678;
+  --rule:       rgba(240, 230, 210, 0.18);
+  --rule-light: rgba(240, 230, 210, 0.18);
+  --gold:       #e0a05a;        /* sunset */
+  --gold-deep:  #b87a3a;
+  --gold-light: #f5c98a;
+  --accent:      var(--gold);
+  --accent-dark: var(--gold-deep);
+}
+
 @theme inline {
   --color-bg: var(--bg);
   --color-bg-alt: var(--bg-alt);
@@ -1356,3 +1450,121 @@ html[dir="rtl"] .testi .quote-mark { left: auto; right: -2px; }
   box-shadow: 0 18px 50px rgba(13, 24, 32, 0.35);
 }
 html[dir="rtl"] .float-pill { right: auto; left: 24px; }
+
+/* ===== Variant + Palette toggle =====
+   Floating control in the top-right of the viewport. Collapsed pill by
+   default; expands to a panel with two rows of chips (copy variant,
+   palette). For preview / review only — does not affect the static
+   SEO metadata baked into app/layout.tsx. */
+.vp-toggle {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 1200;            /* above .top (1000) */
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+html[dir="rtl"] .vp-toggle { right: auto; left: 14px; }
+
+.vp-toggle-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px 7px 10px;
+  background: var(--ink);
+  color: var(--bg);
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  cursor: pointer;
+  text-transform: uppercase;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+  transition: transform 0.18s ease, background 0.18s ease;
+}
+.vp-toggle-pill:hover { transform: translateY(-1px); }
+.vp-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gold);
+  flex: none;
+}
+.vp-pill-label { display: inline-flex; gap: 6px; }
+.vp-sep { opacity: 0.45; }
+.vp-caret {
+  display: inline-flex;
+  margin-left: 2px;
+  font-size: 10px;
+  opacity: 0.7;
+}
+
+.vp-panel {
+  margin-top: 8px;
+  width: min(320px, calc(100vw - 28px));
+  background: var(--bg);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  padding: 14px 14px 10px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.vp-row { display: flex; flex-direction: column; gap: 6px; }
+.vp-row-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.vp-row-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.vp-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.14s ease, color 0.14s ease, border-color 0.14s ease;
+}
+.vp-chip:hover { border-color: var(--ink); }
+.vp-chip.active {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+.vp-chip-code {
+  font-weight: 600;
+  opacity: 0.65;
+}
+.vp-chip.active .vp-chip-code { opacity: 1; }
+.vp-foot {
+  margin-top: 4px;
+  padding-top: 8px;
+  border-top: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+@media (max-width: 720px) {
+  .vp-toggle { top: 10px; right: 10px; }
+  .vp-toggle-pill { padding: 6px 10px; font-size: 10px; }
+  .vp-pill-label > span:not(.vp-sep) { display: inline; }
+  .vp-panel { width: calc(100vw - 20px); }
+}

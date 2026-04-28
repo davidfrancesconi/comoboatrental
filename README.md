@@ -168,6 +168,84 @@ Three button variants, all rectangle, mono caps:
 
 ---
 
+## Editorial preview toggle (variant + palette)
+
+The site ships with a small floating control in the top-right that lets
+the client flip between three **copy variants** and five **colour
+palettes** without rebuilding. Choices are persisted in `localStorage`,
+so a reviewer can land on `comoboatrental.com`, pick a combination, and
+keep coming back to the same one.
+
+This is a **review tool**. Whatever the visitor picks does not change
+what crawlers see — the SEO metadata (title, description, Open Graph,
+Twitter card and `LocalBusiness` JSON-LD) is baked at build time in
+`app/layout.tsx` and is variant-independent. The variants are an English-
+only experiment; switching to IT / RU / AR always shows the standard
+translation in `app/translations.ts`.
+
+### Copy variants
+
+Defined in `app/copy-variants.ts`. Each variant is a partial override
+that gets merged on top of the full English translation.
+
+| Code | Label       | Voice                                           |
+|------|-------------|-------------------------------------------------|
+| A    | Editorial   | Restrained luxury, third-person. **Default.**   |
+| B    | Founder-led | Loris and Claudio in their own voice            |
+| C    | Concierge   | Service-led, day-of-trip framing                |
+
+To edit a variant, open `copy-variants.ts` and change the field. Only
+the fields you want to override need to be present — anything left out
+falls through to `translations.ts`.
+
+### Palettes
+
+Defined in `app/globals.css` under `html[data-palette="A|B|C|D|E"]`.
+Each palette is a small set of CSS custom properties; every other rule
+in the stylesheet consumes those tokens, so swapping the attribute
+re-paints the whole site.
+
+| Code | Label      | Mood                                |
+|------|------------|-------------------------------------|
+| A    | Parchment  | Warm cream + ink (default)          |
+| B    | Fog        | Cool grey-green, restrained         |
+| C    | Terracotta | Warm Mediterranean, slightly bolder |
+| D    | Mono       | Near-monochrome, brass for italics  |
+| E    | Dusk       | Dark mode — sunset over the lake    |
+
+### Picking a final combination
+
+When the client signs off on one combination:
+
+1. Set `DEFAULT_VARIANT` and `DEFAULT_PALETTE` at the top of
+   `app/page.tsx` to the chosen codes (e.g. `"B"` and `"A"`).
+2. If you want to remove the toggle entirely, delete the `<div className="vp-toggle">…</div>` block in `app/page.tsx` and the
+   `===== Variant + Palette toggle =====` rules at the bottom of
+   `app/globals.css`. The variant overrides and palette overrides
+   stay where they are — they're just no longer switchable at runtime.
+3. (Optional) update the metadata in `app/layout.tsx` to match the
+   chosen variant's headline copy. Right now it's locked to Variant A
+   ("Editorial") for SEO consistency.
+
+---
+
+## SEO
+
+Baked in regardless of which variant or palette the visitor picks:
+
+- `<title>` and `<meta name="description">` (`app/layout.tsx`)
+- Open Graph + Twitter card (image: `/public/images/hero-sunset.jpg`)
+- `<link rel="canonical">` → `https://comoboatrental.com`
+- Robots: full index/follow, large image preview, max snippet
+- `LocalBusiness` + `TravelAgency` JSON-LD inlined into `<head>`,
+  with founders **Loris** and **Claudio**, full address, phone, geo,
+  opening hours and Instagram
+
+Update the constants at the top of `app/layout.tsx` if any of these
+ever change.
+
+---
+
 ## Internationalisation
 
 Four locales, all client-rendered from one `app/translations.ts`
