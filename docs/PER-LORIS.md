@@ -14,9 +14,12 @@ Il sito ora è pronto per Google. Prima esisteva una sola pagina;
 ora ne esistono **60** — una per ogni tour, una per ogni
 destinazione (Bellagio, Varenna, Balbianello, Carlotta, Cernobbio,
 Nesso), e tutto in **quattro lingue**: inglese, italiano, russo,
-arabo. L'italiano è scritto a mano da zero, mirato alle ricerche
-che gli italiani fanno davvero su Google ("noleggio barche como",
-"tour barca lago di como").
+arabo. **Tutte e quattro le lingue sono ottimizzate** per le
+ricerche dei rispettivi mercati — italiano per "noleggio barche
+como" (3.600 ricerche/mese), inglese per "lake como boat tour",
+russo per "Аренда лодки Комо" (mercato del lusso russo via Dubai
+e Istanbul), arabo per "تأجير قارب بحيرة كومو" (mercato Gulf —
+UAE, Saudi, Kuwait, ad altissimo margine).
 
 Quello che manca **non è codice**: sono iscrizioni a piattaforme
 esterne (Google Business Profile, GetYourGuide, Tripadvisor) e
@@ -40,10 +43,13 @@ foto migliori. Le devi fare tu, ed è qui che farai la differenza.
 Tutte queste pagine esistono in 4 lingue (tranne il blog,
 inizialmente solo EN+IT).
 
-### Le ricerche italiane su cui ci posizioniamo
+### Le ricerche su cui ci posizioniamo, lingua per lingua
 
-L'italiano nelle pagine è scritto per intercettare queste ricerche
-(con i loro volumi mensili stimati):
+Le pagine sono scritte per intercettare queste ricerche (volumi
+mensili stimati):
+
+**Italiano** (3.600+ ricerche/mese su keyword chiave; concorrenti
+diretti Il Medeghino e Taxi Boat Varenna):
 
 - **noleggio barche como** — 3.600 ricerche/mese
 - **tour privato barca lago di como** — 1.200/mese
@@ -51,8 +57,38 @@ L'italiano nelle pagine è scritto per intercettare queste ricerche
 - **barca al tramonto lago di como** — 600/mese
 - **noleggio barca villa balbianello** — 450/mese
 
-I tuoi concorrenti italiani (Il Medeghino, Taxi Boat Varenna)
-dominano queste ricerche. Ora abbiamo le pagine per competere.
+**Inglese** (mercato globale — il volume più alto di tutti):
+
+- **lake como boat rental** / **lake como boat tour** — molto alti
+- **private boat tour bellagio**
+- **villa balbianello boat tour**
+- **lake como sunset cruise**
+- **como boat hire** (variante UK)
+
+**Russo** (mercato del lusso russo — viaggia ancora tramite Dubai
+e Istanbul; meno volume del 2021 ma ancora rilevante, alto margine):
+
+- **Аренда лодки на озере Комо** (boat rental Lake Como)
+- **Прогулка на лодке Комо**
+- **Вилла Бальбьянелло Casino Royale**
+- **VIP чартер озеро Комо**
+
+**Arabo** (mercato Gulf — UAE, Saudi, Kuwait — il segmento ad
+altissimo margine per il Lago di Como; spesso ignorato dalla
+concorrenza europea):
+
+- **تأجير قارب بحيرة كومو** (boat rental Lake Como)
+- **جولة بحرية بحيرة كومو** (boat tour Lake Como)
+- **فيلا جورج كلوني** (Clooney villa — molto cercato dai turisti
+  Gulf)
+- **شهر العسل بحيرة كومو** (honeymoon Lake Como)
+
+I copy in russo e arabo sono **funzionali al posizionamento Google**
+ma non scritti da madrelingua. Un copywriter nativo russo e un
+copywriter Gulf affilerebbero ulteriormente la cadenza naturale per
+aumentare la conversione (cioè la percentuale di chi legge e
+prenota davvero) di un altro 10-15%. Lo trovi documentato come
+task post-handoff in `docs/HANDOFF.md`.
 
 ### I dettagli tecnici importanti che Google guarda
 

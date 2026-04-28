@@ -67,12 +67,36 @@ The dev never has to dig through component files to update copy.
 | `app/content/faq.ts` | 12 Q&As × 4 locales — homepage FAQ schema + `/<locale>/faq/` |
 | `app/content/blog.ts` | One seed post in EN + IT |
 
-Italian copy is hand-crafted to target the high-volume queries:
-"noleggio barche como" (~3,600/mo), "tour barca lago di como"
-(~1,200/mo), "gita in barca bellagio" (~800/mo), "noleggio barca
-villa balbianello" (~450/mo). Russian and Arabic are competent
-translations carrying the same keywords — a native copywriter could
-sharpen them later but they index correctly as-is.
+Every locale is keyword-targeted for its own search market:
+
+- **Italian**: hand-crafted for "noleggio barche como" (~3,600/mo),
+  "tour barca lago di como" (~1,200/mo), "gita in barca bellagio"
+  (~800/mo), "noleggio barca villa balbianello" (~450/mo). Direct
+  competitors Il Medeghino and Taxi Boat Varenna dominate these
+  queries today.
+- **English**: hand-written for the global English market — "lake
+  como boat rental", "lake como boat tour", "private boat tour
+  bellagio", "villa balbianello boat tour", "lake como sunset
+  cruise". The metaTitle and metaDesc on every tour and
+  destination page hits these patterns.
+- **Russian**: targeted for the Russian luxury-travel market that
+  still reaches Lake Como via Dubai and Istanbul — "Аренда лодки
+  на озере Комо", "Прогулка на лодке Комо", "Вилла Бальбьянелло
+  Casino Royale", "VIP чартер озеро Комо". Body copy is 200-400
+  words per page (parity with EN/IT), with full itinerary detail
+  and the cinematic references Russian travellers know.
+- **Arabic**: Gulf-market focused (UAE, Saudi, Kuwait — the
+  highest-margin Arabic-speaking segment for Lake Como) —
+  "تأجير قارب بحيرة كومو", "جولة بحرية بحيرة كومو", "فيلا جورج
+  كلوني", "شهر العسل بحيرة كومو". Acknowledges Gulf-traveller
+  preferences (privacy, halal-friendly options on the full-day
+  charter) without forcing them.
+
+The Russian and Arabic copy is competent at SEO level (right
+keywords, right structure, right length) but not written by a
+native speaker. A native Russian copywriter and a Gulf-market
+Arabic copywriter would sharpen cadence and idiom further — see
+"What's left to do, G" below.
 
 ### Schema types covered
 
@@ -192,19 +216,36 @@ Suggested next posts:
 - "Lake Como wedding proposal by boat: a planning guide"
 - "George Clooney's Villa Oleandra: what you can and can't see"
 
-### G. Russian + Arabic copy review
+### G. Russian + Arabic native-speaker pass
 
-The RU and AR translations are competent but slightly literal in
-places. A native speaker should:
+The RU and AR copy is keyword-targeted and the right length
+(200-400 words per page, matching EN/IT). What it lacks is the
+final 10-15% polish that only a native speaker brings: natural
+cadence, idiom, register choices.
 
-- Sharpen the homepage headlines for natural cadence
-- Localise a handful of place-name spellings (Bellagio → Беладжо
-  is fine; Cernobbio → Черноббио is the convention)
-- Adjust the FAQ phrasing for register
+For Russian a native should:
+
+- Sharpen the homepage headlines (`app/translations.ts` `ru`
+  block) for cadence
+- Adjust the FAQ register — current phrasing is correct but
+  slightly formal for the luxury-travel market
+- Verify place-name spellings (Bellagio → Беладжо, Cernobbio →
+  Черноббио are the conventions used)
+
+For Arabic a Gulf-market copywriter should:
+
+- Sharpen the dialect register — current copy is Modern Standard
+  Arabic, which is fine for SEO but slightly stiff for Gulf
+  travellers used to khaleeji-influenced marketing
+- Decide whether to add stronger family / multi-generational
+  travel framing on the full-day charter page
+- Verify place-name transliterations (Bellagio → بيلاجيو,
+  Balbianello → بالبيانيلو are the conventions used)
 
 Files: `app/translations.ts` (RU/AR sections),
 `app/content/tours.ts` (RU/AR copy in each tour),
-`app/content/destinations.ts` (RU/AR copy in each).
+`app/content/destinations.ts` (RU/AR copy in each),
+`app/content/faq.ts` (RU/AR FAQs).
 
 ### H. Performance & accessibility
 
