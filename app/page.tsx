@@ -580,15 +580,12 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="exp-grid">
+          <div className="exp-row">
             {t.experiences.items.map((exp, i) => (
               <article key={i} className={`exp-card reveal ${i > 0 ? `reveal-delay-${i}` : ""}`}>
-                <div className="num">N°{String(i + 1).padStart(2, "0")}</div>
+                <div className="num">{String(i + 1).padStart(2, "0")} /</div>
                 <h4><RichText text={exp.title} /></h4>
                 <p>{exp.desc}</p>
-                <div className="img-strip">
-                  <img src={EXP_IMGS[i]} alt="" loading="lazy" />
-                </div>
               </article>
             ))}
           </div>
@@ -609,34 +606,34 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Aggregate rating block — sits above the testimonial grid */}
-          <div className="test-rating reveal">
-            <div className="test-score">
+          {/* Aggregate rating header — score, stars, period, link inline */}
+          <div className="testi-rating reveal">
+            <div className="testi-score">
               {t.testimonials.score}<span className="out">{t.testimonials.scoreOutOf}</span>
             </div>
-            <div className="test-stars">★ ★ ★ ★ ★</div>
-            <div className="test-count">
-              <span className="test-count-line">{t.testimonials.reviewCount}</span>
-              <span className="test-count-period">{t.testimonials.reviewPeriod}</span>
+            <div className="testi-stars">★ ★ ★ ★ ★</div>
+            <div className="meta">
+              {t.testimonials.reviewCount} · {t.testimonials.reviewPeriod} ·{" "}
+              <a
+                href="https://www.google.com/maps/place/Como+Boat+Rental/@45.8108,9.0908,17z"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t.testimonials.reviewLink} →
+              </a>
             </div>
-            <a
-              className="test-google-link"
-              href="https://www.google.com/maps/place/Como+Boat+Rental/@45.8108,9.0908,17z"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {t.testimonials.reviewLink} →
-            </a>
           </div>
 
-          <div className="test-grid">
+          <div className="testi-grid">
             {t.testimonials.items.map((rev, i) => (
-              <article key={i} className={`test-card reveal ${i > 0 ? `reveal-delay-${i}` : ""}`}>
+              <figure key={i} className={`testi reveal ${i > 0 ? `reveal-delay-${i}` : ""}`}>
                 <span className="quote-mark" aria-hidden>“</span>
-                <p className="quote">{rev.quote}</p>
-                <div className="author">{rev.author}</div>
-                <div className="test-meta">{rev.date}</div>
-              </article>
+                <blockquote>{rev.quote}</blockquote>
+                <cite>
+                  <span className="name">{rev.author}</span>
+                  <span className="when">{rev.date}</span>
+                </cite>
+              </figure>
             ))}
           </div>
         </div>

@@ -990,175 +990,149 @@ html[dir="rtl"] .boat-img .badge { left: auto; right: 18px; }
    chrome and the map isn't user-controllable. */
 .leaflet-control-attribution { display: none !important; }
 
-/* ===== EXPERIENCES ===== */
+/* ===== EXPERIENCES — verbatim v2 (cream, 3-col, denser tertiary block) ===== */
 .experiences {
-  padding: 140px 0;
+  padding: var(--pad-section) 0;
   background: var(--bg);
-  color: var(--cream);
+  color: var(--ink);
   position: relative;
 }
-.experiences .section-head { border-top-color: var(--rule-light); }
-.experiences .section-head .right { color: rgba(245,239,228,0.6); }
-.experiences .section-head .index { color: rgba(245,239,228,0.4); }
-.exp-grid {
+.exp-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 48px;
+  gap: clamp(28px, 3vw, 48px);
 }
-@media (max-width: 900px) { .exp-grid { grid-template-columns: 1fr; } }
+@media (max-width: 900px) { .exp-row { grid-template-columns: 1fr; } }
 .exp-card {
-  border-top: 1px solid rgba(245,239,228,0.18);
-  padding-top: 32px;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 36px 0 0;
+  border-top: 1px solid var(--rule);
 }
 .exp-card .num {
   font-family: var(--mono);
   font-size: 11px;
-  color: var(--accent);
-  letter-spacing: 0.15em;
-  margin-bottom: 28px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--gold-deep);
+  margin-bottom: 16px;
 }
 .exp-card h4 {
   font-family: var(--display);
-  font-size: 32px;
+  font-size: clamp(22px, 2vw, 28px);
   font-weight: 400;
-  line-height: 1.05;
-  margin-bottom: 18px;
+  line-height: 1.15;
+  margin: 0 0 14px;
+  color: var(--ink);
 }
-.exp-card h4 em { font-style: italic; color: var(--accent); }
+.exp-card h4 em { font-style: italic; color: var(--gold); }
 .exp-card p {
-  color: rgba(245,239,228,0.7);
+  margin: 0;
+  color: var(--ink-soft);
   font-size: 15px;
-  line-height: 1.65;
-  font-weight: 300;
+  line-height: 1.55;
 }
-.exp-card .img-strip {
-  height: 220px;
-  background: var(--bg-soft);
-  margin-top: 28px;
-  overflow: hidden;
-  position: relative;
-  transition: transform 0.6s ease;
-}
-.exp-card .img-strip img {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-}
-.exp-card:hover .img-strip { transform: translateY(-6px); }
 
-/* ===== TESTIMONIALS ===== */
+/* ===== TESTIMONIALS — verbatim v2 (cream, .testi-rating + .testi-grid) ===== */
 .testimonials {
-  padding: 140px 0;
-  background: var(--cream);
+  padding: var(--pad-section) 0;
+  background: var(--bg);
 }
-.test-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
-}
-@media (max-width: 900px) { .test-grid { grid-template-columns: 1fr; } }
-/* Aggregate rating block: big serif score + stars + Google review count link */
-.test-rating {
+/* Aggregate rating header — score, stars, period, link inline */
+.testi-rating {
   display: flex;
   align-items: baseline;
-  gap: clamp(16px, 3vw, 32px);
-  flex-wrap: wrap;
+  gap: 24px;
   padding-bottom: 32px;
-  margin-bottom: 56px;
+  margin-bottom: 64px;
   border-bottom: 1px solid var(--rule);
+  flex-wrap: wrap;
 }
-.test-score {
+.testi-score {
   font-family: var(--display);
-  font-size: clamp(48px, 5vw, 64px);
+  font-size: 64px;
   font-weight: 400;
   line-height: 1;
   letter-spacing: -0.01em;
 }
-.test-score .out {
-  color: var(--muted);
-  font-size: 0.42em;
-  margin-left: 4px;
-}
-.test-stars {
-  color: var(--accent);
+.testi-score .out { color: var(--ink-mute); font-size: 28px; }
+.testi-stars {
+  color: var(--gold);
+  letter-spacing: 0.1em;
   font-size: 16px;
-  letter-spacing: 0.18em;
 }
-.test-count {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+.testi-rating .meta {
   font-family: var(--mono);
   font-size: 11px;
-  letter-spacing: 0.18em;
+  font-weight: 500;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--ink-soft);
-  margin-left: auto;
 }
-.test-count .test-count-period { color: var(--muted); }
-html[dir="rtl"] .test-count { margin-left: 0; margin-right: auto; }
-.test-google-link {
+.testi-rating .meta a {
   color: var(--ink);
   border-bottom: 1px solid var(--rule);
   padding-bottom: 1px;
-  transition: color 0.2s ease, border-color 0.2s ease;
 }
-.test-google-link:hover {
-  color: var(--accent-dark, var(--accent));
-  border-bottom-color: var(--accent);
+.testi-rating .meta a:hover {
+  color: var(--gold-deep);
+  border-bottom-color: var(--gold-deep);
 }
-html[dir="rtl"] .test-count { margin-left: 0; margin-right: auto; }
 
-.test-card {
-  padding: 36px 0 0;
-  border-top: 1px solid var(--rule);
+.testi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(28px, 3vw, 48px);
+}
+@media (max-width: 900px) { .testi-grid { grid-template-columns: 1fr; } }
+
+.testi {
   position: relative;
+  padding-top: 32px;
 }
-
-/* Oversized italic gold quote mark anchored to the top of each testimonial card */
-.test-card .quote-mark {
-  display: block;
+.testi .quote-mark {
   font-family: var(--display);
-  font-style: italic;
   font-size: 64px;
-  line-height: 0.4;
-  color: var(--accent);
+  font-style: italic;
+  line-height: 0.5;
+  color: var(--gold);
   position: absolute;
   top: 24px;
   left: -2px;
   user-select: none;
-  pointer-events: none;
 }
-html[dir="rtl"] .test-card .quote-mark { left: auto; right: -2px; }
-.test-card .quote {
+html[dir="rtl"] .testi .quote-mark { left: auto; right: -2px; }
+.testi blockquote {
+  margin: 0 0 36px;
   font-family: var(--display);
-  font-style: italic;
-  font-size: 21px;
+  font-size: 19px;
   font-weight: 400;
-  line-height: 1.45;
-  color: var(--ink);
-  margin: 32px 0 28px;
-  padding-left: 22px;
-  text-wrap: pretty;
-}
-.test-card .author,
-.test-card .test-meta { padding-left: 22px; }
-html[dir="rtl"] .test-card .quote,
-html[dir="rtl"] .test-card .author,
-html[dir="rtl"] .test-card .test-meta { padding-left: 0; padding-right: 22px; }
-.test-card .author {
-  font-family: var(--display);
-  font-size: 18px;
   font-style: italic;
+  line-height: 1.55;
+  color: var(--ink);
+  padding-left: 20px;
+  padding-bottom: 0.15em;
 }
-.test-card .test-meta {
-  color: var(--muted);
-  margin-top: 4px;
+.testi cite {
+  font-style: normal;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-left: 20px;
+}
+.testi cite .name {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.testi cite .when {
   font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.05em;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
+  color: var(--ink-mute);
 }
 
 /* ===== OUR BASE — Google Maps embed ===== */
