@@ -271,11 +271,13 @@ export default function Home() {
           </h1>
           <p className="sub reveal is-visible reveal-delay-1">{t.hero.sub}</p>
           <div className="cta-row reveal is-visible reveal-delay-2">
-            <a className="btn primary" href="#tours">
-              {t.hero.ctaPrimary} <span className="arrow">→</span>
+            {/* Ghost CTA — browse the tours */}
+            <a className="btn" href="#tours">
+              {t.hero.ctaPrimary}
             </a>
-            <a className="btn" href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
-              {t.hero.ctaWhatsapp}
+            {/* Filled gold CTA — reserve a boat (jumps to contact) */}
+            <a className="btn primary primary-gold" href="#contact">
+              {t.hero.ctaReserve} <span className="arrow">→</span>
             </a>
           </div>
         </div>
@@ -310,7 +312,7 @@ export default function Home() {
             <div>
               <div className="index">
                 <span>{t.tours.indexLabel}</span>
-                <span>{t.tours.countLabel}</span>
+                <span className="section-lead">{t.tours.lead}</span>
               </div>
               <h3 className="display"><RichText text={t.tours.title} /></h3>
             </div>
@@ -368,7 +370,7 @@ export default function Home() {
             <div>
               <div className="index">
                 <span>{t.map.indexLabel}</span>
-                <span>{t.map.countLabel}</span>
+                <span className="section-lead">{t.map.lead}</span>
               </div>
               <h3 className="display"><RichText text={t.map.title} /></h3>
             </div>
@@ -417,7 +419,7 @@ export default function Home() {
             <div>
               <div className="index">
                 <span style={{ color: "rgba(245,239,228,0.4)" }}>{t.fleet.indexLabel}</span>
-                <span>{t.fleet.countLabel}</span>
+                <span className="section-lead">{t.fleet.lead}</span>
               </div>
               <h3 className="display"><RichText text={t.fleet.title} /></h3>
             </div>
@@ -461,7 +463,7 @@ export default function Home() {
             <div>
               <div className="index">
                 <span style={{ color: "rgba(245,239,228,0.4)" }}>{t.experiences.indexLabel}</span>
-                <span>{t.experiences.countLabel}</span>
+                <span className="section-lead">{t.experiences.lead}</span>
               </div>
               <h3 className="display"><RichText text={t.experiences.title} /></h3>
             </div>
@@ -490,7 +492,7 @@ export default function Home() {
             <div>
               <div className="index">
                 <span>{t.testimonials.indexLabel}</span>
-                <span>{t.testimonials.countLabel}</span>
+                <span className="section-lead">{t.testimonials.lead}</span>
               </div>
               <h3 className="display"><RichText text={t.testimonials.title} /></h3>
             </div>
@@ -504,16 +506,17 @@ export default function Home() {
             </div>
             <div className="test-stars">★ ★ ★ ★ ★</div>
             <div className="test-count">
-              {t.testimonials.reviewCount}
-              <a
-                className="test-google-link"
-                href="https://www.google.com/maps/place/Como+Boat+Rental/@45.8108,9.0908,17z"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {t.testimonials.reviewLink} →
-              </a>
+              <span className="test-count-line">{t.testimonials.reviewCount}</span>
+              <span className="test-count-period">{t.testimonials.reviewPeriod}</span>
             </div>
+            <a
+              className="test-google-link"
+              href="https://www.google.com/maps/place/Como+Boat+Rental/@45.8108,9.0908,17z"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t.testimonials.reviewLink} →
+            </a>
           </div>
 
           <div className="test-grid">
@@ -581,10 +584,11 @@ export default function Home() {
               style={{
                 fontFamily: "var(--mono)", fontSize: 11, letterSpacing: "0.15em",
                 color: "rgba(245,239,228,0.4)", display: "flex", justifyContent: "space-between",
+                gap: 24, flexWrap: "wrap",
               }}
             >
               <span>{t.contact.indexLabel}</span>
-              <span>{t.contact.hoursLabel}</span>
+              <span className="section-lead" style={{ color: "rgba(245,239,228,0.7)" }}>{t.contact.lead}</span>
             </div>
           </div>
 

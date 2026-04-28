@@ -54,6 +54,7 @@ type Translation = {
     title: string; // <em> markup allowed
     sub: string;
     ctaPrimary: string;
+    ctaReserve: string;
     ctaWhatsapp: string;
     scroll: string;
     trust: string[];
@@ -61,7 +62,7 @@ type Translation = {
   intro: { eyebrow: string; title: string; body: string };
   tours: {
     indexLabel: string;
-    countLabel: string;
+    lead: string;
     title: string;
     right: string;
     factDuration: string;
@@ -72,7 +73,7 @@ type Translation = {
   };
   fleet: {
     indexLabel: string;
-    countLabel: string;
+    lead: string;
     title: string;
     right: string;
     inquireCta: string;
@@ -80,7 +81,7 @@ type Translation = {
   };
   map: {
     indexLabel: string;
-    countLabel: string;
+    lead: string;
     title: string;
     right: string;
     sideTitle: string;
@@ -89,20 +90,21 @@ type Translation = {
   };
   experiences: {
     indexLabel: string;
-    countLabel: string;
+    lead: string;
     title: string;
     right: string;
     items: Experience[];
   };
   testimonials: {
     indexLabel: string;
-    countLabel: string;
+    lead: string;
     title: string;
     right: string;
-    score: string;        // e.g. "4.9"
-    scoreOutOf: string;   // e.g. "/ 5"
-    reviewCount: string;  // e.g. "87 Google reviews"
-    reviewLink: string;   // e.g. "Read all on Google →"
+    score: string;          // e.g. "4.9"
+    scoreOutOf: string;     // e.g. "/ 5.0"
+    reviewCount: string;    // e.g. "Based on 87 Google reviews"
+    reviewPeriod: string;   // e.g. "2023 — 2025"
+    reviewLink: string;     // e.g. "Read all on Google →"
     items: Review[];
   };
   ourBase: {
@@ -115,6 +117,7 @@ type Translation = {
   };
   contact: {
     indexLabel: string;
+    lead: string;          // small italic line, e.g. "We reply within an hour, every day, 9 — 20."
     hoursLabel: string;
     title: string;
     phoneLabel: string;
@@ -157,9 +160,10 @@ export const translations: Record<Locale, Translation> = {
     nav: { tours: "Tours", fleet: "Fleet", map: "Map", experiences: "Experiences", contact: "Contact" },
     hero: {
       location: "Lago di Como · Italia",
-      title: "Bellagio. Varenna.<br/><em>Balbianello.</em>",
-      sub: "Private boat tours on Lake Como, aboard hand-built wooden boats. With your own captain, at your own pace.",
+      title: "Lake Como.<br/>By <em>private boat.</em>",
+      sub: "Cruise the lake aboard classic wooden boats with a professional local captain — Bellagio, Varenna, Balbianello and the lake's hidden corners.",
       ctaPrimary: "Browse tours",
+      ctaReserve: "Reserve a boat",
       ctaWhatsapp: "Chat on WhatsApp",
       scroll: "Scroll",
       trust: ["Fully insured", "Certified captains", "Since 2018", "★ 4.9 / 87 reviews"],
@@ -171,7 +175,7 @@ export const translations: Record<Locale, Translation> = {
     },
     tours: {
       indexLabel: "(01) — Tours",
-      countLabel: "04 tours",
+      lead: "Four ways to see the lake.",
       title: "Private cruises with <em>your own captain.</em>",
       right: "Personalised itineraries to the most iconic destinations of Lake Como — Villa Balbianello, Bellagio, Varenna and the lake's quiet corners.",
       factDuration: "Duration",
@@ -206,7 +210,8 @@ export const translations: Record<Locale, Translation> = {
       ],
     },
     fleet: {
-      indexLabel: "(03) — Fleet", countLabel: "02 boats",
+      indexLabel: "(03) — Fleet",
+      lead: "Hand-built wooden boats.",
       title: "Two boats. Both <em>mahogany.</em>",
       right: "Maintained to a higher standard than the lake demands. Sliding sunroofs, leather seating, full HiFi — every detail considered.",
       inquireCta: "Inquire",
@@ -238,30 +243,34 @@ export const translations: Record<Locale, Translation> = {
       ],
     },
     map: {
-      indexLabel: "(02) — The Lake", countLabel: "09 stops",
-      title: "Where we <em>cruise.</em>",
-      right: "From the southern tip at Como to Bellagio at the centre and beyond — every villa, hidden cove and waterfall on a single map.",
+      indexLabel: "(02) — The Lake",
+      lead: "Where we cruise.",
+      title: "Iconic <em>destinations,</em> woven into a single day.",
+      right: "From the southern tip at Como up the west shore to Bellagio, Varenna and the lake's quietest corners. Hover or tap any destination to locate it.",
       sideTitle: "Iconic <em>destinations.</em>",
       sideBody: "Nine stops, traced south to north along the lake's most photographed shoreline. Your captain weaves them into one private itinerary — at your pace.",
       pins: buildPins(["Departure", "15 min", "Clooney", "Waterfall", "Mid-lake", "Iconic", "Tremezzo", "The Pearl", "East shore"]),
     },
     experiences: {
-      indexLabel: "(04) — Beyond a tour", countLabel: "03 experiences",
-      title: "Tailor-made <em>experiences.</em>",
+      indexLabel: "(04) — Beyond a Tour",
+      lead: "Tailor-made experiences.",
+      title: "For the moments that <em>matter most.</em>",
       right: "From wedding proposals at sunset to editorial productions at Villa d'Este — we orchestrate the moment, on the water.",
       items: [
-        { title: "Weddings & <em>special occasions.</em>", desc: "Weddings, proposals, anniversaries by boat — champagne on board, bespoke service and the lake at golden hour. Unforgettable, by design." },
-        { title: "Photoshoots & <em>productions.</em>",     desc: "Editorial, wedding and commercial photo & video shoots aboard our wooden boats — Villa d'Este, Villa Balbianello, golden hour on the water." },
-        { title: "Expert local <em>captains.</em>",         desc: "Certified, multilingual captains acting as personal concierges — restaurant tips, hidden coves, perfect timing with the lake winds." },
+        { title: "Weddings & special occasions",  desc: "Weddings, proposals, anniversaries by boat. Champagne on board and bespoke service for unforgettable moments on the water." },
+        { title: "Photoshoots & productions",     desc: "Editorial, wedding and commercial shoots aboard our wooden boats — Villa d'Este, Villa Balbianello, golden hour on the lake." },
+        { title: "Local captains as concierges",  desc: "Certified, multilingual captains who know the lake like a backyard — restaurant tips, hidden coves, perfect timing with the wind." },
       ],
     },
     testimonials: {
-      indexLabel: "(05) — Guests", countLabel: "★★★★★ Google",
-      title: "What people <em>say.</em>",
+      indexLabel: "(05) — Guests",
+      lead: "What people say.",
+      title: "Reviewed across <em>three seasons.</em>",
       right: "Reviews collected from Google — verified guests of Como Boat Rental.",
       score: "4.9",
-      scoreOutOf: "/ 5",
-      reviewCount: "87 Google reviews",
+      scoreOutOf: "/ 5.0",
+      reviewCount: "Based on 87 Google reviews",
+      reviewPeriod: "2023 — 2025",
       reviewLink: "Read all on Google",
       items: [
         { quote: "The tour was absolutely amazing. Lake Como is stunning, and the boat ride made the experience unforgettable. Highly recommend to anyone visiting Como.", author: "Dima", date: "August 2025 · Google" },
@@ -278,12 +287,14 @@ export const translations: Record<Locale, Translation> = {
       directionsCta: "Open in Google Maps",
     },
     contact: {
-      indexLabel: "(07) — Reservations", hoursLabel: "Mon — Sun · 9:00–20:00",
+      indexLabel: "(07) — Reservations",
+      lead: "We reply within an hour, every day, 9 — 20.",
+      hoursLabel: "Hours",
       title: "Plan your <em>boat experience.</em>",
       phoneLabel: "Phone", emailLabel: "Email",
-      headOfficeLabel: "Head Office", boatParkingLabel: "Boat Parking",
-      headOffice: "Via Ravanera 7,<br/>22100 Como (IT)",
-      boatParking: "Lungolago Viale Geno,<br/>fronte civico 10, Como",
+      headOfficeLabel: "Hours", boatParkingLabel: "Where",
+      headOffice: "Every day · 9:00 — 20:00",
+      boatParking: "Viale Geno, 10<br/>22100 Como · Italy<br/><small>boat parking</small>",
       whatsapp: "WhatsApp", emailCta: "Email us", instagramCta: "Instagram",
       rights: "© 2026 Como Boat Rental — P.IVA IT03998950137",
       safety: "All boats fully insured · Safety gear on board",
@@ -295,9 +306,10 @@ export const translations: Record<Locale, Translation> = {
     nav: { tours: "Tour", fleet: "Flotta", map: "Mappa", experiences: "Esperienze", contact: "Contatti" },
     hero: {
       location: "Lago di Como · Italia",
-      title: "Bellagio. Varenna.<br/><em>Balbianello.</em>",
-      sub: "Tour privati in barca sul Lago di Como, a bordo di motoscafi classici in legno. Con il tuo skipper, al tuo ritmo.",
+      title: "Lago di Como.<br/>In <em>barca privata.</em>",
+      sub: "Naviga il lago a bordo di barche classiche in legno con uno skipper professionista locale — Bellagio, Varenna, Balbianello e gli angoli nascosti del lago.",
       ctaPrimary: "Vedi i tour",
+      ctaReserve: "Prenota una barca",
       ctaWhatsapp: "Scrivici su WhatsApp",
       scroll: "Scorri",
       trust: ["Tutto assicurato", "Skipper certificati", "Dal 2018", "★ 4.9 / 87 recensioni"],
@@ -308,7 +320,8 @@ export const translations: Record<Locale, Translation> = {
       body: "Dal primo bacino e Villa Oleandra di George Clooney ai giardini cinematografici di Villa del Balbianello e alla cascata nascosta di Nesso — ogni itinerario è costruito attorno a te, ai tuoi ospiti e al ritmo del lago.",
     },
     tours: {
-      indexLabel: "(01) — Tour", countLabel: "04 tour",
+      indexLabel: "(01) — Tour",
+      lead: "Quattro modi per vedere il lago.",
       title: "Crociere private con <em>il tuo skipper.</em>",
       right: "Itinerari personalizzati verso le destinazioni più iconiche del Lago di Como — Villa del Balbianello, Bellagio, Varenna e gli angoli silenziosi del lago.",
       factDuration: "Durata",
@@ -343,7 +356,8 @@ export const translations: Record<Locale, Translation> = {
       ],
     },
     fleet: {
-      indexLabel: "(03) — Flotta", countLabel: "02 barche",
+      indexLabel: "(03) — Flotta",
+      lead: "Barche in legno fatte a mano.",
       title: "Due barche. Entrambe <em>in mogano.</em>",
       right: "Mantenute a uno standard più alto di quanto il lago richieda. Tetti apribili, sedute in pelle, HiFi completo — ogni dettaglio considerato.",
       inquireCta: "Richiedi",
@@ -375,30 +389,34 @@ export const translations: Record<Locale, Translation> = {
       ],
     },
     map: {
-      indexLabel: "(02) — Il Lago", countLabel: "09 tappe",
-      title: "Dove <em>navighiamo.</em>",
-      right: "Dalla punta sud di Como fino a Bellagio al centro e oltre — ogni villa, caletta nascosta e cascata su una sola mappa.",
+      indexLabel: "(02) — Il Lago",
+      lead: "Dove navighiamo.",
+      title: "Destinazioni <em>iconiche,</em> intrecciate in una sola giornata.",
+      right: "Dalla punta sud di Como su per la sponda ovest fino a Bellagio, Varenna e gli angoli più silenziosi del lago. Passa il mouse o tocca una destinazione per individuarla.",
       sideTitle: "Destinazioni <em>iconiche.</em>",
       sideBody: "Nove tappe, da sud a nord lungo la sponda più fotografata del lago. Il tuo skipper le intreccia in un unico itinerario privato — al tuo ritmo.",
       pins: buildPins(["Partenza", "15 min", "Clooney", "Cascata", "Centro lago", "Iconica", "Tremezzo", "La Perla", "Sponda est"]),
     },
     experiences: {
-      indexLabel: "(04) — Oltre il tour", countLabel: "03 esperienze",
-      title: "Esperienze <em>su misura.</em>",
+      indexLabel: "(04) — Oltre il Tour",
+      lead: "Esperienze su misura.",
+      title: "Per i momenti che <em>contano di più.</em>",
       right: "Dalle proposte di matrimonio al tramonto alle produzioni editoriali a Villa d'Este — orchestriamo il momento, sull'acqua.",
       items: [
-        { title: "Matrimoni e <em>occasioni speciali.</em>", desc: "Matrimoni, proposte, anniversari in barca — champagne a bordo, servizio personalizzato e il lago all'ora dorata. Indimenticabile, per scelta." },
-        { title: "Servizi <em>fotografici e produzioni.</em>", desc: "Servizi editoriali, matrimoniali e commerciali a bordo delle nostre barche in legno — Villa d'Este, Villa Balbianello, golden hour sull'acqua." },
-        { title: "Skipper <em>locali esperti.</em>",         desc: "Skipper certificati e multilingue, veri concierge personali — consigli su ristoranti, calette nascoste, tempi perfetti con i venti del lago." },
+        { title: "Matrimoni e occasioni speciali", desc: "Matrimoni, proposte, anniversari in barca. Champagne a bordo e servizio personalizzato per momenti indimenticabili sull'acqua." },
+        { title: "Servizi fotografici e produzioni", desc: "Riprese editoriali, di matrimonio e commerciali a bordo delle nostre barche in legno — Villa d'Este, Villa Balbianello, ora dorata sul lago." },
+        { title: "Skipper come concierge",         desc: "Skipper certificati e multilingue che conoscono il lago come il proprio giardino — consigli ristoranti, calette nascoste, tempi perfetti con il vento." },
       ],
     },
     testimonials: {
-      indexLabel: "(05) — Ospiti", countLabel: "★★★★★ Google",
-      title: "Cosa <em>dicono di noi.</em>",
+      indexLabel: "(05) — Ospiti",
+      lead: "Cosa dicono.",
+      title: "Recensiti in <em>tre stagioni.</em>",
       right: "Recensioni raccolte da Google — ospiti verificati di Como Boat Rental.",
       score: "4,9",
-      scoreOutOf: "/ 5",
-      reviewCount: "87 recensioni Google",
+      scoreOutOf: "/ 5,0",
+      reviewCount: "Basato su 87 recensioni Google",
+      reviewPeriod: "2023 — 2025",
       reviewLink: "Leggi tutto su Google",
       items: [
         { quote: "Tour assolutamente fantastico. Il Lago di Como è stupendo e il giro in barca ha reso l'esperienza indimenticabile. Lo consiglio a chiunque visiti Como.", author: "Dima", date: "Agosto 2025 · Google" },
@@ -415,12 +433,14 @@ export const translations: Record<Locale, Translation> = {
       directionsCta: "Apri in Google Maps",
     },
     contact: {
-      indexLabel: "(07) — Prenotazioni", hoursLabel: "Lun — Dom · 9:00–20:00",
+      indexLabel: "(07) — Prenotazioni",
+      lead: "Rispondiamo entro un'ora, tutti i giorni, 9 — 20.",
+      hoursLabel: "Orari",
       title: "Pianifica la tua <em>esperienza in barca.</em>",
       phoneLabel: "Telefono", emailLabel: "Email",
-      headOfficeLabel: "Sede", boatParkingLabel: "Pontile",
-      headOffice: "Via Ravanera 7,<br/>22100 Como (IT)",
-      boatParking: "Lungolago Viale Geno,<br/>fronte civico 10, Como",
+      headOfficeLabel: "Orari", boatParkingLabel: "Dove",
+      headOffice: "Tutti i giorni · 9:00 — 20:00",
+      boatParking: "Viale Geno, 10<br/>22100 Como · Italia<br/><small>posto barca</small>",
       whatsapp: "WhatsApp", emailCta: "Scrivici", instagramCta: "Instagram",
       rights: "© 2026 Como Boat Rental — P.IVA IT03998950137",
       safety: "Tutte le barche assicurate · Equipaggiamento di sicurezza a bordo",
@@ -432,9 +452,10 @@ export const translations: Record<Locale, Translation> = {
     nav: { tours: "Туры", fleet: "Флот", map: "Карта", experiences: "Опыты", contact: "Контакты" },
     hero: {
       location: "Озеро Комо · Италия",
-      title: "Белладжо. Варенна.<br/><em>Бальбьянелло.</em>",
-      sub: "Частные прогулки на лодке по озеру Комо, на классических деревянных лодках. С личным капитаном, в вашем темпе.",
+      title: "Озеро Комо.<br/>На <em>частной лодке.</em>",
+      sub: "Прогулки по озеру на классических деревянных лодках с профессиональным местным капитаном — Белладжо, Варенна, Бальбьянелло и скрытые уголки озера.",
       ctaPrimary: "Посмотреть туры",
+      ctaReserve: "Забронировать лодку",
       ctaWhatsapp: "Написать в WhatsApp",
       scroll: "Прокрутка",
       trust: ["Полная страховка", "Сертифицированные капитаны", "С 2018 года", "★ 4.9 / 87 отзывов"],
@@ -445,7 +466,8 @@ export const translations: Record<Locale, Translation> = {
       body: "От первого бассейна и Виллы Олеандры Джорджа Клуни до кинематографичных садов Виллы дель Бальбьянелло и скрытого водопада в Нессо — каждый маршрут построен под вас, ваших гостей и ритм озера.",
     },
     tours: {
-      indexLabel: "(01) — Туры", countLabel: "04 тура",
+      indexLabel: "(01) — Туры",
+      lead: "Четыре способа увидеть озеро.",
       title: "Частные круизы <em>с вашим капитаном.</em>",
       right: "Индивидуальные маршруты к самым легендарным местам озера Комо — Вилла Бальбьянелло, Белладжо, Варенна и тихие уголки озера.",
       factDuration: "Длительность",
@@ -480,7 +502,8 @@ export const translations: Record<Locale, Translation> = {
       ],
     },
     fleet: {
-      indexLabel: "(03) — Флот", countLabel: "02 лодки",
+      indexLabel: "(03) — Флот",
+      lead: "Деревянные лодки ручной работы.",
       title: "Две лодки. Обе <em>из красного дерева.</em>",
       right: "Поддерживаемые на уровне выше, чем требует озеро. Раздвижные крыши, кожаные сиденья, полное HiFi — каждая деталь продумана.",
       inquireCta: "Запросить",
@@ -512,30 +535,34 @@ export const translations: Record<Locale, Translation> = {
       ],
     },
     map: {
-      indexLabel: "(02) — Озеро", countLabel: "09 точек",
-      title: "Где <em>мы плаваем.</em>",
-      right: "От южной оконечности у Комо до Белладжо в центре и далее — каждая вилла, скрытая бухта и водопад на одной карте.",
+      indexLabel: "(02) — Озеро",
+      lead: "Где мы плаваем.",
+      title: "Знаковые <em>места,</em> сплетённые в один день.",
+      right: "От южной оконечности у Комо вверх по западному берегу до Белладжо, Варенны и самых тихих уголков озера. Наведите курсор или коснитесь точки, чтобы её найти.",
       sideTitle: "Знаковые <em>места.</em>",
       sideBody: "Девять остановок, прослеженных с юга на север вдоль самого фотографируемого берега озера. Капитан собирает их в единый частный маршрут — в вашем темпе.",
       pins: buildPins(["Отправление", "15 мин", "Клуни", "Водопад", "Центр озера", "Знаковая", "Тремеццо", "Жемчужина", "Восточный берег"]),
     },
     experiences: {
-      indexLabel: "(04) — Больше чем тур", countLabel: "03 опыта",
-      title: "Индивидуальные <em>опыты.</em>",
+      indexLabel: "(04) — Больше чем тур",
+      lead: "Индивидуальные опыты.",
+      title: "Для моментов, которые <em>важнее всего.</em>",
       right: "От предложений руки и сердца на закате до редакционных съёмок на Вилле д'Эсте — мы оркестрируем момент, на воде.",
       items: [
-        { title: "Свадьбы и <em>особые случаи.</em>",        desc: "Свадьбы, предложения, юбилеи на лодке — шампанское на борту, индивидуальный сервис и озеро в золотой час. Незабываемо, по замыслу." },
-        { title: "Фотосъёмки и <em>производство.</em>",       desc: "Редакционные, свадебные и коммерческие фото- и видеосъёмки на наших деревянных лодках — Вилла д'Эсте, Вилла Бальбьянелло, золотой час на воде." },
-        { title: "Опытные <em>местные капитаны.</em>",        desc: "Сертифицированные капитаны со знанием языков — настоящие персональные консьержи: рестораны, скрытые бухты, идеальное время с учётом ветров." },
+        { title: "Свадьбы и особые случаи",   desc: "Свадьбы, предложения, юбилеи на лодке. Шампанское на борту и индивидуальный сервис для незабываемых моментов на воде." },
+        { title: "Фотосъёмки и производство", desc: "Редакционные, свадебные и коммерческие съёмки на наших деревянных лодках — Вилла д'Эсте, Вилла Бальбьянелло, золотой час на озере." },
+        { title: "Капитаны как консьержи",    desc: "Сертифицированные многоязычные капитаны, знающие озеро как свой двор — рестораны, скрытые бухты, идеальное время с ветром." },
       ],
     },
     testimonials: {
-      indexLabel: "(05) — Гости", countLabel: "★★★★★ Google",
-      title: "Что <em>говорят о нас.</em>",
+      indexLabel: "(05) — Гости",
+      lead: "Что говорят.",
+      title: "Проверено в <em>трёх сезонах.</em>",
       right: "Отзывы с Google — проверенные гости Como Boat Rental.",
       score: "4,9",
-      scoreOutOf: "/ 5",
-      reviewCount: "87 отзывов Google",
+      scoreOutOf: "/ 5,0",
+      reviewCount: "На основании 87 отзывов Google",
+      reviewPeriod: "2023 — 2025",
       reviewLink: "Читать все на Google",
       items: [
         { quote: "Тур был абсолютно потрясающим. Озеро Комо великолепно, а прогулка на лодке сделала впечатления незабываемыми. Очень рекомендую всем.", author: "Дима", date: "Август 2025 · Google" },
@@ -552,12 +579,14 @@ export const translations: Record<Locale, Translation> = {
       directionsCta: "Открыть в Google Maps",
     },
     contact: {
-      indexLabel: "(07) — Бронирование", hoursLabel: "Пн — Вс · 9:00–20:00",
+      indexLabel: "(07) — Бронирование",
+      lead: "Отвечаем в течение часа, каждый день, 9 — 20.",
+      hoursLabel: "Часы",
       title: "Спланируйте <em>опыт на воде.</em>",
       phoneLabel: "Телефон", emailLabel: "Email",
-      headOfficeLabel: "Офис", boatParkingLabel: "Причал",
-      headOffice: "Via Ravanera 7,<br/>22100 Комо (Италия)",
-      boatParking: "Lungolago Viale Geno,<br/>напротив дома 10, Комо",
+      headOfficeLabel: "Часы", boatParkingLabel: "Где",
+      headOffice: "Каждый день · 9:00 — 20:00",
+      boatParking: "Viale Geno, 10<br/>22100 Комо · Италия<br/><small>стоянка лодок</small>",
       whatsapp: "WhatsApp", emailCta: "Написать", instagramCta: "Instagram",
       rights: "© 2026 Como Boat Rental — НДС IT03998950137",
       safety: "Все лодки застрахованы · Спасательное оборудование на борту",
@@ -569,9 +598,10 @@ export const translations: Record<Locale, Translation> = {
     nav: { tours: "الجولات", fleet: "الأسطول", map: "الخريطة", experiences: "التجارب", contact: "اتصل بنا" },
     hero: {
       location: "بحيرة كومو · إيطاليا",
-      title: "بيلاجيو. فارينا.<br/><em>بالبيانيلو.</em>",
-      sub: "جولات قوارب خاصة في بحيرة كومو، على متن قوارب خشبية كلاسيكية. مع قبطانك، بإيقاعك.",
+      title: "بحيرة كومو.<br/>على متن <em>قارب خاص.</em>",
+      sub: "أبحر في البحيرة على متن قوارب خشبية كلاسيكية مع قبطان محلي محترف — بيلاجيو، فارينا، بالبيانيلو والزوايا الخفية للبحيرة.",
       ctaPrimary: "تصفّح الجولات",
+      ctaReserve: "احجز قارباً",
       ctaWhatsapp: "تواصل عبر واتساب",
       scroll: "تمرير",
       trust: ["تأمين شامل", "قباطنة معتمدون", "منذ 2018", "★ 4.9 / 87 تقييماً"],
@@ -582,7 +612,8 @@ export const translations: Record<Locale, Translation> = {
       body: "من الحوض الأول وفيلا أوليندرا لجورج كلوني إلى حدائق فيلا ديل بالبيانيلو السينمائية والشلال الخفي في نيسو — كل مسار مصمم حولك وحول ضيوفك وإيقاع البحيرة.",
     },
     tours: {
-      indexLabel: "(01) — الجولات", countLabel: "04 جولات",
+      indexLabel: "(01) — الجولات",
+      lead: "أربع طرق لرؤية البحيرة.",
       title: "جولات خاصة <em>مع قبطانك.</em>",
       right: "مسارات مخصصة إلى أشهر وجهات بحيرة كومو — فيلا ديل بالبيانيلو، بيلاجيو، فارينا والزوايا الهادئة للبحيرة.",
       factDuration: "المدة",
@@ -617,7 +648,8 @@ export const translations: Record<Locale, Translation> = {
       ],
     },
     fleet: {
-      indexLabel: "(03) — الأسطول", countLabel: "02 قاربان",
+      indexLabel: "(03) — الأسطول",
+      lead: "قوارب خشبية مصنوعة يدوياً.",
       title: "قاربان. كلاهما <em>من الماهوغني.</em>",
       right: "تتم صيانتهما بمعيار أعلى مما تتطلبه البحيرة. سقوف منزلقة، مقاعد جلدية، نظام HiFi كامل — كل تفصيلة مدروسة.",
       inquireCta: "استفسر",
@@ -649,30 +681,34 @@ export const translations: Record<Locale, Translation> = {
       ],
     },
     map: {
-      indexLabel: "(02) — البحيرة", countLabel: "09 محطات",
-      title: "أين <em>نُبحر.</em>",
-      right: "من الطرف الجنوبي عند كومو إلى بيلاجيو في الوسط وما بعدها — كل فيلا وخليج خفي وشلال على خريطة واحدة.",
+      indexLabel: "(02) — البحيرة",
+      lead: "أين نُبحر.",
+      title: "وجهات <em>أيقونية،</em> منسوجة في يوم واحد.",
+      right: "من الطرف الجنوبي عند كومو صعوداً على طول الضفة الغربية إلى بيلاجيو وفارينا وأهدأ زوايا البحيرة. مرّر فوق وجهة أو انقرها لتحديد موقعها.",
       sideTitle: "وجهات <em>أيقونية.</em>",
       sideBody: "تسع محطات، متتبَّعة من الجنوب إلى الشمال على طول أكثر شواطئ البحيرة تصويراً. يضفّرها قبطانك في مسار خاص واحد — بإيقاعك.",
       pins: buildPins(["انطلاق", "15 دقيقة", "كلوني", "شلال", "وسط البحيرة", "أيقونية", "تريميتزو", "اللؤلؤة", "الضفة الشرقية"]),
     },
     experiences: {
-      indexLabel: "(04) — أكثر من جولة", countLabel: "03 تجارب",
-      title: "تجارب <em>مفصّلة لك.</em>",
+      indexLabel: "(04) — أكثر من جولة",
+      lead: "تجارب مفصّلة.",
+      title: "للحظات التي <em>تعني أكثر.</em>",
       right: "من طلبات الزواج عند الغروب إلى الإنتاج التحريري في فيلا ديستي — نُنسّق اللحظة، على الماء.",
       items: [
-        { title: "حفلات الزفاف <em>والمناسبات الخاصة.</em>", desc: "حفلات زفاف، طلبات زواج، ذكرى سنوية على القارب — شامبانيا على المتن وخدمة مخصصة والبحيرة في الساعة الذهبية. لا يُنسى، بالتصميم." },
-        { title: "جلسات التصوير <em>والإنتاج.</em>",         desc: "تصوير تحريري، أعراس، إنتاج تجاري على متن قواربنا الخشبية — فيلا ديستي، فيلا بالبيانيلو، الساعة الذهبية على الماء." },
-        { title: "قباطنة <em>محليون خبراء.</em>",            desc: "قباطنة معتمدون يتحدثون عدة لغات — أمناء استقبال شخصيون: توصيات مطاعم، خلجان مخفية، توقيت مثالي مع رياح البحيرة." },
+        { title: "حفلات الزفاف والمناسبات الخاصة", desc: "حفلات زفاف، طلبات زواج، ذكرى سنوية على القارب. شامبانيا على المتن وخدمة مخصصة للحظات لا تُنسى على الماء." },
+        { title: "جلسات التصوير والإنتاج",         desc: "تصوير تحريري وأعراس وتجاري على متن قواربنا الخشبية — فيلا ديستي، فيلا بالبيانيلو، الساعة الذهبية على البحيرة." },
+        { title: "قباطنة كأمناء استقبال",          desc: "قباطنة معتمدون يتحدثون عدة لغات يعرفون البحيرة كحديقتهم — توصيات مطاعم، خلجان مخفية، توقيت مثالي مع الريح." },
       ],
     },
     testimonials: {
-      indexLabel: "(05) — الضيوف", countLabel: "★★★★★ Google",
-      title: "ماذا <em>يقولون.</em>",
+      indexLabel: "(05) — الضيوف",
+      lead: "ماذا يقولون.",
+      title: "مُقَيَّمون عبر <em>ثلاثة مواسم.</em>",
       right: "مراجعات من Google — ضيوف موثَّقون لـ Como Boat Rental.",
       score: "4.9",
-      scoreOutOf: "/ 5",
-      reviewCount: "87 تقييماً على Google",
+      scoreOutOf: "/ 5.0",
+      reviewCount: "بناءً على 87 تقييماً على Google",
+      reviewPeriod: "2023 — 2025",
       reviewLink: "اقرأ الكل على Google",
       items: [
         { quote: "كانت الجولة رائعة تماماً. بحيرة كومو خلابة، ورحلة القارب جعلت التجربة لا تُنسى. أوصي بها لكل من يزور كومو.", author: "ديما", date: "أغسطس 2025 · Google" },
@@ -689,12 +725,14 @@ export const translations: Record<Locale, Translation> = {
       directionsCta: "فتح في خرائط Google",
     },
     contact: {
-      indexLabel: "(07) — الحجوزات", hoursLabel: "الإثنين — الأحد · 9:00–20:00",
+      indexLabel: "(07) — الحجوزات",
+      lead: "نرد خلال ساعة، كل يوم، 9 — 20.",
+      hoursLabel: "ساعات",
       title: "خطّط <em>تجربتك على القارب.</em>",
       phoneLabel: "الهاتف", emailLabel: "البريد الإلكتروني",
-      headOfficeLabel: "المقر الرئيسي", boatParkingLabel: "موقف القوارب",
-      headOffice: "Via Ravanera 7,<br/>22100 كومو (إيطاليا)",
-      boatParking: "Lungolago Viale Geno,<br/>أمام رقم 10، كومو",
+      headOfficeLabel: "ساعات", boatParkingLabel: "أين",
+      headOffice: "كل يوم · 9:00 — 20:00",
+      boatParking: "Viale Geno, 10<br/>22100 كومو · إيطاليا<br/><small>موقف القوارب</small>",
       whatsapp: "واتساب", emailCta: "مراسلتنا", instagramCta: "إنستغرام",
       rights: "© 2026 Como Boat Rental — الرقم الضريبي IT03998950137",
       safety: "جميع القوارب مؤمَّنة · معدات السلامة على المتن",
