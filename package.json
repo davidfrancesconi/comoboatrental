@@ -1,11 +1,17 @@
 {
-  "name": "site",
+  "name": "comoboatrental",
   "version": "0.1.0",
   "private": true,
+  "description": "Como Boat Rental marketing site — multilingual single-page Next.js static export.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davidfrancesconi/comoboatrental.git"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "preview": "next build && npx serve out"
   },
   "dependencies": {
     "leaflet": "^1.9.4",
