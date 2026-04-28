@@ -168,6 +168,50 @@ Three button variants, all rectangle, mono caps:
 
 ---
 
+## SEO & content architecture
+
+The site is a multi-page, multi-locale Next.js static export
+optimised for Google's "things to do" carousel and "people also ask"
+rich results. Read [`docs/HANDOFF.md`](./docs/HANDOFF.md) for the
+full architecture, what's done, what's left for the dev, and the
+off-site checklist for Google Business Profile, GetYourGuide,
+Viator, Tripadvisor, Bokun, hotel concierge partnerships and Italian-
+market channels.
+
+Quick map of the SEO-related modules:
+
+```
+app/
+├── seo.ts                      ← single source of truth for site constants (URL, phone, address, geo, founders, rating, locale helpers)
+├── jsonld.ts                   ← schema.org builders (LocalBusiness, TouristTrip, Product, Review, AggregateRating, FAQPage, BreadcrumbList, Place)
+├── sitemap.ts                  ← MetadataRoute.Sitemap generator
+├── robots.ts                   ← MetadataRoute.Robots generator
+├── layout.tsx                  ← root shell — fonts, manifest, preconnect hints, theme-color
+├── page.tsx                    ← root /, redirects to /<browser-lang>/
+├── [locale]/                   ← per-locale routes (one per /en/, /it/, /ru/, /ar/)
+│   ├── layout.tsx              ← per-locale metadata, hreflang via metadata.alternates.languages
+│   ├── page.tsx                ← homepage with full @graph JSON-LD
+│   ├── tours/[slug]/page.tsx   ← per-tour landing pages
+│   ├── destinations/[slug]/page.tsx  ← per-destination guides
+│   ├── faq/page.tsx
+│   ├── reviews/page.tsx
+│   └── blog/[slug]/page.tsx
+├── content/                    ← all long-form copy in one place
+│   ├── tours.ts                ← 4 tours × 4 locales — Italian hand-written for SEO
+│   ├── destinations.ts         ← 6 destinations × 4 locales
+│   ├── faq.ts                  ← 12 Q&As × 4 locales
+│   └── blog.ts                 ← seed posts
+└── components/
+    ├── HomePage.tsx            ← the existing single-page UI as a client component
+    └── InnerPage.tsx           ← shared nav + footer for inner pages
+```
+
+The build emits 60 static pages — homepage × 4 locales, 4 tours × 4
+locales, 6 destinations × 4 locales, FAQ × 4, reviews × 4, blog × 2,
+plus sitemap and robots.
+
+---
+
 ## Editorial preview toggle (variant + palette)
 
 The site ships with a small floating control in the top-right that lets
