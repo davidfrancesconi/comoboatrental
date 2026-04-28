@@ -327,27 +327,32 @@ export default function Home() {
                 <div className="img-wrap">
                   <img src={TOUR_IMGS[i]} alt={tour.title.replace(/<[^>]+>/g, "")} loading="lazy" />
                   <div className="duration-tag">{tour.duration}</div>
-                  <div className="number">N°{String(i + 1).padStart(2, "0")}</div>
+                  <div className="price-tag">
+                    <span className="from-label">{t.tours.factFrom}</span>
+                    <b>{tour.price.replace(/^[^\d]*/, "").replace(/[^\d.,]/g, "").replace(/^/, "€")}</b>
+                  </div>
                 </div>
-                <div className="title-row">
-                  <h4><RichText text={tour.title} /></h4>
-                  <div className="price">{tour.price}</div>
-                </div>
+                <h4><RichText text={tour.title} /></h4>
                 <p className="descr">{tour.desc}</p>
-                <div className="facts">
-                  <div className="fact">
-                    <span className="lbl">{t.tours.factDuration}</span>
-                    <span className="val">{tour.duration}</span>
+                {/* Itinerary stops as a flow with → arrows between them */}
+                <div className="itinerary">
+                  {tour.stops.map((s, k) => (
+                    <span className="stop" key={k}>{s}</span>
+                  ))}
+                </div>
+                {/* Three-cell meta row pinned to the bottom for easy scanning */}
+                <div className="meta-row">
+                  <div className="meta-cell">
+                    <span className="k">{t.tours.factDuration}</span>
+                    <span className="v">{tour.duration}</span>
                   </div>
-                  <div className="fact fact-multiline">
-                    <span className="lbl">{t.tours.factStops}</span>
-                    <span className="val">
-                      {tour.stops.map((s, k) => <span key={k} className="line">{s}</span>)}
-                    </span>
+                  <div className="meta-cell">
+                    <span className="k">{t.tours.factIdeal}</span>
+                    <span className="v">{tour.meta}</span>
                   </div>
-                  <div className="fact">
-                    <span className="lbl">{t.tours.factIdeal}</span>
-                    <span className="val">{tour.meta}</span>
+                  <div className="meta-cell">
+                    <span className="k">{t.tours.factFrom ?? "From"}</span>
+                    <span className="v">{tour.price}</span>
                   </div>
                 </div>
               </article>

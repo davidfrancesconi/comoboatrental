@@ -594,126 +594,128 @@ html[dir="rtl"] .btn:hover .arrow { transform: scaleX(-1) translateX(4px); }
   transition: transform 1.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .tour-card:hover .img-wrap img { transform: scale(1.05); }
+/* Duration tag — light card top-left of the image */
 .tour-card .duration-tag {
   position: absolute;
-  top: 16px;
-  left: 16px;
-  background: rgba(13, 24, 32, 0.78);
-  backdrop-filter: blur(8px);
-  color: var(--cream);
-  padding: 7px 12px;
+  top: 18px;
+  left: 18px;
+  background: rgba(245, 239, 228, 0.95);
+  color: var(--ink);
+  padding: 8px 14px;
   font-family: var(--mono);
   font-size: 11px;
-  letter-spacing: 0.12em;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   z-index: 2;
+}
+html[dir="rtl"] .tour-card .duration-tag { left: auto; right: 18px; }
+
+/* Price tag — dark glass card top-right with mono "FROM" + serif amount */
+.tour-card .price-tag {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  background: rgba(13, 24, 32, 0.78);
+  backdrop-filter: blur(6px);
+  color: var(--cream);
+  padding: 7px 13px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
 }
-html[dir="rtl"] .tour-card .duration-tag { left: auto; right: 16px; }
-.tour-card .number {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--cream);
-  letter-spacing: 0.15em;
-  z-index: 2;
-  background: rgba(13, 24, 32, 0.55);
-  padding: 7px 10px;
-  backdrop-filter: blur(6px);
+.tour-card .price-tag b {
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 18px;
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 1;
 }
-html[dir="rtl"] .tour-card .number { right: auto; left: 16px; }
+.tour-card .price-tag .from-label { opacity: 0.75; }
+html[dir="rtl"] .tour-card .price-tag { right: auto; left: 18px; }
 
-/* Title row — title on the left, price on the right; aligned across all cards */
-.tour-card .title-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
-  margin-bottom: 14px;
-  border-top: 1px solid var(--rule);
-  padding-top: 18px;
-}
+/* Title is now full-width below the image */
 .tour-card h4 {
   font-family: var(--display);
-  font-size: clamp(22px, 1.8vw, 28px);
+  font-size: clamp(24px, 2vw, 30px);
   font-weight: 400;
   line-height: 1.1;
   letter-spacing: -0.01em;
   color: var(--ink);
-  flex: 1;
-  min-width: 0;
-}
-.tour-card .price {
-  font-family: var(--display);
-  font-size: 20px;
-  font-style: italic;
-  color: var(--accent);
-  white-space: nowrap;
+  margin-bottom: 12px;
 }
 
 .tour-card p.descr {
   color: var(--ink-soft);
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: 15px;
+  line-height: 1.55;
   font-weight: 300;
   margin-bottom: 18px;
-  flex: 1;
+  max-width: 48ch;
 }
 
-/* Comparison facts row — same anatomy across all cards.
-   Pinned to the BOTTOM of each card so heights stay aligned. */
-.tour-card .facts {
-  border-top: 1px solid var(--rule);
-  padding-top: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  color: var(--muted);
-  text-transform: uppercase;
-}
-.tour-card .fact {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-}
-.tour-card .fact .lbl {
-  color: var(--accent);
-  flex-shrink: 0;
-}
-.tour-card .fact .val {
-  color: var(--ink-soft);
-  text-align: right;
-  text-transform: none;
-}
-html[dir="rtl"] .tour-card .fact .val { text-align: left; }
-
-/* Stops value — comma list with gold → arrows between, single line if it fits */
-.tour-card .fact-multiline .val {
+/* Itinerary stops — inline flow with gold → arrows between */
+.tour-card .itinerary {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: flex-end;
-  gap: 6px 4px;
-  text-transform: none;
-  letter-spacing: 0.04em;
+  gap: 6px 12px;
+  margin-bottom: 22px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
 }
-.tour-card .fact-multiline .val .line {
+.tour-card .itinerary .stop {
   display: inline-flex;
-  align-items: baseline;
-  gap: 8px;
+  align-items: center;
+  gap: 12px;
 }
-.tour-card .fact-multiline .val .line:not(:last-child)::after {
+.tour-card .itinerary .stop:not(:last-child)::after {
   content: "→";
   color: var(--accent);
-  font-size: 12px;
-  margin-left: 2px;
+  font-size: 13px;
+  margin-left: 0;
 }
-html[dir="rtl"] .tour-card .fact-multiline .val { justify-content: flex-start; }
-html[dir="rtl"] .tour-card .fact-multiline .val .line:not(:last-child)::after { content: "←"; }
+html[dir="rtl"] .tour-card .itinerary .stop:not(:last-child)::after { content: "←"; }
+
+/* Three-cell meta row pinned to the bottom for easy scanning */
+.tour-card .meta-row {
+  display: flex;
+  gap: clamp(16px, 2.4vw, 36px);
+  padding-top: 20px;
+  border-top: 1px solid var(--rule);
+  margin-top: auto;
+}
+.tour-card .meta-row .meta-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+.tour-card .meta-row .meta-cell .k {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.tour-card .meta-row .meta-cell .v {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.2;
+}
 
 /* ===== FLEET ===== */
 .fleet {

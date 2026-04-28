@@ -67,6 +67,7 @@ type Translation = {
     factDuration: string;
     factStops: string;
     factIdeal: string;
+    factFrom: string;
     items: Tour[];
   };
   fleet: {
@@ -155,10 +156,10 @@ export const translations: Record<Locale, Translation> = {
   en: {
     nav: { tours: "Tours", fleet: "Fleet", map: "Map", experiences: "Experiences", contact: "Contact" },
     hero: {
-      location: "Lake Como — Lombardia, Italia · 45.81°N 9.08°E",
-      title: "Lake Como, <em>privately</em><br/>aboard classic<br/>wooden boats.",
-      sub: "Exclusive private cruises with a captain — Bellagio, Varenna, Villa del Balbianello and the lake's hidden corners. At your own pace, in timeless Italian elegance.",
-      ctaPrimary: "Discover the tours",
+      location: "Lago di Como · Italia",
+      title: "Bellagio. Varenna.<br/><em>Balbianello.</em>",
+      sub: "Private boat tours on Lake Como, aboard hand-built wooden boats. With your own captain, at your own pace.",
+      ctaPrimary: "Browse tours",
       ctaWhatsapp: "Chat on WhatsApp",
       scroll: "Scroll",
       trust: ["Fully insured", "Certified captains", "Since 2018", "★ 4.9 / 87 reviews"],
@@ -175,7 +176,8 @@ export const translations: Record<Locale, Translation> = {
       right: "Tailored itineraries to the most iconic destinations — from a one-hour cruise of the first basin to bespoke days with hotel pick-up and lakeside lunch.",
       factDuration: "Duration",
       factStops: "Stops",
-      factIdeal: "Ideal for",
+      factIdeal: "Best for",
+      factFrom: "From",
       items: [
         {
           duration: "1 hour", title: "Lake Como Highlights",
@@ -292,10 +294,10 @@ export const translations: Record<Locale, Translation> = {
   it: {
     nav: { tours: "Tour", fleet: "Flotta", map: "Mappa", experiences: "Esperienze", contact: "Contatti" },
     hero: {
-      location: "Lago di Como — Lombardia, Italia · 45.81°N 9.08°E",
-      title: "Il Lago di Como, <em>in privato</em><br/>a bordo di barche<br/>classiche in legno.",
-      sub: "Crociere private esclusive con skipper — Bellagio, Varenna, Villa del Balbianello e gli angoli nascosti del lago. Al tuo ritmo, con un'eleganza italiana senza tempo.",
-      ctaPrimary: "Scopri i tour",
+      location: "Lago di Como · Italia",
+      title: "Bellagio. Varenna.<br/><em>Balbianello.</em>",
+      sub: "Tour privati in barca sul Lago di Como, a bordo di motoscafi classici in legno. Con il tuo skipper, al tuo ritmo.",
+      ctaPrimary: "Vedi i tour",
       ctaWhatsapp: "Scrivici su WhatsApp",
       scroll: "Scorri",
       trust: ["Tutto assicurato", "Skipper certificati", "Dal 2018", "★ 4.9 / 87 recensioni"],
@@ -312,6 +314,7 @@ export const translations: Record<Locale, Translation> = {
       factDuration: "Durata",
       factStops: "Tappe",
       factIdeal: "Ideale per",
+      factFrom: "Da",
       items: [
         {
           duration: "1 ora", title: "Highlights del Lago",
@@ -428,10 +431,10 @@ export const translations: Record<Locale, Translation> = {
   ru: {
     nav: { tours: "Туры", fleet: "Флот", map: "Карта", experiences: "Опыты", contact: "Контакты" },
     hero: {
-      location: "Озеро Комо — Ломбардия, Италия · 45.81°N 9.08°E",
-      title: "Озеро Комо, <em>в приватной</em><br/>атмосфере на классических<br/>деревянных лодках.",
-      sub: "Эксклюзивные частные круизы с капитаном — Белладжо, Варенна, Вилла дель Бальбьянелло и скрытые уголки озера. В вашем темпе, с вечной итальянской элегантностью.",
-      ctaPrimary: "Открыть туры",
+      location: "Озеро Комо · Италия",
+      title: "Белладжо. Варенна.<br/><em>Бальбьянелло.</em>",
+      sub: "Частные прогулки на лодке по озеру Комо, на классических деревянных лодках. С личным капитаном, в вашем темпе.",
+      ctaPrimary: "Посмотреть туры",
       ctaWhatsapp: "Написать в WhatsApp",
       scroll: "Прокрутка",
       trust: ["Полная страховка", "Сертифицированные капитаны", "С 2018 года", "★ 4.9 / 87 отзывов"],
@@ -448,6 +451,7 @@ export const translations: Record<Locale, Translation> = {
       factDuration: "Длительность",
       factStops: "Остановки",
       factIdeal: "Идеально для",
+      factFrom: "От",
       items: [
         {
           duration: "1 час", title: "Главные виды Комо",
@@ -564,10 +568,10 @@ export const translations: Record<Locale, Translation> = {
   ar: {
     nav: { tours: "الجولات", fleet: "الأسطول", map: "الخريطة", experiences: "التجارب", contact: "اتصل بنا" },
     hero: {
-      location: "بحيرة كومو — لومبارديا، إيطاليا · 45.81°N 9.08°E",
-      title: "بحيرة كومو، <em>على نحوٍ خاص</em><br/>على متن قوارب<br/>خشبية كلاسيكية.",
-      sub: "رحلات بحرية خاصة وحصرية مع قبطان — بيلاجيو، فارينا، فيلا ديل بالبيانيلو والزوايا الخفية للبحيرة. بإيقاعك الخاص، بأناقة إيطالية لا تشيخ.",
-      ctaPrimary: "اكتشف الجولات",
+      location: "بحيرة كومو · إيطاليا",
+      title: "بيلاجيو. فارينا.<br/><em>بالبيانيلو.</em>",
+      sub: "جولات قوارب خاصة في بحيرة كومو، على متن قوارب خشبية كلاسيكية. مع قبطانك، بإيقاعك.",
+      ctaPrimary: "تصفّح الجولات",
       ctaWhatsapp: "تواصل عبر واتساب",
       scroll: "تمرير",
       trust: ["تأمين شامل", "قباطنة معتمدون", "منذ 2018", "★ 4.9 / 87 تقييماً"],
@@ -584,6 +588,7 @@ export const translations: Record<Locale, Translation> = {
       factDuration: "المدة",
       factStops: "المحطات",
       factIdeal: "مناسب لـ",
+      factFrom: "من",
       items: [
         {
           duration: "ساعة واحدة", title: "أبرز معالم كومو",
