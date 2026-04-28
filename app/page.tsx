@@ -29,14 +29,22 @@ const CONTACT_BG = "/images/lake-como-discover.jpg";
 
 // Static curated grid that mimics the WordPress Smash Balloon Instagram feed
 // from the legacy site. Each tile links to the live Instagram profile.
+// Order chosen to match the rough sequence shown on the legacy comoboatrental.it
+// — flagship boat shot first, then alternating wide/scenic ↔ portrait/lifestyle:
+//   1. Flagship: portrait of model on the Riva, Villa d'Este behind  (hero-1)
+//   2. Scenic:   the Riva at sunset on open water                    (hero-sunset)
+//   3. People:   wedding/proposal moment on board                    (wedding)
+//   4. Architecture: Villa del Balbianello                          (balbianello)
+//   5. Lifestyle: aerial of the wooden caddy at speed                (luxury-cruise)
+//   6. Town:     Bellagio waterfront                                  (bellagio)
 // To swap for a real auto-updating feed, see README "Instagram feed" section.
 const INSTAGRAM_TILES = [
   "/images/hero-1.jpg",
-  "/images/balbianello.jpg",
-  "/images/bellagio.jpg",
-  "/images/luxury-cruise.jpg",
   "/images/hero-sunset.jpg",
   "/images/wedding.jpg",
+  "/images/balbianello.jpg",
+  "/images/luxury-cruise.jpg",
+  "/images/bellagio.jpg",
 ];
 
 // Render <em>...</em> as italic accent inside a heading without dangerouslySetInnerHTML.

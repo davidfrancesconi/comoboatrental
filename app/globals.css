@@ -26,8 +26,9 @@
   --sans:    var(--font-body), system-ui, -apple-system, sans-serif;
   --mono:    var(--font-mono), ui-monospace, monospace;
 
-  /* Spacing */
-  --pad-section: clamp(80px, 12vh, 140px);
+  /* Spacing — tightened from the original v2 to avoid huge dead space
+     on mobile (was clamp(80, 12vh, 140) → too generous on phones). */
+  --pad-section: clamp(56px, 9vh, 110px);
   --container:   1280px;
   --gutter:      clamp(20px, 3vw, 40px);
 }
@@ -558,12 +559,14 @@ html[dir="rtl"] .btn:hover .arrow { transform: scaleX(-1) translateX(4px); }
   font-weight: 300;
 }
 
-/* ===== Section head — verbatim v2 ===== */
+/* ===== Section head — based on v2, slightly tightened ===== */
 .section-head {
   display: grid;
   grid-template-columns: 1fr 2fr;
   gap: clamp(40px, 6vw, 100px);
-  margin-bottom: clamp(60px, 8vh, 100px);
+  /* Was clamp(60, 8vh, 100) — tightened on mobile so the eyebrow
+     no longer floats 60px below the prior section's content. */
+  margin-bottom: clamp(40px, 6vh, 80px);
   align-items: end;
 }
 @media (max-width: 740px) {
