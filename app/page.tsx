@@ -361,51 +361,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FLEET */}
-      <section className="fleet" id="fleet">
-        <div className="container-x">
-          <div className="section-head reveal">
-            <div>
-              <div className="index">
-                <span style={{ color: "rgba(245,239,228,0.4)" }}>{t.fleet.indexLabel}</span>
-                <span>{t.fleet.countLabel}</span>
-              </div>
-              <h3 className="display"><RichText text={t.fleet.title} /></h3>
-            </div>
-            <div className="right">{t.fleet.right}</div>
-          </div>
-
-          {t.fleet.items.map((boat, i) => (
-            <div key={i} className="fleet-item reveal" style={i === t.fleet.items.length - 1 ? { marginBottom: 0 } : undefined}>
-              <div className="img-block">
-                <img src={FLEET_IMGS[i]} alt={boat.name.replace(/<[^>]+>/g, "")} loading="lazy" />
-                <div className="corner-label">{boat.cornerLabel}</div>
-              </div>
-              <div className="text-block">
-                <div className="meta" style={{ color: "rgba(245,239,228,0.5)", marginBottom: 16 }}>{boat.origin}</div>
-                <h4><RichText text={boat.name} /></h4>
-                <p className="descr">{boat.desc}</p>
-                <div className="specs">
-                  {boat.specs.map((spec, k) => (
-                    <div key={k}>
-                      <div className="spec-label">{spec.label}</div>
-                      <div className="spec-value">{spec.value}</div>
-                    </div>
-                  ))}
-                </div>
-                <div className="price-row">
-                  <div className="price"><small>{locale === "en" ? "From" : locale === "it" ? "Da" : locale === "ru" ? "От" : "من"}</small>{boat.price}</div>
-                  <a className="btn" href="#contact" style={{ borderColor: "rgba(245,239,228,0.5)", color: "var(--cream)" }}>
-                    {t.fleet.inquireCta} <span className="arrow">→</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* MAP */}
+      {/* MAP — between Tours and Fleet, per v2 design */}
       <section className="map-section" id="map">
         <div className="container-x">
           <div className="section-head reveal" style={{ marginBottom: 60 }}>
@@ -451,6 +407,50 @@ export default function Home() {
               />
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* FLEET */}
+      <section className="fleet" id="fleet">
+        <div className="container-x">
+          <div className="section-head reveal">
+            <div>
+              <div className="index">
+                <span style={{ color: "rgba(245,239,228,0.4)" }}>{t.fleet.indexLabel}</span>
+                <span>{t.fleet.countLabel}</span>
+              </div>
+              <h3 className="display"><RichText text={t.fleet.title} /></h3>
+            </div>
+            <div className="right">{t.fleet.right}</div>
+          </div>
+
+          {t.fleet.items.map((boat, i) => (
+            <div key={i} className="fleet-item reveal" style={i === t.fleet.items.length - 1 ? { marginBottom: 0 } : undefined}>
+              <div className="img-block">
+                <img src={FLEET_IMGS[i]} alt={boat.name.replace(/<[^>]+>/g, "")} loading="lazy" />
+                <div className="corner-label">{boat.cornerLabel}</div>
+              </div>
+              <div className="text-block">
+                <div className="meta" style={{ color: "rgba(245,239,228,0.5)", marginBottom: 16 }}>{boat.origin}</div>
+                <h4><RichText text={boat.name} /></h4>
+                <p className="descr">{boat.desc}</p>
+                <div className="specs">
+                  {boat.specs.map((spec, k) => (
+                    <div key={k}>
+                      <div className="spec-label">{spec.label}</div>
+                      <div className="spec-value">{spec.value}</div>
+                    </div>
+                  ))}
+                </div>
+                <div className="price-row">
+                  <div className="price"><small>{locale === "en" ? "From" : locale === "it" ? "Da" : locale === "ru" ? "От" : "من"}</small>{boat.price}</div>
+                  <a className="btn" href="#contact" style={{ borderColor: "rgba(245,239,228,0.5)", color: "var(--cream)" }}>
+                    {t.fleet.inquireCta} <span className="arrow">→</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
