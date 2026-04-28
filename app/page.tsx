@@ -418,14 +418,14 @@ export default function Home() {
       <section className="tours" id="tours">
         <div className="container-x">
           <div className="section-head reveal">
-            <div>
-              <div className="index">
-                <span>{t.tours.indexLabel}</span>
-                <span className="section-lead">{t.tours.lead}</span>
-              </div>
-              <h3 className="display"><RichText text={t.tours.title} /></h3>
+            <div className="label">
+              <span className="eyebrow">{t.tours.indexLabel}</span>
+              <p className="lead">{t.tours.lead}</p>
             </div>
-            <div className="right">{t.tours.right}</div>
+            <div className="title">
+              <h3 className="display"><RichText text={t.tours.title} /></h3>
+              <p>{t.tours.right}</p>
+            </div>
           </div>
 
           <div className="tours-grid">
@@ -479,14 +479,14 @@ export default function Home() {
       <section className="map-section" id="map" ref={mapSectionRef}>
         <div className="container-x">
           <div className="section-head reveal" style={{ marginBottom: 60 }}>
-            <div>
-              <div className="index">
-                <span>{t.map.indexLabel}</span>
-                <span className="section-lead">{t.map.lead}</span>
-              </div>
-              <h3 className="display"><RichText text={t.map.title} /></h3>
+            <div className="label">
+              <span className="eyebrow">{t.map.indexLabel}</span>
+              <p className="lead">{t.map.lead}</p>
             </div>
-            <div className="right">{t.map.right}</div>
+            <div className="title">
+              <h3 className="display"><RichText text={t.map.title} /></h3>
+              <p>{t.map.right}</p>
+            </div>
           </div>
 
           <div className="map-wrap">
@@ -524,14 +524,14 @@ export default function Home() {
       <section className="fleet" id="fleet">
         <div className="container-x">
           <div className="section-head reveal">
-            <div>
-              <div className="index">
-                <span style={{ color: "rgba(245,239,228,0.4)" }}>{t.fleet.indexLabel}</span>
-                <span className="section-lead">{t.fleet.lead}</span>
-              </div>
-              <h3 className="display"><RichText text={t.fleet.title} /></h3>
+            <div className="label">
+              <span className="eyebrow">{t.fleet.indexLabel}</span>
+              <p className="lead">{t.fleet.lead}</p>
             </div>
-            <div className="right">{t.fleet.right}</div>
+            <div className="title">
+              <h3 className="display"><RichText text={t.fleet.title} /></h3>
+              <p>{t.fleet.right}</p>
+            </div>
           </div>
 
           {t.fleet.items.map((boat, i) => (
@@ -568,14 +568,14 @@ export default function Home() {
       <section className="experiences" id="experiences">
         <div className="container-x">
           <div className="section-head reveal">
-            <div>
-              <div className="index">
-                <span style={{ color: "rgba(245,239,228,0.4)" }}>{t.experiences.indexLabel}</span>
-                <span className="section-lead">{t.experiences.lead}</span>
-              </div>
-              <h3 className="display"><RichText text={t.experiences.title} /></h3>
+            <div className="label">
+              <span className="eyebrow">{t.experiences.indexLabel}</span>
+              <p className="lead">{t.experiences.lead}</p>
             </div>
-            <div className="right">{t.experiences.right}</div>
+            <div className="title">
+              <h3 className="display"><RichText text={t.experiences.title} /></h3>
+              <p>{t.experiences.right}</p>
+            </div>
           </div>
 
           <div className="exp-grid">
@@ -597,14 +597,14 @@ export default function Home() {
       <section className="testimonials">
         <div className="container-x">
           <div className="section-head reveal" style={{ marginBottom: 60 }}>
-            <div>
-              <div className="index">
-                <span>{t.testimonials.indexLabel}</span>
-                <span className="section-lead">{t.testimonials.lead}</span>
-              </div>
-              <h3 className="display"><RichText text={t.testimonials.title} /></h3>
+            <div className="label">
+              <span className="eyebrow">{t.testimonials.indexLabel}</span>
+              <p className="lead">{t.testimonials.lead}</p>
             </div>
-            <div className="right">{t.testimonials.right}</div>
+            <div className="title">
+              <h3 className="display"><RichText text={t.testimonials.title} /></h3>
+              <p>{t.testimonials.right}</p>
+            </div>
           </div>
 
           {/* Aggregate rating block — sits above the testimonial grid */}
@@ -644,14 +644,14 @@ export default function Home() {
       <section className="our-base" id="our-base">
         <div className="container-x">
           <div className="section-head reveal" style={{ marginBottom: 60 }}>
-            <div>
-              <div className="index">
-                <span>{t.ourBase.indexLabel}</span>
-                <span>{t.ourBase.countLabel}</span>
-              </div>
-              <h3 className="display"><RichText text={t.ourBase.title} /></h3>
+            <div className="label">
+              <span className="eyebrow">{t.ourBase.indexLabel}</span>
+              <p className="lead">{t.ourBase.countLabel}</p>
             </div>
-            <div className="right">{t.ourBase.body}</div>
+            <div className="title">
+              <h3 className="display"><RichText text={t.ourBase.title} /></h3>
+              <p>{t.ourBase.body}</p>
+            </div>
           </div>
 
           <div className="map-embed-wrap reveal">

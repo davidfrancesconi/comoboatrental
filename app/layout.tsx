@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Inter_Tight, Cairo, JetBrains_Mono } from "next/font/google";
+import { Cormorant_Garamond, Inter, Cairo, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -10,7 +10,7 @@ const cormorant = Cormorant_Garamond({
   display: "swap",
 });
 
-const interTight = Inter_Tight({
+const inter = Inter({
   subsets: ["latin", "latin-ext", "cyrillic"],
   weight: ["300", "400", "500", "600"],
   variable: "--font-body",
@@ -43,7 +43,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${cormorant.variable} ${interTight.variable} ${cairo.variable} ${jetbrains.variable}`}
+      className={`${cormorant.variable} ${inter.variable} ${cairo.variable} ${jetbrains.variable}`}
     >
       <body>{children}</body>
     </html>
