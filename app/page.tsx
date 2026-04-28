@@ -534,33 +534,35 @@ export default function Home() {
             </div>
           </div>
 
-          {t.fleet.items.map((boat, i) => (
-            <div key={i} className="fleet-item reveal" style={i === t.fleet.items.length - 1 ? { marginBottom: 0 } : undefined}>
-              <div className="img-block">
-                <img src={FLEET_IMGS[i]} alt={boat.name.replace(/<[^>]+>/g, "")} loading="lazy" />
-                <div className="corner-label">{boat.cornerLabel}</div>
-              </div>
-              <div className="text-block">
-                <div className="meta" style={{ color: "rgba(245,239,228,0.5)", marginBottom: 16 }}>{boat.origin}</div>
-                <h4><RichText text={boat.name} /></h4>
-                <p className="descr">{boat.desc}</p>
-                <div className="specs">
+          <div className="fleet-grid">
+            {t.fleet.items.map((boat, i) => (
+              <article key={i} className="boat-card reveal">
+                <div className="boat-img">
+                  <img src={FLEET_IMGS[i]} alt={boat.name.replace(/<[^>]+>/g, "")} loading="lazy" />
+                  <span className="badge">{boat.cornerLabel}</span>
+                </div>
+                <h3><RichText text={boat.name} /></h3>
+                <p>{boat.desc}</p>
+                <div className="boat-specs">
                   {boat.specs.map((spec, k) => (
-                    <div key={k}>
-                      <div className="spec-label">{spec.label}</div>
-                      <div className="spec-value">{spec.value}</div>
+                    <div key={k} className="spec">
+                      <span className="k">{spec.label}</span>
+                      <span className="v">{spec.value}</span>
                     </div>
                   ))}
                 </div>
-                <div className="price-row">
-                  <div className="price"><small>{locale === "en" ? "From" : locale === "it" ? "Da" : locale === "ru" ? "От" : "من"}</small>{boat.price}</div>
-                  <a className="btn" href="#contact" style={{ borderColor: "rgba(245,239,228,0.5)", color: "var(--cream)" }}>
+                <div className="boat-foot">
+                  <div className="boat-price">
+                    <span className="label">{locale === "en" ? "From" : locale === "it" ? "Da" : locale === "ru" ? "От" : "من"}</span>
+                    <span className="v">{boat.price}</span>
+                  </div>
+                  <a className="btn ghost" href="#contact">
                     {t.fleet.inquireCta} <span className="arrow">→</span>
                   </a>
                 </div>
-              </div>
-            </div>
-          ))}
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
