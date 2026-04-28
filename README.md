@@ -1,13 +1,18 @@
 # Como Boat Rental
 
-Marketing site for **comoboatrental.it** — a single-page, multilingual
-presentation of the private boat tour business on Lake Como.
+Sito di marketing per **comoboatrental.it** — presentazione
+multilingue dell'attività di tour privati in barca sul Lago di Como.
 
-Live: deployed to Vercel from this repo. Vercel auto-detects the
-`output: "export"` config and publishes the `out/` folder.
+Live: deployato su Vercel da questo repo. Vercel rileva automaticamente
+la config `output: "export"` e pubblica la cartella `out/`.
 
-This README is the handoff document. Everything a front-end dev needs to
-clone, run, modify and ship the site is below.
+Questo README è il documento di handoff. Tutto ciò che serve a uno
+sviluppatore front-end per clonare, far girare, modificare e
+spedire il sito è qui sotto. Per la roadmap completa SEO + canali
+off-site (Google Business Profile, GetYourGuide, Tripadvisor, Bokun,
+hotel concierge, stampa) leggi [`docs/HANDOFF.md`](./docs/HANDOFF.md).
+Per il riassunto operativo per Loris (in italiano, con focus su
+azioni da fare lui) leggi [`docs/PER-LORIS.md`](./docs/PER-LORIS.md).
 
 ---
 
@@ -16,129 +21,150 @@ clone, run, modify and ship the site is below.
 ```bash
 git clone https://github.com/davidfrancesconi/comoboatrental.git
 cd comoboatrental
-bun install      # or: npm install
+bun install      # oppure: npm install
 bun run dev      # http://localhost:3000
-bun run build    # → static HTML/CSS/JS in ./out/
+bun run build    # → HTML/CSS/JS statici in ./out/
 ```
 
-No backend. No database. No environment variables. No API keys.
+Niente backend. Niente database. Niente variabili d'ambiente.
+Niente API key.
 
 ---
 
 ## Stack
 
-- **Next.js 16** (App Router) with `output: "export"` — produces a
-  fully static `out/` folder, deployable to any static host
-  (Vercel, Netlify, Cloudflare Pages, S3, GitHub Pages, FTP, etc.)
+- **Next.js 16** (App Router) con `output: "export"` — produce una
+  cartella `out/` completamente statica, deployabile su qualsiasi
+  host statico (Vercel, Netlify, Cloudflare Pages, S3, GitHub
+  Pages, FTP, ecc.)
 - **TypeScript**
-- **Tailwind CSS v4** (mostly used as a build pipeline; the bulk of
-  styling lives in plain CSS in `app/globals.css`)
-- **Leaflet 1.9** for the interactive Lake Como map (CartoDB Voyager
-  tiles, no API key needed)
-- **Bun** for install / build / dev. Anything that works with
-  npm/pnpm/yarn works here too — no Bun-specific code.
+- **Tailwind CSS v4** (usato principalmente come pipeline di
+  build; il grosso dello styling vive in CSS puro in
+  `app/globals.css`)
+- **Leaflet 1.9** per la mappa interattiva del Lago di Como (tile
+  CartoDB Voyager, nessuna API key richiesta)
+- **Bun** per install / build / dev. Funziona anche con
+  npm/pnpm/yarn — niente codice Bun-specifico.
 
-Fonts are loaded via `next/font/google`:
+I font sono caricati via `next/font/google`:
 
-- **Cormorant Garamond** — display serif (headlines, italics)
+- **Cormorant Garamond** — display serif (titoli, corsivi)
 - **Inter** — body sans
-- **JetBrains Mono** — eyebrows, labels, mono caps
-- **Cairo** — Arabic body and display fallback
+- **JetBrains Mono** — eyebrow, label, mono caps
+- **Cairo** — body e display fallback per arabo
 
 ---
 
-## Project layout
+## Struttura del progetto
 
 ```
 .
 ├── app/
-│   ├── page.tsx          ← the entire single-page site (one client component)
-│   ├── translations.ts   ← all copy + map pin data, EN / IT / RU / AR
-│   ├── globals.css       ← design system, layout, every section's CSS
-│   ├── layout.tsx        ← document shell, font loading, metadata
-│   └── favicon.ico
+│   ├── layout.tsx                ← shell radice — font, manifest, preconnect, theme-color
+│   ├── page.tsx                  ← redirect dalla root / a /<lingua-browser>/
+│   ├── seo.ts                    ← unica fonte di verità per costanti del sito
+│   ├── jsonld.ts                 ← builder schema.org
+│   ├── sitemap.ts                ← generatore sitemap
+│   ├── robots.ts                 ← generatore robots
+│   ├── translations.ts           ← copy homepage + pin mappa, EN / IT / RU / AR
+│   ├── copy-variants.ts          ← 3 varianti copy per il toggle editoriale
+│   ├── globals.css               ← design system, layout, CSS di ogni sezione
+│   ├── [locale]/                 ← rotte per lingua
+│   │   ├── layout.tsx            ← metadati per lingua, hreflang
+│   │   ├── page.tsx              ← homepage con JSON-LD @graph completo
+│   │   ├── tours/[slug]/page.tsx ← landing per tour
+│   │   ├── destinations/[slug]/page.tsx  ← guide per destinazione
+│   │   ├── faq/page.tsx
+│   │   ├── reviews/page.tsx
+│   │   └── blog/[slug]/page.tsx
+│   ├── content/                  ← copy lungo, in un solo posto
+│   │   ├── tours.ts              ← 4 tour × 4 lingue
+│   │   ├── destinations.ts       ← 6 destinazioni × 4 lingue
+│   │   ├── faq.ts                ← 12 Q&A × 4 lingue
+│   │   └── blog.ts               ← articoli seed
+│   └── components/
+│       ├── HomePage.tsx          ← UI single-page come client component
+│       └── InnerPage.tsx         ← nav + footer condivisi per le pagine interne
 ├── public/
-│   └── images/           ← all photography + assets
-├── next.config.ts        ← `output: "export"` + image config
+│   ├── images/                   ← tutte le foto + asset
+│   ├── manifest.webmanifest
+│   └── favicon.ico
+├── docs/
+│   ├── HANDOFF.md                ← questo handoff in versione completa
+│   └── PER-LORIS.md              ← riassunto operativo per Loris (it)
+├── scripts/
+│   └── sync-instagram.mjs        ← sync feed Instagram al build
+├── next.config.ts                ← `output: "export"` + image config + trailingSlash
 ├── tsconfig.json
 └── package.json
 ```
 
-`app/page.tsx` is one big client component (`"use client"`) that
-renders every section of the site. There is no per-section file split —
-the section breakpoints inside `page.tsx` are just JSX comments
-(`{/* HERO */}`, `{/* TOURS */}`, etc.) and the order in JSX matches
-the order on the page.
-
-If you want to refactor into per-section components, the natural
-boundaries are:
-
-- `<Hero />`
-- `<Tours />`
-- `<Map />` (already isolated as `<LakeComoMap />` for the Leaflet
-  instance)
-- `<Fleet />`
-- `<Experiences />`
-- `<Testimonials />`
-- `<OurBase />`
-- `<Contact />`
+Il build emette **60 pagine statiche** — homepage × 4 lingue, 4 tour
+× 4 lingue, 6 destinazioni × 4 lingue, FAQ × 4, recensioni × 4,
+blog × 2, più sitemap e robots.
 
 ---
 
 ## Run, build, deploy
 
 ```bash
-bun install            # or: npm install / pnpm install
-bun run dev            # local dev — http://localhost:3000
-bun run build          # production build → ./out/
-bun run preview        # build + preview locally on a static server
+bun install            # oppure: npm install / pnpm install
+bun run dev            # dev locale — http://localhost:3000
+bun run build          # build di produzione → ./out/
+bun run preview        # build + preview locale su server statico
 ```
 
-To deploy:
+Per deployare:
 
-- **Vercel** — import the GitHub repo. Static export is detected
-  automatically; the `out/` folder is published. No env vars needed.
-- **Netlify / Cloudflare Pages** — set the build command to
-  `bun run build` (or `npm run build`) and the publish directory to
+- **Vercel** — importa il repo GitHub. L'export statico viene
+  rilevato in automatico; viene pubblicata la cartella `out/`.
+  Nessuna env var necessaria.
+- **Netlify / Cloudflare Pages** — imposta il build command su
+  `bun run build` (o `npm run build`) e la publish directory su
   `out`.
-- **Any static host** — run `bun run build` and upload the contents
-  of `out/` to your host.
+- **Qualsiasi host statico** — gira `bun run build` e carica il
+  contenuto di `out/` sull'host.
 
 ---
 
 ## Design system
 
-Tokens, fonts, colours, type sizes, spacing and component anatomy come
-from a hi-fi prototype made in Claude Design (claude.ai/design). The
-prototype URL was the source of truth during the build — every spec
-in this codebase is taken verbatim from the rendered v2 print.
+Token, font, colori, dimensioni tipografiche, spacing e anatomia
+dei componenti vengono da un prototipo hi-fi fatto su Claude Design
+(claude.ai/design). L'URL del prototipo è stato la fonte di verità
+durante la build — ogni spec in questo codebase è preso verbatim
+dal print v2 renderizzato.
 
-### Colour tokens (in `app/globals.css :root`)
+### Token di colore (in `app/globals.css :root`)
 
-| Variable          | Value                       | Use                                         |
-|-------------------|-----------------------------|---------------------------------------------|
-| `--bg`            | `#f5efe4`                   | Warm parchment background, default sections |
-| `--bg-alt`        | `#ece4d4`                   | Dimmer parchment for section banding        |
-| `--ink`           | `#1a1f24`                   | Near-black with a green-blue tint           |
-| `--ink-soft`      | `#4a5560`                   | Body copy on cream, secondary text          |
-| `--ink-mute`      | `#7a8590`                   | Mono labels, tertiary text                  |
-| `--rule`          | `rgba(26, 31, 36, 0.14)`    | Hairlines and dividers                      |
-| `--gold`          | `#b08a4a`                   | Accent gold (italic em on light bg)         |
-| `--gold-deep`     | `#8c6b32`                   | Darker gold for hover states                |
-| `--gold-light`    | `#e8c987`                   | Lighter highlight gold (italic em on dark)  |
+| Variabile         | Valore                      | Uso                                              |
+|-------------------|-----------------------------|--------------------------------------------------|
+| `--bg`            | `#f5efe4`                   | Sfondo pergamena calda, sezioni di default       |
+| `--bg-alt`        | `#ece4d4`                   | Pergamena più scura per banding di sezione       |
+| `--ink`           | `#1a1f24`                   | Quasi-nero con sfumatura verde-blu               |
+| `--ink-soft`      | `#4a5560`                   | Body copy su crema, testo secondario             |
+| `--ink-mute`      | `#7a8590`                   | Etichette mono, testo terziario                  |
+| `--rule`          | `rgba(26, 31, 36, 0.14)`    | Linee sottili e divisori                         |
+| `--gold`          | `#b08a4a`                   | Oro accent (em corsivo su bg chiaro)             |
+| `--gold-deep`     | `#8c6b32`                   | Oro più scuro per stati hover                    |
+| `--gold-light`    | `#e8c987`                   | Oro chiaro highlight (em corsivo su bg scuro)    |
 
-### Type system
+Le altre 4 palette (Fog, Terracotta, Mono, Dusk) sono override sotto
+`html[data-palette="B|C|D|E"]` nello stesso file. Vedi sezione
+"Toggle editoriale" sotto.
 
-| Class      | Family            | Use                                           |
-|------------|-------------------|-----------------------------------------------|
-| `.display` | Cormorant Garamond | Headlines, italic em accents                  |
-| `.lead`    | Cormorant Garamond italic 300 | Section taglines under the eyebrow |
-| `.eyebrow` | JetBrains Mono caps | Section labels (e.g. "01 — TOURS")           |
-| body       | Inter             | All running prose                             |
+### Sistema tipografico
 
-### Section anatomy
+| Classe     | Famiglia          | Uso                                              |
+|------------|-------------------|--------------------------------------------------|
+| `.display` | Cormorant Garamond | Titoli, accenti italic em                       |
+| `.lead`    | Cormorant Garamond italic 300 | Tagline di sezione sotto l'eyebrow   |
+| `.eyebrow` | JetBrains Mono caps | Etichette di sezione (es. "01 — TOURS")        |
+| body       | Inter             | Tutto il testo corrente                          |
 
-Every content section uses the same `<div class="section-head">` shape:
+### Anatomia di sezione
+
+Ogni sezione di contenuto usa la stessa shape `<div class="section-head">`:
 
 ```jsx
 <div className="section-head">
@@ -147,315 +173,348 @@ Every content section uses the same `<div class="section-head">` shape:
     <p className="lead">{lead}</p>
   </div>
   <div className="title">
-    <h3 className="display"><RichText text={title} /></h3>
+    <h2 className="display"><RichText text={title} /></h2>
     <p>{rightDescription}</p>
   </div>
 </div>
 ```
 
-The grid is `1fr 2fr` so the eyebrow + lead pair sits in the
-left column and the title + description in the right.
+La griglia è `1fr 2fr` quindi la coppia eyebrow + lead sta in colonna
+sinistra e titolo + descrizione a destra.
 
-### Buttons
+### Bottoni
 
-Three button variants, all rectangle, mono caps:
+Tre varianti, tutte rettangolari, mono caps:
 
-- `.btn.primary` — filled `--ink`, light text. Default CTA.
-- `.btn.primary-gold` — filled `--gold-light`. Used for "Reserve a
-  boat" in the hero.
-- `.btn.ghost` — cream text, 50% cream border. For dark sections.
-- `.btn.light` — ink text, ink border. For cream sections.
+- `.btn.primary` — riempito `--ink`, testo chiaro. CTA di default.
+- `.btn.primary-gold` — riempito `--gold-light`. Usato per "Riserva
+  una barca" nell'hero.
+- `.btn.ghost` — testo crema, bordo crema 50%. Per sezioni scure.
+- `.btn.light` — testo ink, bordo ink. Per sezioni crema.
 
 ---
 
-## SEO & content architecture
+## Architettura SEO & contenuti
 
-The site is a multi-page, multi-locale Next.js static export
-optimised for Google's "things to do" carousel and "people also ask"
-rich results. Read [`docs/HANDOFF.md`](./docs/HANDOFF.md) for the
-full architecture, what's done, what's left for the dev, and the
-off-site checklist for Google Business Profile, GetYourGuide,
-Viator, Tripadvisor, Bokun, hotel concierge partnerships and Italian-
-market channels.
+Il sito è un export statico Next.js multi-pagina e multi-lingua,
+ottimizzato per il carosello "things to do" di Google e per i rich
+result "people also ask". Leggi [`docs/HANDOFF.md`](./docs/HANDOFF.md)
+per l'architettura completa, lo stato del fatto/da fare, e la
+checklist off-site per Google Business Profile, GetYourGuide,
+Viator, Tripadvisor, Bokun, partnership con concierge degli hotel
+e canali del mercato italiano.
 
-Quick map of the SEO-related modules:
+Mappa rapida dei moduli SEO-related:
 
 ```
 app/
-├── seo.ts                      ← single source of truth for site constants (URL, phone, address, geo, founders, rating, locale helpers)
-├── jsonld.ts                   ← schema.org builders (LocalBusiness, TouristTrip, Product, Review, AggregateRating, FAQPage, BreadcrumbList, Place)
-├── sitemap.ts                  ← MetadataRoute.Sitemap generator
-├── robots.ts                   ← MetadataRoute.Robots generator
-├── layout.tsx                  ← root shell — fonts, manifest, preconnect hints, theme-color
-├── page.tsx                    ← root /, redirects to /<browser-lang>/
-├── [locale]/                   ← per-locale routes (one per /en/, /it/, /ru/, /ar/)
-│   ├── layout.tsx              ← per-locale metadata, hreflang via metadata.alternates.languages
-│   ├── page.tsx                ← homepage with full @graph JSON-LD
-│   ├── tours/[slug]/page.tsx   ← per-tour landing pages
-│   ├── destinations/[slug]/page.tsx  ← per-destination guides
+├── seo.ts                      ← unica fonte di verità per costanti (URL, telefono, indirizzo, geo, founders, rating, helper di lingua)
+├── jsonld.ts                   ← builder schema.org (LocalBusiness, TouristTrip, Product, Review, AggregateRating, FAQPage, BreadcrumbList, Place)
+├── sitemap.ts                  ← generatore MetadataRoute.Sitemap
+├── robots.ts                   ← generatore MetadataRoute.Robots
+├── layout.tsx                  ← shell radice — font, manifest, preconnect hint, theme-color
+├── page.tsx                    ← root /, redirect a /<lingua-browser>/
+├── [locale]/                   ← rotte per lingua (una per /en/, /it/, /ru/, /ar/)
+│   ├── layout.tsx              ← metadati per lingua, hreflang via metadata.alternates.languages
+│   ├── page.tsx                ← homepage con @graph JSON-LD completo
+│   ├── tours/[slug]/page.tsx   ← landing per tour
+│   ├── destinations/[slug]/page.tsx  ← guide per destinazione
 │   ├── faq/page.tsx
 │   ├── reviews/page.tsx
 │   └── blog/[slug]/page.tsx
-├── content/                    ← all long-form copy in one place
-│   ├── tours.ts                ← 4 tours × 4 locales — Italian hand-written for SEO
-│   ├── destinations.ts         ← 6 destinations × 4 locales
-│   ├── faq.ts                  ← 12 Q&As × 4 locales
-│   └── blog.ts                 ← seed posts
+├── content/                    ← tutto il copy lungo in un solo posto
+│   ├── tours.ts                ← 4 tour × 4 lingue — ogni lingua ottimizzata per il proprio mercato
+│   ├── destinations.ts         ← 6 destinazioni × 4 lingue
+│   ├── faq.ts                  ← 12 Q&A × 4 lingue
+│   └── blog.ts                 ← articoli seed
 └── components/
-    ├── HomePage.tsx            ← the existing single-page UI as a client component
-    └── InnerPage.tsx           ← shared nav + footer for inner pages
+    ├── HomePage.tsx            ← l'UI single-page esistente come client component
+    └── InnerPage.tsx           ← nav + footer condivisi per le pagine interne
 ```
 
-The build emits 60 static pages — homepage × 4 locales, 4 tours × 4
-locales, 6 destinations × 4 locales, FAQ × 4, reviews × 4, blog × 2,
-plus sitemap and robots.
+Il copy è ottimizzato per ogni mercato di ricerca:
+
+- **Italiano** — scritto a mano per "noleggio barche como" (~3.600/mese),
+  "tour barca lago di como" (~1.200/mese), ecc.
+- **Inglese** — per il mercato globale: "lake como boat rental",
+  "lake como boat tour", "private boat tour bellagio", ecc.
+- **Russo** — mercato del lusso russo (via Dubai/Istanbul):
+  "Аренда лодки на озере Комо", "VIP чартер озеро Комо"
+- **Arabo** — mercato Gulf (UAE, Saudi, Kuwait): "تأجير قارب بحيرة كومو",
+  "فيلا جورج كلوني"
+
+Il copy russo e arabo è competente al livello SEO ma non scritto
+da madrelingua — vedi `docs/HANDOFF.md` sezione G per il task
+post-handoff.
 
 ---
 
-## Editorial preview toggle (variant + palette)
+## Toggle editoriale di anteprima (variante + palette)
 
-The site ships with a small floating control in the top-right that lets
-the client flip between three **copy variants** and five **colour
-palettes** without rebuilding. Choices are persisted in `localStorage`,
-so a reviewer can land on `comoboatrental.com`, pick a combination, and
-keep coming back to the same one.
+Il sito spedisce un piccolo controllo flottante in alto a destra
+che permette al cliente di alternare tra tre **varianti di copy**
+e cinque **palette di colore** senza ricompilare. Le scelte
+vengono salvate in `localStorage`, così un revisore può atterrare
+su `comoboatrental.com`, scegliere una combinazione, e ritornare
+sempre alla stessa.
 
-This is a **review tool**. Whatever the visitor picks does not change
-what crawlers see — the SEO metadata (title, description, Open Graph,
-Twitter card and `LocalBusiness` JSON-LD) is baked at build time in
-`app/layout.tsx` and is variant-independent. The variants are an English-
-only experiment; switching to IT / RU / AR always shows the standard
-translation in `app/translations.ts`.
+È uno **strumento di review**. Quello che il visitatore sceglie
+non cambia ciò che vedono i crawler — i metadati SEO (title,
+description, Open Graph, Twitter card e JSON-LD `LocalBusiness`)
+sono bakerati al build in `app/layout.tsx` e in `app/[locale]/layout.tsx`,
+indipendenti dalla variante. Le varianti di copy agiscono solo
+sull'inglese; passando a IT / RU / AR si vede sempre la
+traduzione standard in `app/translations.ts`.
 
-### Copy variants
+### Varianti di copy
 
-Defined in `app/copy-variants.ts`. Each variant is a partial override
-that gets merged on top of the full English translation.
+Definite in `app/copy-variants.ts`. Ogni variante è un override
+parziale che viene mergiato sopra la traduzione inglese completa.
 
-| Code | Label       | Voice                                           |
-|------|-------------|-------------------------------------------------|
-| A    | Editorial   | Restrained luxury, third-person. **Default.**   |
-| B    | Founder-led | Loris and Claudio in their own voice            |
-| C    | Concierge   | Service-led, day-of-trip framing                |
+| Codice | Etichetta   | Voce                                              |
+|--------|-------------|---------------------------------------------------|
+| A      | Editorial   | Lusso composto, terza persona. **Default.**       |
+| B      | Founder-led | Loris e Claudio in prima persona                  |
+| C      | Concierge   | Service-led, framing del giorno del tour          |
 
-To edit a variant, open `copy-variants.ts` and change the field. Only
-the fields you want to override need to be present — anything left out
-falls through to `translations.ts`.
+Per modificare una variante, apri `copy-variants.ts` e cambia il
+campo. Servono solo i campi che vuoi sovrascrivere — il resto
+cade su `translations.ts`.
 
-### Palettes
+### Palette
 
-Defined in `app/globals.css` under `html[data-palette="A|B|C|D|E"]`.
-Each palette is a small set of CSS custom properties; every other rule
-in the stylesheet consumes those tokens, so swapping the attribute
-re-paints the whole site.
+Definite in `app/globals.css` sotto `html[data-palette="A|B|C|D|E"]`.
+Ogni palette è un piccolo set di custom property CSS; ogni altra
+regola del foglio di stile consuma quei token, quindi cambiare
+l'attributo ridipinge tutto il sito.
 
-| Code | Label      | Mood                                |
-|------|------------|-------------------------------------|
-| A    | Parchment  | Warm cream + ink (default)          |
-| B    | Fog        | Cool grey-green, restrained         |
-| C    | Terracotta | Warm Mediterranean, slightly bolder |
-| D    | Mono       | Near-monochrome, brass for italics  |
-| E    | Dusk       | Dark mode — sunset over the lake    |
+| Codice | Etichetta  | Mood                                       |
+|--------|------------|--------------------------------------------|
+| A      | Parchment  | Crema caldo + ink (default)                |
+| B      | Fog        | Grigio-verde freddo, sobrio                |
+| C      | Terracotta | Mediterraneo caldo, leggermente più audace |
+| D      | Mono       | Quasi-monocromatico, ottone per i corsivi  |
+| E      | Dusk       | Dark mode — tramonto sul lago              |
 
-### Picking a final combination
+### Scegliere una combinazione finale
 
-When the client signs off on one combination:
+Quando il cliente conferma una combinazione:
 
-1. Set `DEFAULT_VARIANT` and `DEFAULT_PALETTE` at the top of
-   `app/page.tsx` to the chosen codes (e.g. `"B"` and `"A"`).
-2. If you want to remove the toggle entirely, delete the `<div className="vp-toggle">…</div>` block in `app/page.tsx` and the
-   `===== Variant + Palette toggle =====` rules at the bottom of
-   `app/globals.css`. The variant overrides and palette overrides
-   stay where they are — they're just no longer switchable at runtime.
-3. (Optional) update the metadata in `app/layout.tsx` to match the
-   chosen variant's headline copy. Right now it's locked to Variant A
-   ("Editorial") for SEO consistency.
+1. Imposta `DEFAULT_VARIANT` e `DEFAULT_PALETTE` in cima a
+   `app/components/HomePage.tsx` ai codici scelti (es. `"B"` e `"A"`).
+2. Se vuoi rimuovere il toggle del tutto, cancella l'intero blocco
+   `<div className="vp-toggle">…</div>` in
+   `app/components/HomePage.tsx` e le regole `===== Variant + Palette toggle =====`
+   in fondo a `app/globals.css`. Gli override della variante e
+   della palette restano dove sono — semplicemente non sono più
+   commutabili a runtime.
+3. (Opzionale) aggiorna i metadati in `app/[locale]/layout.tsx`
+   per matchare la copy della variante scelta. Ora sono fissi
+   alla Variant A ("Editorial") per coerenza SEO.
 
 ---
 
 ## SEO
 
-Baked in regardless of which variant or palette the visitor picks:
+Bakerato indipendentemente dalla variante o palette scelta dal
+visitatore:
 
-- `<title>` and `<meta name="description">` (`app/layout.tsx`)
-- Open Graph + Twitter card (image: `/public/images/hero-sunset.jpg`)
-- `<link rel="canonical">` → `https://comoboatrental.com`
+- `<title>` e `<meta name="description">` per locale in
+  `app/[locale]/layout.tsx`
+- Open Graph + Twitter card (immagine: `/public/images/hero-sunset.jpg`)
+- `<link rel="canonical">` per pagina, lingua-aware
+- `<link rel="alternate" hreflang>` per ogni lingua, ogni pagina
 - Robots: full index/follow, large image preview, max snippet
-- `LocalBusiness` + `TravelAgency` JSON-LD inlined into `<head>`,
-  with founders **Loris** and **Claudio**, full address, phone, geo,
-  opening hours and Instagram
+- `LocalBusiness` + `TravelAgency` JSON-LD inline in `<head>`
+  con i founders **Loris** e **Claudio**, indirizzo completo,
+  telefono, geo, orari e Instagram
+- `AggregateRating` (4.9/87) su ogni pagina
+- `Review` × 3 testimonianze
+- `Product` + `Offer` per le 2 barche con prezzo
+- `TouristTrip` per ogni tour con itinerario completo e prezzo
+- `FAQPage` (homepage abbreviata, /faq completa)
+- `BreadcrumbList` su ogni pagina
+- `Place` / `TouristAttraction` con coordinate per ogni destinazione
+- `Article` per i blog post
 
-Update the constants at the top of `app/layout.tsx` if any of these
-ever change.
+Aggiorna le costanti in `app/seo.ts` se cambia qualcosa
+sull'attività (telefono, indirizzo, valutazione, ecc.).
 
 ---
 
-## Internationalisation
+## Internazionalizzazione
 
-Four locales, all client-rendered from one `app/translations.ts`
-object. There is no routing per locale — switching the language
-updates React state, which re-renders the page in place and toggles
-`<html lang>` and `<html dir>`.
+Quattro lingue, ognuna su una rotta statica:
 
 ```
-EN — English
-IT — Italian
-RU — Russian
-AR — Arabic (RTL)
+/en/  — Inglese
+/it/  — Italiano
+/ru/  — Russo
+/ar/  — Arabo (RTL)
 ```
 
-Adding a section's copy means:
+La root `/` reindirizza alla lingua del browser (default `/en/`).
+La detection avviene client-side; gli hreflang in head garantiscono
+che Google associ correttamente le varianti di lingua.
 
-1. Extend the `Translation` type in `translations.ts`
-2. Populate the new field for all four locales
-3. Consume it in `page.tsx`
+Aggiungere il copy di una sezione significa:
 
-Adding a new locale means:
+1. Estendere il type `Translation` in `translations.ts`
+2. Popolare il nuovo campo per tutte e quattro le lingue
+3. Consumarlo in `HomePage.tsx`
 
-1. Add the locale code to the `Locale` type
-2. Add an entry to the `locales` array (used by the language switcher)
-3. Add a full translation block in `translations`
-4. If the script runs RTL, push the locale into `rtlLocales`
-5. If the script needs a font that the existing `Cairo` fallback
-   doesn't cover, add a new `next/font` import in `layout.tsx`
+Aggiungere una nuova lingua: vedi `docs/HANDOFF.md` sezione 4.
 
-Place names (Bellagio, Villa del Balbianello, Cernobbio, etc.) stay
-in their original Italian form across all locales — they're proper
-nouns and translating them would actively harm SEO.
+I toponimi (Bellagio, Villa del Balbianello, Cernobbio, ecc.)
+restano nella forma italiana originale in tutte le lingue — sono
+nomi propri e tradurli farebbe danno alla SEO.
 
 ---
 
-## The Lake Como map
+## La mappa del Lago di Como
 
-The `<LakeComoMap />` component in `page.tsx` is a real interactive
-Leaflet map, not a static image:
+Il componente `<LakeComoMap />` in `app/components/HomePage.tsx`
+è una vera mappa Leaflet interattiva, non un'immagine statica:
 
-- Tile source: **CartoDB Voyager** (free, no API key, attribution
-  hidden because the map is decorative — re-enable it if you ever
-  ship a version where the attribution is required by Carto's TOS)
-- All map interactions are disabled (no drag, no zoom, no pinch).
-  The map only flies on its own
-- Nine `circleMarker`s with permanent serif tooltips for the
-  destinations, dashed dark polyline connecting them in cruise
-  order, and an animated SVG boat marker that orbits the route
-- An `IntersectionObserver` on the `<section>` calls
-  `flyToBounds(...)` to fit all destinations when the section enters
-  the viewport, and `flyTo(initialView, 10)` when it leaves —
-  giving the section the cinematic "fly-in / fly-out" effect
+- Tile source: **CartoDB Voyager** (gratis, nessuna API key,
+  attribuzione nascosta perché la mappa è decorativa — riattivala
+  se in futuro spedirai una versione dove l'attribuzione è
+  richiesta dai TOS Carto)
+- Tutte le interazioni della mappa sono disabilitate (no drag,
+  no zoom, no pinch). La mappa vola solo da sé
+- Nove `circleMarker` con tooltip serif permanenti per le
+  destinazioni, polilinea tratteggiata scura che le connette
+  in ordine di crociera, e un marker SVG animato di una barca
+  che orbita il percorso
+- Un `IntersectionObserver` sulla `<section>` chiama
+  `flyToBounds(...)` per inquadrare tutte le destinazioni quando
+  la sezione entra nel viewport, e `flyTo(initialView, 10)`
+  quando esce — dando alla sezione l'effetto cinematografico
+  "fly-in / fly-out"
 
-To **move a pin**: edit the `lat` / `lng` in `translations.ts`
-under `PIN_BASE`. The new position is picked up automatically.
+Per **spostare un pin**: modifica `lat` / `lng` in
+`translations.ts` sotto `PIN_BASE`. La nuova posizione viene presa
+automaticamente.
 
-To **rename a pin**: edit `PIN_BASE[].name`. Same name applies to
-all locales (place names don't translate).
+Per **rinominare un pin**: modifica `PIN_BASE[].name`. Lo stesso
+nome si applica a tutte le lingue (i toponimi non si traducono).
 
-To **change the cruise route order**: reorder `PIN_BASE` (the
-polyline traces them in array order; the side itinerary list
-displays them in array order too).
+Per **cambiare l'ordine della crociera**: riordina `PIN_BASE` (la
+polilinea li traccia in ordine d'array; la lista laterale di
+itinerario li mostra in ordine d'array).
 
-The legacy "Our Base" section below uses a plain Google Maps
-`<iframe>` embed (no API key, just a search query).
+La sezione legacy "Our Base" più sotto usa un semplice embed
+`<iframe>` di Google Maps (nessuna API key, solo una query di
+ricerca).
 
 ---
 
-## Photography
+## Fotografia
 
-All boat / lake imagery lives in `public/images/`. The mapping from
-photo to section is at the top of `app/page.tsx`:
+Tutte le immagini barca / lago vivono in `public/images/`. La
+mappatura da foto a sezione è in cima a `app/components/HomePage.tsx`:
 
 ```ts
 const HERO_IMG    = "/images/hero-sunset.jpg";
 const TOUR_IMGS   = ["/images/hero-1.jpg", ...];
 const FLEET_IMGS  = ["/images/taxi-boat.jpg", "/images/luxury-caddy.jpg"];
-const EXP_IMGS    = ["/images/wedding.jpg", ...];
 const CONTACT_BG  = "/images/lake-como-discover.jpg";
 ```
 
-To swap a photo: drop the new file into `public/images/` and update
-the constant. No image-pipeline magic — these are served as-is and
-lazy-loaded via `loading="lazy"`.
+Per cambiare una foto: metti il nuovo file in `public/images/` e
+aggiorna la costante. Niente magia di image pipeline — vengono
+servite così come sono e lazy-loaded via `loading="lazy"`.
 
-All photography © Como Boat Rental.
+Tutte le foto © Como Boat Rental.
 
 ---
 
-## Contact constants
+## Costanti di contatto
 
-Hard-coded at the top of `app/page.tsx`:
+Hard-coded in `app/seo.ts`:
 
 ```ts
-const PHONE_1_DISP = "+39 340 6487574";
-const PHONE_2_DISP = "+39 348 0689769";
-const EMAIL        = "info@comoboatrental.it";
-const WHATSAPP_URL = "https://wa.me/393406487574";
-const INSTAGRAM_URL = "https://www.instagram.com/comoboatrental";
+export const PHONE_DISPLAY_PRIMARY = "+39 340 6487574";
+export const PHONE_DISPLAY_SECONDARY = "+39 348 0689769";
+export const EMAIL = "info@comoboatrental.it";
+export const WHATSAPP_URL = "https://wa.me/393406487574";
+export const INSTAGRAM_URL = "https://www.instagram.com/comoboatrental";
 ```
 
-The site has no booking flow and no backend forms — every CTA either
-opens WhatsApp, opens an email, jumps to the contact section, or
-opens the Instagram profile.
+Il sito non ha flow di prenotazione e nessuna form di backend —
+ogni CTA apre WhatsApp, apre una mail, salta alla sezione contatti
+o apre il profilo Instagram.
 
 ---
 
-## Known TODOs / things to consider
+## TODO noti / cose da considerare
 
-- **Real photography in tour cards.** The four tour cards currently
-  reuse hero / cruise photography. A dev with access to the photo
-  library could shoot or curate one explicit hero photo per tour
-  and replace the entries in `TOUR_IMGS`.
-- **Booking flow.** Currently every CTA is "Reserve a boat" → jumps
-  to the contact section. If the business wants real bookings (calendar
-  + payment), that's a backend integration that doesn't exist yet.
-  The static site doesn't preclude it — Vercel functions or a separate
-  booking widget (e.g. FareHarbor, Bokun) drop in cleanly.
-- **Instagram feed.** The Instagram section pulls the latest 6
-  public posts from `@comoboatrental` at **build time** via the
-  helper script `scripts/sync-instagram.mjs`. The script hits the
-  same public web endpoint the Instagram website itself uses
-  (no API token, no Facebook Business setup, no third-party
-  service), downloads each photo to `/public/images/instagram/`,
-  and writes a manifest to `/public/instagram-feed.json`. The
-  manifest is consumed by `app/page.tsx`. If the sync fails for
-  any reason — Instagram throttles, endpoint format changes,
-  no network during the build — the build continues and the
-  page falls back to a curated set of in-house photos.
+- **Foto reali nelle card tour.** Le quattro card tour attualmente
+  riusano foto hero / di crociera. Uno sviluppatore con accesso
+  alla libreria foto può scattare o curare una foto eroe per tour
+  e sostituire le entry in `TOUR_IMGS`.
+- **Flow di prenotazione.** Attualmente ogni CTA è "Riserva una
+  barca" → salta alla sezione contatti. Se l'attività vuole
+  prenotazioni vere (calendario + pagamento), è un'integrazione
+  backend che ancora non esiste. Il sito statico non lo preclude
+  — funzioni Vercel o un widget di prenotazione separato (es.
+  Bokun raccomandato — vedi `docs/HANDOFF.md`) si inseriscono
+  pulitamente.
+- **Feed Instagram.** La sezione Instagram prende gli ultimi 6
+  post pubblici da `@comoboatrental` al **build time** via lo
+  script helper `scripts/sync-instagram.mjs`. Lo script colpisce
+  lo stesso endpoint web pubblico che il sito Instagram stesso
+  usa (nessun API token, nessun setup Facebook Business, nessun
+  servizio terzo), scarica ogni foto in `/public/images/instagram/`,
+  e scrive un manifest in `/public/instagram-feed.json`. Il
+  manifest è consumato da `app/components/HomePage.tsx`. Se la
+  sync fallisce per qualsiasi motivo — Instagram throttling,
+  cambio formato endpoint, no rete durante il build — il build
+  continua e la pagina cade su un set curato di foto interne.
 
-  The script runs automatically as a `prebuild` hook, so any
-  `bun run build` (or `npm run build`) refreshes the feed. To
-  refresh manually without a full build:
+  Lo script gira automaticamente come hook `prebuild`, quindi
+  ogni `bun run build` (o `npm run build`) rinfresca il feed.
+  Per rinfrescare manualmente senza un build completo:
 
   ```bash
   bun run sync:instagram
   ```
 
-  To change the source profile, set `IG_USERNAME=otherprofile` in
-  the environment (or edit the default in the script). To change
-  how many posts the grid pulls, set `IG_POST_LIMIT`.
+  Per cambiare il profilo sorgente, imposta
+  `IG_USERNAME=otherprofile` nell'environment (o modifica il
+  default nello script). Per cambiare quanti post prende la
+  griglia, imposta `IG_POST_LIMIT`.
 
-  Because the site is a static export, "live" here means
-  "fresh as of the last deploy". A scheduled rebuild on Vercel
-  (Cron Jobs → POST to the deploy hook on a schedule) keeps the
-  grid fresh without any manual intervention. Suggested cadence:
-  every 6 hours.
+  Siccome il sito è un export statico, "live" qui significa
+  "fresh come dell'ultimo deploy". Un rebuild schedulato su
+  Vercel (Cron Jobs → POST al deploy hook a tempi pianificati)
+  tiene la griglia aggiornata senza intervento manuale. Cadenza
+  suggerita: ogni 6 ore.
 
-  If the public endpoint Instagram uses ever stops responding,
-  the cleanest fallbacks are
-  [Behold.so](https://behold.so) (free embed widget) or the
-  official Instagram Graph API (requires Meta Business + token).
-- **Form / mailing list.** Out of scope for this build.
-- **Cookie banner.** None. The site uses no cookies and no analytics.
-  If analytics are added (Plausible, Simple Analytics, GA4), check
-  whether a banner is needed for the deployment region.
-- **Performance.** Lighthouse score is in the 90s out of the box.
-  The biggest win available is converting the photography to AVIF /
-  WebP (currently JPG) — `next/image` would automate this if `output: "export"` weren't disabling its runtime. A pre-build Sharp script would be the cleanest solution.
+  Se l'endpoint pubblico che Instagram usa smettesse di
+  rispondere, i fallback più puliti sono
+  [Behold.so](https://behold.so) (widget di embed gratuito) o
+  l'API Instagram Graph ufficiale (richiede Meta Business +
+  token).
+- **Form / mailing list.** Fuori scope per questo build.
+- **Cookie banner.** Nessuno. Il sito non usa cookie e nessun
+  analytics. Se si aggiungono analytics (Plausible, Simple
+  Analytics, GA4), verifica se serve un banner per la regione
+  di deploy.
+- **Performance.** Il punteggio Lighthouse è nei 90 fuori dalla
+  scatola. La vincita più grande disponibile è convertire le
+  foto in AVIF / WebP (attualmente JPG) — `next/image` lo
+  automatizzerebbe se `output: "export"` non disabilitasse il
+  suo runtime. Uno script Sharp pre-build sarebbe la soluzione
+  più pulita. Vedi `docs/HANDOFF.md` sezione "Cosa resta da fare,
+  A".
 
 ---
 
-## Licence
+## Licenza
 
-The code in this repo is private. All photography is the property of
-Como Boat Rental. Map tiles are © OpenStreetMap contributors via
-CARTO ([ODbL](https://opendatacommons.org/licenses/odbl/)) — credit
-must be visible if/when the map is used outside this site's
-decorative context.
+Il codice in questo repo è privato. Tutte le foto sono proprietà
+di Como Boat Rental. I tile della mappa sono © OpenStreetMap
+contributors via CARTO ([ODbL](https://opendatacommons.org/licenses/odbl/))
+— il credit deve essere visibile se/quando la mappa viene usata
+fuori dal contesto decorativo di questo sito.

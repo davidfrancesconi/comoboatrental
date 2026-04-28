@@ -1,419 +1,443 @@
-# Como Boat Rental — handoff to the dev
+# Como Boat Rental — handoff per lo sviluppatore
 
-This document is the handoff between David's foundation work and the
-front-end developer who'll take the site forward for Loris and
-Claudio. It covers:
+Questo documento è il passaggio di consegne tra il lavoro di fondazione
+fatto da David e lo sviluppatore front-end che porterà avanti il sito
+per Loris e Claudio. Copre:
 
-1. **What's already in the code** — every SEO and content surface that
-   currently ships
-2. **What's left to do in code** — concrete tasks the dev should pick
-   up next
-3. **What Loris (or whoever runs the business) needs to do off-site**
-   — Google Business Profile, OTA listings, booking system, press
-4. **How to extend the site** — adding tours, destinations, blog
-   posts, locales, schema types
+1. **Cosa c'è già nel codice** — ogni superficie SEO e di contenuto
+   attualmente in produzione
+2. **Cosa resta da fare in codice** — task concreti che lo sviluppatore
+   dovrebbe prendere subito
+3. **Cosa deve fare Loris (o chiunque gestisca il business) fuori dal
+   sito** — Google Business Profile, listing OTA, sistema di
+   prenotazione, stampa
+4. **Come estendere il sito** — aggiungere tour, destinazioni, articoli
+   blog, lingue, tipi di schema
 
-If you're picking this up cold, read in order — sections build on
-each other.
+Se prendi in mano il progetto da zero, leggi nell'ordine — le sezioni
+si costruiscono l'una sull'altra.
+
+Tutta la documentazione tecnica (commenti nei file, README, questo
+documento) è in inglese o italiano a seconda del file. Il codice
+stesso è in inglese standard. La parte rivolta a Loris vive in
+`docs/PER-LORIS.md`.
 
 ---
 
-## 1. What's already in the code
+## 1. Cosa c'è già nel codice
 
-### Architecture
+### Architettura
 
-- **Next.js 16, App Router, `output: "export"`.** The site is a
-  static-export single-page app with a multi-page architecture for
-  SEO. Build produces an `out/` folder you can host anywhere
-  (currently Vercel from GitHub).
-- **Per-locale routing** under `app/[locale]/...`. Visit `/`, get
-  redirected to your browser's preferred language (defaults to
-  `/en/`). Each of `/en/`, `/it/`, `/ru/`, `/ar/` is a real
-  crawlable URL with its own metadata, JSON-LD, hreflang and Open
-  Graph block.
-- **60 static pages** generated at build:
-  - 4 homepage variants (one per locale)
-  - 4 tours × 4 locales = 16 tour pages
-  - 6 destinations × 4 locales = 24 destination pages
-  - 4 FAQ pages
-  - 4 reviews pages
-  - 1 blog post in 2 locales (EN, IT) = 2 blog pages
+- **Next.js 16, App Router, `output: "export"`.** Il sito è una
+  single-page app esportata staticamente, con un'architettura
+  multi-pagina pensata per la SEO. Il build produce una cartella
+  `out/` ospitabile ovunque (oggi su Vercel collegato a GitHub).
+- **Routing per locale** sotto `app/[locale]/...`. Visitando `/`,
+  il visitatore viene reindirizzato sulla lingua preferita del suo
+  browser (fallback su `/en/`). Ognuno tra `/en/`, `/it/`, `/ru/`,
+  `/ar/` è un URL reale crawlabile, con i propri metadati, JSON-LD,
+  hreflang e blocco Open Graph.
+- **60 pagine statiche** generate al build:
+  - 4 varianti homepage (una per lingua)
+  - 4 tour × 4 lingue = 16 pagine tour
+  - 6 destinazioni × 4 lingue = 24 pagine destinazioni
+  - 4 pagine FAQ
+  - 4 pagine recensioni
+  - 1 articolo blog in 2 lingue (EN, IT) = 2 pagine blog
   - `/sitemap.xml`, `/robots.txt`
-  - root `/` redirect
+  - redirect dalla root `/`
 
-### SEO infrastructure
+### Infrastruttura SEO
 
-The dev should know where to find the things people will ask them to
-update.
+Lo sviluppatore deve sapere dove trovare le cose che gli verranno
+chieste di aggiornare.
 
-| Concern | File | Notes |
+| Cosa | File | Note |
 |---|---|---|
-| Site-wide constants (URL, phone, address, geo, founders, rating) | `app/seo.ts` | Single source of truth. Update here, not in 12 places |
-| JSON-LD schema builders | `app/jsonld.ts` | LocalBusiness, TouristTrip, Product, Review, AggregateRating, FAQPage, BreadcrumbList, Place. Returns plain objects; pages JSON.stringify them into `<script type="application/ld+json">` |
-| Sitemap (auto-generated) | `app/sitemap.ts` | Lists every locale × page with hreflang alternates per entry |
-| Robots (auto-generated) | `app/robots.ts` | Allow-all + sitemap pointer |
-| Manifest | `public/manifest.webmanifest` | Wired into `app/layout.tsx` |
-| Per-locale title/description | `app/[locale]/layout.tsx` | The metadata block for the homepage in each locale |
+| Costanti del sito (URL, telefono, indirizzo, geo, founders, rating) | `app/seo.ts` | Unica fonte di verità. Modifica qui, non in 12 posti diversi |
+| Builder JSON-LD schema.org | `app/jsonld.ts` | LocalBusiness, TouristTrip, Product, Review, AggregateRating, FAQPage, BreadcrumbList, Place. Restituisce oggetti puri; le pagine fanno JSON.stringify dentro `<script type="application/ld+json">` |
+| Sitemap (auto-generato) | `app/sitemap.ts` | Elenca ogni lingua × pagina con alternates hreflang per voce |
+| Robots (auto-generato) | `app/robots.ts` | Allow-all + puntatore al sitemap |
+| Manifest | `public/manifest.webmanifest` | Collegato in `app/layout.tsx` |
+| Title e description per locale | `app/[locale]/layout.tsx` | Il blocco metadata della homepage in ogni lingua |
 
-### Content data
+### Dati di contenuto
 
-All long-form copy lives in `app/content/` as plain TypeScript objects.
-The dev never has to dig through component files to update copy.
+Tutto il copy di lunga forma vive in `app/content/` come oggetti
+TypeScript piani. Lo sviluppatore non deve mai scavare nei file dei
+componenti per aggiornare il copy.
 
-| File | Contents |
+| File | Contenuto |
 |---|---|
-| `app/content/tours.ts` | 4 tours × 4 locales — full copy, itinerary, included/not-included, FAQs, prices |
-| `app/content/destinations.ts` | 6 destinations × 4 locales — guide copy, "good to know", cross-link to tours |
-| `app/content/faq.ts` | 12 Q&As × 4 locales — homepage FAQ schema + `/<locale>/faq/` |
-| `app/content/blog.ts` | One seed post in EN + IT |
+| `app/content/tours.ts` | 4 tour × 4 lingue — copy completo, itinerario, incluso/non incluso, FAQ, prezzi |
+| `app/content/destinations.ts` | 6 destinazioni × 4 lingue — guida, "buono a sapersi", cross-link ai tour |
+| `app/content/faq.ts` | 12 Q&A × 4 lingue — schema FAQ in homepage + `/<locale>/faq/` |
+| `app/content/blog.ts` | Un articolo seed in EN + IT |
 
-Every locale is keyword-targeted for its own search market:
+Ogni lingua è ottimizzata sul mercato di ricerca corrispondente:
 
-- **Italian**: hand-crafted for "noleggio barche como" (~3,600/mo),
-  "tour barca lago di como" (~1,200/mo), "gita in barca bellagio"
-  (~800/mo), "noleggio barca villa balbianello" (~450/mo). Direct
-  competitors Il Medeghino and Taxi Boat Varenna dominate these
-  queries today.
-- **English**: hand-written for the global English market — "lake
+- **Italiano**: scritto a mano per "noleggio barche como" (~3.600/mese),
+  "tour barca lago di como" (~1.200/mese), "gita in barca bellagio"
+  (~800/mese), "noleggio barca villa balbianello" (~450/mese). I
+  concorrenti diretti Il Medeghino e Taxi Boat Varenna oggi dominano
+  queste query.
+- **Inglese**: scritto a mano per il mercato inglese globale — "lake
   como boat rental", "lake como boat tour", "private boat tour
-  bellagio", "villa balbianello boat tour", "lake como sunset
-  cruise". The metaTitle and metaDesc on every tour and
-  destination page hits these patterns.
-- **Russian**: targeted for the Russian luxury-travel market that
-  still reaches Lake Como via Dubai and Istanbul — "Аренда лодки
-  на озере Комо", "Прогулка на лодке Комо", "Вилла Бальбьянелло
-  Casino Royale", "VIP чартер озеро Комо". Body copy is 200-400
-  words per page (parity with EN/IT), with full itinerary detail
-  and the cinematic references Russian travellers know.
-- **Arabic**: Gulf-market focused (UAE, Saudi, Kuwait — the
-  highest-margin Arabic-speaking segment for Lake Como) —
-  "تأجير قارب بحيرة كومو", "جولة بحرية بحيرة كومو", "فيلا جورج
-  كلوني", "شهر العسل بحيرة كومو". Acknowledges Gulf-traveller
-  preferences (privacy, halal-friendly options on the full-day
-  charter) without forcing them.
+  bellagio", "villa balbianello boat tour", "lake como sunset cruise".
+  metaTitle e metaDesc di ogni pagina tour e destinazione attaccano
+  questi pattern.
+- **Russo**: mirato sul mercato russo del lusso che ancora raggiunge
+  il Lago di Como passando per Dubai e Istanbul — "Аренда лодки на
+  озере Комо", "Прогулка на лодке Комо", "Вилла Бальбьянелло Casino
+  Royale", "VIP чартер озеро Комо". Body 200-400 parole per pagina
+  (parità con EN/IT), con itinerario completo e i riferimenti
+  cinematografici che i viaggiatori russi conoscono.
+- **Arabo**: focus sul mercato Gulf (Emirati, Arabia Saudita, Kuwait —
+  il segmento ad altissimo margine per il Lago di Como) — "تأجير قارب
+  بحيرة كومو", "جولة بحرية بحيرة كومو", "فيلا جورج كلوني", "شهر
+  العسل بحيرة كومو". Riconosce le preferenze dei viaggiatori Gulf
+  (privacy, opzioni halal-friendly nel charter giornaliero) senza
+  forzare la cosa.
 
-The Russian and Arabic copy is competent at SEO level (right
-keywords, right structure, right length) but not written by a
-native speaker. A native Russian copywriter and a Gulf-market
-Arabic copywriter would sharpen cadence and idiom further — see
-"What's left to do, G" below.
+Il copy russo e arabo è competente a livello SEO (keyword giuste,
+struttura giusta, lunghezza giusta) ma non scritto da madrelingua.
+Un copywriter nativo russo e un copywriter Gulf-market arabo
+affilerebbero ulteriormente cadenza e idioma — vedi sezione "Cosa
+resta da fare, G".
 
-### Schema types covered
+### Tipi di schema coperti
 
-- `LocalBusiness` + `TravelAgency` (with founders, geo, hours, sameAs)
+- `LocalBusiness` + `TravelAgency` (con founders, geo, orari, sameAs)
 - `WebSite`
-- `AggregateRating` (4.9/87, on every page)
-- `Review` × 3 testimonials (on /reviews + homepage)
-- `Product` × 2 boats with `Offer` + `UnitPriceSpecification`
-- `TouristTrip` × 4 tours with `ItemList` itineraries and `Offer`
-- `FAQPage` (homepage abbreviated, `/faq` full)
-- `BreadcrumbList` (every page)
-- `TouristAttraction` / `Place` × 6 destinations with `geo`
+- `AggregateRating` (4.9/87, su ogni pagina)
+- `Review` × 3 testimonianze (su /reviews + homepage)
+- `Product` × 2 barche con `Offer` + `UnitPriceSpecification`
+- `TouristTrip` × 4 tour con `ItemList` di itinerario e `Offer`
+- `FAQPage` (homepage abbreviata, `/faq` completa)
+- `BreadcrumbList` (ogni pagina)
+- `TouristAttraction` / `Place` × 6 destinazioni con `geo`
 - `Article` (blog)
 
-### Other shipped surfaces
+### Altre superfici già spedite
 
-- **Editorial preview toggle** (top-right floating panel): switch
-  between 3 copy variants × 5 colour palettes. Stored in
-  localStorage. **For client review only — does not affect SEO**
-  (metadata is variant-independent and baked at build time).
-  Remove when Loris signs off; see "What's left to do" below.
-- **Live Instagram feed**: `scripts/sync-instagram.mjs` runs as
-  `prebuild` and pulls the latest 6 public posts from
-  `@comoboatrental` into `public/instagram-feed.json` with each tile
-  carrying its accessibility caption as alt text.
-- **Locale toggle**: navigates between `/en/`, `/it/`, `/ru/`, `/ar/`
-  via real URLs (not JS state). The runtime `<html lang>` and `dir`
-  flip pre-paint via a tiny inline script in `app/layout.tsx`.
+- **Toggle editoriale di anteprima** (pannello flottante in alto a
+  destra): permette di alternare tra 3 varianti di copy × 5 palette
+  di colore. Salvataggio in localStorage. **Per revisione cliente
+  solamente — non impatta sulla SEO** (i metadati sono indipendenti
+  dalla variante e bakerati al build). Da rimuovere quando Loris ha
+  scelto; vedi sezione "Cosa resta da fare" sotto.
+- **Feed Instagram live**: `scripts/sync-instagram.mjs` gira come
+  `prebuild` e prende gli ultimi 6 post pubblici da `@comoboatrental`
+  scrivendoli in `public/instagram-feed.json`, con ogni tile che
+  porta la sua accessibility caption come alt text.
+- **Switcher locale**: naviga tra `/en/`, `/it/`, `/ru/`, `/ar/` via
+  URL reali (non stato JS). L'attributo `<html lang>` e `dir` cambia
+  prima del paint grazie a un piccolo script inline in
+  `app/layout.tsx`.
 
 ---
 
-## 2. What's left to do in code
+## 2. Cosa resta da fare in codice
 
-Pick up in order of impact-per-hour. None are blockers — the site
-ships and ranks competitively as-is.
+Affronta nell'ordine di impatto-per-ora. Nessuna è bloccante — il sito
+parte e si posiziona competitivo così com'è.
 
-### A. Image optimisation (Lighthouse hit otherwise)
+### A. Ottimizzazione immagini (altrimenti penalità Lighthouse)
 
-The README's longest-standing TODO. All photography is JPG, none
-have AVIF/WebP variants, none carry width/height hints on every img
-tag (most do, some don't). Cumulative Layout Shift is mediocre.
+È il TODO più vecchio del README. Tutte le foto sono JPG, nessuna
+ha varianti AVIF/WebP, non tutti i tag img portano width/height
+(la maggior parte sì, alcuni no). Il Cumulative Layout Shift è
+mediocre.
 
-The clean fix:
+La fix pulita:
 
-- Add `sharp` to `dependencies` (already in `trustedDependencies`)
-- Write `scripts/optimise-images.mjs` that scans `public/images/`
-  on `prebuild`, generates `.avif` and `.webp` siblings, and emits
-  a manifest mapping `original → { avif, webp, w, h }`
-- Replace `<img src=…>` with `<picture>` blocks: AVIF source →
-  WebP source → JPG fallback
-- Use the manifest to inject width/height attributes everywhere
+- Aggiungi `sharp` alle `dependencies` (è già in
+  `trustedDependencies`)
+- Scrivi `scripts/optimise-images.mjs` che scansiona
+  `public/images/` come `prebuild`, genera fratelli `.avif` e
+  `.webp`, ed emette un manifest che mappa
+  `originale → { avif, webp, w, h }`
+- Sostituisci `<img src=…>` con blocchi `<picture>`: source
+  AVIF → source WebP → fallback JPG
+- Usa il manifest per iniettare attributi width/height ovunque
 
-Estimated time: 2–3 hours. Lighthouse Performance and CLS scores
-will jump 5–15 points.
+Tempo stimato: 2-3 ore. I punteggi Lighthouse Performance e CLS
+salgono di 5-15 punti.
 
-### B. Real OG cover image
+### B. Vera immagine OG cover
 
-`public/images/hero-sunset.jpg` is 1586×2410 (portrait crop). The
-metadata declares 1200×630 (the OG default). Today it works but the
-crop isn't perfect.
+`public/images/hero-sunset.jpg` è 1586×2410 (taglio verticale).
+I metadati dichiarano 1200×630 (default OG). Oggi funziona ma il
+crop non è perfetto.
 
-Generate `public/images/og-cover.jpg` as a proper 1200×630 with the
-wordmark + tagline burned in (per locale ideally — 4 versions). Wire
-into `app/[locale]/layout.tsx` `openGraph.images`.
+Genera `public/images/og-cover.jpg` come 1200×630 vero e proprio,
+con wordmark + tagline impressi (idealmente per lingua — 4 versioni).
+Collega in `app/[locale]/layout.tsx` `openGraph.images`.
 
-### C. Better favicon set
+### C. Set di favicon migliore
 
-`public/favicon.ico` is the existing 32×32 multi-resolution file.
-For PWA scoring and proper Apple Touch / Android Home Screen icons,
-generate:
+`public/favicon.ico` è il file 32×32 multi-risoluzione esistente.
+Per il punteggio PWA e per icone Apple Touch / Android Home Screen
+proper, genera:
 
 - `public/icon-192.png` (192×192)
 - `public/icon-512.png` (512×512)
 - `public/apple-touch-icon.png` (180×180)
-- `public/safari-pinned-tab.svg` (monochrome)
+- `public/safari-pinned-tab.svg` (monocromatica)
 
-Update `manifest.webmanifest` icons array and `app/layout.tsx`
-metadata.icons. The simplest source: generate from a clean SVG of
-the "Como Boat Rental" wordmark (or a boat silhouette) using
-[realfavicongenerator.net](https://realfavicongenerator.net).
+Aggiorna l'array icons in `manifest.webmanifest` e
+`app/layout.tsx` metadata.icons. Sorgente più semplice: genera da
+un SVG pulito del wordmark "Como Boat Rental" (o di una sagoma di
+barca) usando [realfavicongenerator.net](https://realfavicongenerator.net).
 
-### D. Lock in the variant + palette
+### D. Lock-in della variante + palette
 
-Right now visitors see a floating toggle in the top-right. Once
-Loris signs off on a combination:
+In questo momento i visitatori vedono un toggle flottante in alto
+a destra. Quando Loris sceglie una combinazione:
 
-1. Edit `DEFAULT_VARIANT` and `DEFAULT_PALETTE` at the top of
-   `app/components/HomePage.tsx` to the chosen codes
-2. Delete the entire `<div className="vp-toggle">…</div>` block
-3. Delete the `===== Variant + Palette toggle =====` rules at the
-   bottom of `app/globals.css`
+1. Modifica `DEFAULT_VARIANT` e `DEFAULT_PALETTE` in cima a
+   `app/components/HomePage.tsx` con i codici scelti
+2. Cancella l'intero blocco `<div className="vp-toggle">…</div>`
+3. Cancella le regole `===== Variant + Palette toggle =====` in
+   fondo a `app/globals.css`
 
-The variant override copy and palette CSS stay where they are — the
-toggle just becomes hard-coded.
+Il copy della variante e il CSS della palette rimangono dove sono
+— il toggle diventa solo hardcoded.
 
-### E. Booking widget on tour pages
+### E. Widget di prenotazione sulle pagine tour
 
-When Loris signs up for **Bokun** (see section 3 below), each tour
-page gets an embedded availability calendar above the FAQ block.
-Bokun provides an iframe snippet — drop it into
-`app/[locale]/tours/[slug]/page.tsx` between the CTA block and the
-FAQ block.
+Quando Loris si iscrive a **Bokun** (vedi sezione 3 sotto), ogni
+pagina tour riceve un calendario di disponibilità embeddato sopra
+il blocco FAQ. Bokun fornisce uno snippet iframe — incollalo in
+`app/[locale]/tours/[slug]/page.tsx` tra il blocco CTA e il
+blocco FAQ.
 
-### F. Blog cadence
+### F. Cadenza blog
 
-The blog has a single seed post. Adding posts is mechanical:
+Il blog ha un solo articolo seed. Aggiungere articoli è meccanico:
 
-1. Append a slug to `BLOG_SLUGS` in `app/content/blog.ts`
-2. Add an entry to the `blog` object with EN + IT copy
-3. `bun run build` regenerates the sitemap and adds the new
-   post to `/<locale>/blog/<slug>/`
+1. Aggiungi uno slug a `BLOG_SLUGS` in `app/content/blog.ts`
+2. Aggiungi una entry all'oggetto `blog` con copy EN + IT
+3. `bun run build` rigenera il sitemap e aggiunge il nuovo
+   articolo a `/<locale>/blog/<slug>/`
 
-Suggested next posts:
-- "How to visit Villa del Balbianello by boat" (matches Nagi's #1
-  ranking content)
+Articoli successivi suggeriti:
+- "How to visit Villa del Balbianello by boat" (corrisponde al
+  contenuto #1 di Nagi nei ranking)
 - "Wooden boats vs fibreglass on Lake Como — what to look for"
 - "Lake Como wedding proposal by boat: a planning guide"
 - "George Clooney's Villa Oleandra: what you can and can't see"
 
-### G. Russian + Arabic native-speaker pass
+### G. Pass nativo russo + arabo
 
-The RU and AR copy is keyword-targeted and the right length
-(200-400 words per page, matching EN/IT). What it lacks is the
-final 10-15% polish that only a native speaker brings: natural
-cadence, idiom, register choices.
+Il copy RU e AR è keyword-targeted e della giusta lunghezza
+(200-400 parole per pagina, parità con EN/IT). Quello che manca
+è il 10-15% finale di rifinitura che solo un madrelingua porta:
+cadenza naturale, idioma, scelte di registro.
 
-For Russian a native should:
+Per il russo un madrelingua dovrebbe:
 
-- Sharpen the homepage headlines (`app/translations.ts` `ru`
-  block) for cadence
-- Adjust the FAQ register — current phrasing is correct but
-  slightly formal for the luxury-travel market
-- Verify place-name spellings (Bellagio → Беладжо, Cernobbio →
-  Черноббио are the conventions used)
+- Affilare i titoli homepage (`app/translations.ts` blocco `ru`)
+  per cadenza
+- Aggiustare il registro delle FAQ — il fraseggio attuale è
+  corretto ma leggermente formale per il mercato del lusso
+- Verificare le translitterazioni dei toponimi (Bellagio →
+  Беладжо, Cernobbio → Черноббио sono le convenzioni usate)
 
-For Arabic a Gulf-market copywriter should:
+Per l'arabo un copywriter Gulf-market dovrebbe:
 
-- Sharpen the dialect register — current copy is Modern Standard
-  Arabic, which is fine for SEO but slightly stiff for Gulf
-  travellers used to khaleeji-influenced marketing
-- Decide whether to add stronger family / multi-generational
-  travel framing on the full-day charter page
-- Verify place-name transliterations (Bellagio → بيلاجيو,
-  Balbianello → بالبيانيلو are the conventions used)
+- Affilare il registro dialettale — il copy attuale è in arabo
+  standard moderno (MSA), che va bene per la SEO ma è leggermente
+  rigido per i viaggiatori Gulf abituati a marketing con
+  influenze khaleeji
+- Decidere se aggiungere un framing più forte di viaggio
+  multi-generazionale / familiare nella pagina del charter
+  giornaliero
+- Verificare le translitterazioni (Bellagio → بيلاجيو,
+  Balbianello → بالبيانيلو sono le convenzioni usate)
 
-Files: `app/translations.ts` (RU/AR sections),
-`app/content/tours.ts` (RU/AR copy in each tour),
-`app/content/destinations.ts` (RU/AR copy in each),
-`app/content/faq.ts` (RU/AR FAQs).
+File: `app/translations.ts` (sezioni RU/AR), `app/content/tours.ts`
+(copy RU/AR in ogni tour), `app/content/destinations.ts`
+(copy RU/AR in ogni destinazione), `app/content/faq.ts` (FAQ RU/AR).
 
-### H. Performance & accessibility
+### H. Performance & accessibilità
 
-Quick remaining wins:
+Vincite veloci rimaste:
 
-- Add `prefers-reduced-motion` query to disable the animated boat
-  on the Leaflet map (`HomePage.tsx`, the `step()` rAF loop)
-- Replace `<details>` FAQ accordions with proper aria-expanded
-  buttons for screen reader friendliness
-- Audit `<img>` tags missing width/height (a few snuck through —
-  search the codebase)
-- Add `inert` polyfill for the mobile menu when closed
+- Aggiungi una media query `prefers-reduced-motion` per disabilitare
+  la barca animata sulla mappa Leaflet (`HomePage.tsx`, il loop
+  rAF `step()`)
+- Sostituisci gli accordion FAQ `<details>` con bottoni
+  aria-expanded propri per friendliness con screen reader
+- Audita i tag `<img>` che mancano width/height (qualcuno è
+  scivolato — cerca nel codice)
+- Aggiungi polyfill `inert` per il menu mobile quando chiuso
 
 ---
 
-## 3. What Loris (or David) needs to do off-site
+## 3. Cosa deve fare Loris (o David) fuori dal sito
 
-The site is a foundation. Most of the traffic for a Lake Como
-operator comes from channels that don't crawl your site — they
-list you in their own catalog. The site still has to *support*
-those channels (with proper schema, OG cards, deep links), which
-is done — but registration and ongoing engagement are off-site work.
+Il sito è una fondazione. La maggior parte del traffico per un
+operatore del Lago di Como arriva da canali che non crawlano il
+tuo sito — ti listano nel proprio catalogo. Il sito comunque deve
+*supportare* quei canali (con schema corretto, OG card, deep link),
+e questo è fatto — ma registrazioni e attività continua sono
+lavoro fuori sito.
 
-Ranked by impact-per-hour for a Lake Como private boat operator:
+Ordinato per impatto-per-ora per un operatore di barche private
+sul Lago di Como:
 
 ### Tier 1 — must-have
 
 #### 1. Google Business Profile
 
-Free. Drives mobile "near me" searches. Setup ~30 min, ongoing
-maintenance ~30 min/week.
+Gratis. Driver delle ricerche mobile "near me". Setup ~30 min,
+manutenzione continua ~30 min/settimana.
 
-**Setup checklist:**
+**Checklist setup:**
 
-- Sign up at [business.google.com](https://business.google.com/)
-  with the email Loris uses for the business
-- **Primary category**: "Boat tour agency"
-- **Secondary categories**: "Tour operator", "Sightseeing tour
+- Iscriviti a [business.google.com](https://business.google.com/)
+  con la mail con cui Loris gestisce il business
+- **Categoria primaria**: "Boat tour agency"
+- **Categorie secondarie**: "Tour operator", "Sightseeing tour
   agency"
-- **Address**: Lungolago Viale Geno, 10, 22100 Como CO, Italy
-- **Phone**: +39 340 6487574
-- **Website**: https://comoboatrental.com/en/
-- **Hours**: Mon–Sun 09:00–20:00 (year-round)
-- **Service area**: Lake Como (the geographic region, not just Como)
-- **Attributes**: "Accepts reservations", "Family-friendly",
-  "Wheelchair accessible" (if true), "LGBTQ+ friendly"
-- **Services list** (as separate items with descriptions + prices):
+- **Indirizzo**: Lungolago Viale Geno, 10, 22100 Como CO, Italy
+- **Telefono**: +39 340 6487574
+- **Sito web**: https://comoboatrental.com/it/
+- **Orari**: Lun–Dom 09:00–20:00 (tutto l'anno)
+- **Service area**: Lake Como (la regione geografica, non solo
+  Como)
+- **Attributi**: "Accepts reservations", "Family-friendly",
+  "Wheelchair accessible" (se vero), "LGBTQ+ friendly"
+- **Lista servizi** (come voci separate con descrizione + prezzo):
   1. *Lake Como Highlights* · 1h · €220
   2. *Balbianello & Nesso* · 2.5h · €480
   3. *Half-Day Top Villas* · 4h · €780
-  4. *Full-Day Bespoke Charter* · 6–8h · from €1,400
-  5. *Wedding & special-occasion charter*
-  6. *Photoshoot & production charter*
-- **Photos**: upload at least 25 — boats, villas seen from the
-  water, captains at the helm, guests on board (with consent),
-  details (mahogany dashboard, leather seating)
-- **Q&A seeding**: copy the FAQ from `app/content/faq.ts` and
-  pre-populate the Q&A section so visitors see answers immediately
-- **Posts cadence**: weekly. Suggested rhythm:
-  - Mon — weather forecast for the week + availability
-  - Thu — photo of the previous weekend's tour
-  - Sun (in season) — sunset photo
+  4. *Full-Day Bespoke Charter* · 6–8h · da €1.400
+  5. *Charter matrimoni e occasioni speciali*
+  6. *Charter shooting fotografici e produzioni*
+- **Foto**: caricane almeno 25 — barche, ville viste dall'acqua,
+  skipper al timone, ospiti a bordo (con consenso), dettagli
+  (cruscotto in mogano, sedute in pelle)
+- **Q&A seeding**: copia le FAQ da `app/content/faq.ts` e
+  pre-popola la sezione Q&A in modo che i visitatori vedano
+  subito le risposte
+- **Cadenza post** (continua nel tempo, ~30 min/settimana):
+  - Lun — meteo della settimana + disponibilità
+  - Gio — foto del tour del weekend precedente
+  - Dom (in stagione) — foto del tramonto
 
 #### 2. Tripadvisor
 
-Free. The single most important review platform for Lake Como
-travel. Aim to rank in the top 10 for "Things to Do in Como".
+Gratis. La singola piattaforma di recensioni più importante per
+il Lago di Como. Obiettivo: top 10 in "Things to Do in Como".
 
-- Claim profile at [tripadvisor.com/Owners](https://www.tripadvisor.com/Owners)
-- Category: "Tours & Activities" → "Boat Tours"
-- **Respond to every review within 48 hours** (Tripadvisor's
-  algorithm rewards response velocity)
-- After every tour: send guests a short follow-up message via
-  WhatsApp with a Tripadvisor review link. Aim for 1 review per
-  10 trips (industry baseline)
-- Once you have 50+ reviews, rank starts to compound
+- Rivendica il profilo su [tripadvisor.com/Owners](https://www.tripadvisor.com/Owners)
+- Categoria: "Tours & Activities" → "Boat Tours"
+- **Rispondi a ogni recensione entro 48 ore** (l'algoritmo
+  Tripadvisor premia la velocità di risposta)
+- Dopo ogni tour: manda al cliente un breve messaggio
+  WhatsApp con il link Tripadvisor per lasciare la recensione.
+  Obiettivo: 1 recensione ogni 10 tour (baseline di settore)
+- Quando arrivi a 50+ recensioni, il posizionamento parte da
+  solo
 
 #### 3. GetYourGuide
 
-Highest-volume OTA for Lake Como. ~20–30% commission. Apply at
-[getyourguide.supply](https://www.getyourguide.supply/).
+L'OTA con più volume per il Lago di Como. Commissione ~20-30%.
+Application su [getyourguide.supply](https://www.getyourguide.supply/).
 
-Needs from the site (already shipped):
-- AggregateRating + Review schema ✓
-- TouristTrip schema per tour ✓
-- 16:9 high-res images (some of `public/images/` are already 16:9;
-  the dev should generate proper 1200×675 crops for each tour —
-  see "What's left to do, A. Image optimisation")
+Cose richieste dal sito (già spedite):
+- AggregateRating + schema Review ✓
+- Schema TouristTrip per ogni tour ✓
+- Immagini ad alta risoluzione 16:9 (alcune in `public/images/`
+  sono già 16:9; lo sviluppatore deve generare crop appropriati
+  1200×675 per ogni tour — vedi "Cosa resta da fare, A.
+  Ottimizzazione immagini")
 
 #### 4. Viator (Tripadvisor Experiences)
 
-Sister to Tripadvisor; same listing flows into both. Apply at
-[supplier.viator.com](https://supplier.viator.com/sign-up-info).
-Same documentation as GetYourGuide.
+Sorella di Tripadvisor; lo stesso listing va in entrambi.
+Application su [supplier.viator.com](https://supplier.viator.com/sign-up-info).
+Stessa documentazione di GetYourGuide.
 
-### Tier 2 — high-impact, lower urgency
+### Tier 2 — alto impatto, urgenza inferiore
 
-#### 5. Bokun (booking system) — **recommended over FareHarbor**
+#### 5. Bokun (sistema di prenotazione) — **consigliato rispetto a FareHarbor**
 
-Bokun is the Tripadvisor-owned booking system. Once integrated,
-**a single calendar syncs to 50+ OTAs** (Viator, Tripadvisor,
-GetYourGuide, Klook, Civitatis, Tiqets, Headout, Manawa, more).
-Stops the double-booking risk that comes with manually managing
-multiple OTAs.
+Bokun è il sistema di prenotazione di proprietà di Tripadvisor.
+Una volta integrato, **un solo calendario si sincronizza con 50+
+OTA** (Viator, Tripadvisor, GetYourGuide, Klook, Civitatis, Tiqets,
+Headout, Manawa, e altri). Elimina il rischio di doppie
+prenotazioni che viene dal gestire più OTA manualmente.
 
-- Sign up at [bokun.io](https://www.bokun.io)
-- Set up products mirroring `app/content/tours.ts` (4 tours)
-- Get the embed snippet for each tour
-- Hand it to the dev to drop into the tour pages (see
-  "What's left to do in code, E")
+1. Iscriviti su [bokun.io](https://www.bokun.io)
+2. Crea i prodotti che rispecchiano `app/content/tours.ts`
+   (4 tour)
+3. Prendi lo snippet embed per ogni tour
+4. Passalo allo sviluppatore per inserirlo nelle pagine tour
+   (vedi "Cosa resta da fare in codice, E")
 
-Why Bokun over FareHarbor:
-- Native Viator + Tripadvisor sync (FareHarbor is owned by Booking
-  Holdings, optimises for Booking.com)
-- Lower setup friction in Europe
-- Better support for European VAT and lake-fee invoicing
+Perché Bokun e non FareHarbor:
+- Sync nativo con Viator + Tripadvisor (FareHarbor è di
+  Booking Holdings, ottimizzato per Booking.com)
+- Minore frizione di setup in Europa
+- Migliore supporto per IVA europea e fatturazione tasse del lago
 
 #### 6. Airbnb Experiences
 
-Relaunched in 2025 with "Airbnb Originals". Best margin (Airbnb
-takes 15–20%). Apply at
+Rilanciato nel 2025 con "Airbnb Originals". Margine migliore
+(Airbnb prende 15-20%). Application su
 [airbnb.com/experiences](https://www.airbnb.com/host/experiences).
-Faster onboarding than Viator.
+Onboarding più veloce di Viator.
 
 #### 7. Booking.com Experiences
 
-Newer, less transparent than the others. Reach via Booking.com
-partner support. ~15–20% commission. Worth doing once Bokun is in
-place — adds incremental volume without much effort.
+Più nuovo, meno trasparente degli altri. Si raggiunge tramite il
+supporto partner di Booking.com. Commissione ~15-20%. Vale la
+pena farlo una volta che Bokun è in piedi — aggiunge volume
+incrementale senza grande sforzo.
 
-#### 8. Italian-specific channels (often missed by foreign operators)
+#### 8. Canali specifici italiani (spesso ignorati dagli operatori stranieri)
 
-- **Lake Como Tourism Board** (lakecomotourism.it) — apply for
-  preferred-supplier listing. Free, institutional credibility.
-- **Musement** (TUI-owned) — strong for European group tours.
-  Apply via [supplier.musement.com](https://supplier.musement.com/)
-- **Italyscape** — B2B DMC. Reach out directly (sales@italyscape.com)
-  about premium concierge partnerships
-- **PagineGialle.it / Virgilio.it** — free local Italian directory
-  listings. Low impact but frictionless
+- **Lake Como Tourism Board** (lakecomotourism.it) — fai domanda
+  per essere preferred-supplier listing. Gratis, credibilità
+  istituzionale.
+- **Musement** (di TUI) — forte per gruppi turistici europei.
+  Application via [supplier.musement.com](https://supplier.musement.com/)
+- **Italyscape** — DMC B2B. Contattali direttamente
+  (sales@italyscape.com) per partnership concierge premium
+- **PagineGialle.it / Virgilio.it** — directory locali italiane,
+  iscrizione gratuita. Impatto basso ma frizione nulla
 
 ### Tier 3 — slow-burn, brand-building
 
-#### 9. Press & editorial
+#### 9. Stampa & editoriale
 
-These are slower wins (weeks-to-months) but compound for years
-through backlinks.
+Vincite più lente (settimane-mesi) ma compongono per anni
+attraverso i backlink.
 
-- **HARO** (helpareporter.com) — journalists post requests for
-  Lake Como sources every week. Sign up, set Italy/travel
-  alerts, respond to relevant ones
-- **TravMedia** (travmedia.com) — distribute press releases to
-  travel publications
-- **Lake Como local press** — La Provincia di Como, Corriere della
-  Sera (Lombardia edition). One feature article = local
-  link juice + walk-in interest
-- **Wedding press** — Junebug Weddings, Vogue Sposa, Wedding Italy.
-  Pitch the proposal/wedding angle — it's the highest-margin
-  product
+- **HARO** (helpareporter.com) — giornalisti pubblicano
+  richieste di fonti su Lake Como ogni settimana. Iscriviti,
+  imposta alert su Italia/travel, rispondi a quelle rilevanti
+- **TravMedia** (travmedia.com) — distribuisci comunicati
+  stampa a pubblicazioni travel
+- **Stampa locale Lake Como** — La Provincia di Como, Corriere
+  della Sera (edizione Lombardia). Un articolo feature = link
+  juice locale + interesse walk-in
+- **Stampa wedding** — Junebug Weddings, Vogue Sposa, Wedding
+  Italy. Pitcha l'angolo proposta/matrimonio — è il prodotto a
+  margine più alto
 
-#### 10. Hotel concierge partnerships
+#### 10. Partnership concierge hotel
 
-The single highest-margin channel. Hotels refer their guests to
-boat operators they trust; in return they expect the boat to
-collect from their pontoon and to deliver guests back on time.
+Il singolo canale a margine più alto. Gli hotel indirizzano
+i loro ospiti verso operatori barca di fiducia; in cambio si
+aspettano che la barca passi al loro pontile e riporti gli
+ospiti puntuali.
 
-Top targets (in order of priority):
-- **Villa d'Este** (Cernobbio) — the top one
+Target principali (in ordine di priorità):
+- **Villa d'Este** (Cernobbio) — il top
 - **Passalacqua** (Moltrasio)
 - **Mandarin Oriental** (Blevio)
 - **Il Sereno** (Torno)
@@ -422,148 +446,157 @@ Top targets (in order of priority):
 - **Filario** (Lezzeno)
 - **Casta Diva Resort** (Blevio)
 
-Process: send a one-page PDF to the concierge desk (a
-"preferred-supplier" pitch — boats, photos, a few testimonials
-with hotel names), follow up by phone, offer a familiarisation
-trip (free 1h tour for the head concierge + their family).
-Commission: 10–15% to the hotel concierge fund is standard.
+Processo: manda un PDF di una pagina al concierge desk (un
+"preferred-supplier pitch" — barche, foto, qualche testimonial
+con i nomi degli hotel), richiama dopo qualche giorno, offri
+un giro di familiarizzazione (1 ora di tour gratuito per il
+head concierge + famiglia). Commissione: 10-15% al fondo
+concierge dell'hotel è standard.
 
 ### Tier 4 — discovery
 
 #### 11. Instagram
 
-Already at @comoboatrental. The site already pulls the live feed
-into the homepage. Suggested growth tactics:
+Già su @comoboatrental. Il sito mostra automaticamente le ultime
+6 foto in homepage. Tattiche di crescita suggerite:
 
-- Post 3–5 times per week — boats, villas, guest experiences
-  (with consent)
-- Reels with drone footage geotagged "Lake Como"
-- Hashtag mix per post: 2 mega (#LakeComo, #LagodiComo), 8 medium
-  (#PrivateBoatTour, #BellagioBySea, #ItalyVacation), 8 small
+- Post 3-5 volte a settimana — barche, ville, esperienze ospiti
+  (con consenso)
+- Reels con riprese drone geotaggati "Lake Como"
+- Mix hashtag per post: 2 mega (#LakeComo, #LagodiComo), 8 medi
+  (#PrivateBoatTour, #BellagioBySea, #ItalyVacation), 8 piccoli
   (#ComoBoatTour, #WoodenBoatLakeComo)
-- **Collab posts** with influencers visiting (offer them a free
-  short tour in exchange for one collab post)
+- **Collab post** con influencer in visita (offri un giro
+  corto gratuito in cambio di un post collab)
 
 #### 12. TikTok
 
-Skip until Instagram is humming. When you're ready, the same
-content rebrandable as TikTok works fine.
+Salta finché Instagram non gira a regime. Quando sei pronto, lo
+stesso contenuto rebrandato come TikTok funziona perfettamente.
 
 ---
 
-## 4. How to extend the site
+## 4. Come estendere il sito
 
-### Add a new tour
+### Aggiungere un nuovo tour
 
-1. Append a slug to `TOUR_SLUGS` in `app/content/tours.ts`
-2. Add an entry to the `tours` array with EN + IT copy
-   (RU + AR can be a port of EN initially — flag as TODO)
-3. Pick `baseIndex` 0–3 to map to one of the 4 base tours in
-   `app/translations.ts` (the homepage card). If the new tour
-   doesn't fit, also add it to `translations.ts` `tours.items`
-   for all 4 locales
-4. `bun run build` — sitemap and route auto-generate
+1. Aggiungi uno slug a `TOUR_SLUGS` in `app/content/tours.ts`
+2. Aggiungi una entry all'array `tours` con copy EN + IT
+   (RU + AR può essere un porto dall'EN inizialmente — segna
+   come TODO)
+3. Scegli `baseIndex` 0-3 per mappare a uno dei 4 tour base in
+   `app/translations.ts` (la card homepage). Se il nuovo tour
+   non si adatta, aggiungilo anche a `translations.ts`
+   `tours.items` per tutte le 4 lingue
+4. `bun run build` — sitemap e rotta auto-generano
 
-### Add a new destination
+### Aggiungere una nuova destinazione
 
-1. Append a slug to `DESTINATION_SLUGS` in `app/content/destinations.ts`
-2. Add an entry to `destinations` with `pinId` matching a pin in
-   `app/translations.ts` `PIN_BASE` (or add a new pin to
-   `PIN_BASE` with lat/lng)
-3. EN + IT copy required; RU/AR optional (will fall back to
-   English if `copy[locale]` is missing — currently the code
-   doesn't gracefully handle missing locales, so include them
-   even as direct EN copies)
+1. Aggiungi uno slug a `DESTINATION_SLUGS` in
+   `app/content/destinations.ts`
+2. Aggiungi una entry a `destinations` con `pinId` matchante un
+   pin in `app/translations.ts` `PIN_BASE` (o aggiungi un pin
+   nuovo a `PIN_BASE` con lat/lng)
+3. Copy EN + IT richiesti; RU/AR opzionali (cadrà su EN se
+   `copy[locale]` manca — al momento il codice non gestisce
+   gracefulmente locali mancanti, quindi includili anche come
+   copia diretta dell'EN)
 4. `bun run build`
 
-### Add a new locale (e.g. German)
+### Aggiungere una nuova lingua (es. tedesco)
 
-1. Add `"de"` to the `Locale` type in `app/translations.ts`
-2. Add an entry to the `locales` array
-3. Add a full translation block in `translations` for `de`
-4. Add `de` keys to all `Record<Locale, ...>` objects in:
+1. Aggiungi `"de"` al type `Locale` in `app/translations.ts`
+2. Aggiungi una entry all'array `locales`
+3. Aggiungi un blocco di traduzione completo in `translations`
+   per `de`
+4. Aggiungi le chiavi `de` a tutti gli oggetti `Record<Locale, ...>`
+   in:
    - `app/seo.ts` (LOCALE_BCP47, LOCALE_OG)
    - `app/[locale]/layout.tsx` (titles, descs)
-   - `app/content/tours.ts` (each tour's `copy`)
+   - `app/content/tours.ts` (`copy` di ogni tour)
    - `app/content/destinations.ts`
    - `app/content/faq.ts`
-   - `app/content/blog.ts` (optional — leave blank to skip blog
-     for that locale)
-5. Add `"de"` to the `VALID_LOCALES` array in every
+   - `app/content/blog.ts` (opzionale — lascia vuoto per
+     saltare il blog in quella lingua)
+5. Aggiungi `"de"` all'array `VALID_LOCALES` in ogni
    `app/[locale]/...page.tsx`
-6. If the script needs a different font, add a `next/font` import
-   in `app/layout.tsx`
+6. Se la scrittura richiede un font diverso, aggiungi un import
+   `next/font` in `app/layout.tsx`
 7. `bun run build`
 
-### Add a new schema type
+### Aggiungere un nuovo tipo di schema
 
-1. Add a builder function to `app/jsonld.ts` returning a plain
-   object
-2. Import it in the relevant page's `page.tsx` and add it to the
-   `combine([...])` call
-3. Validate the build output at
+1. Aggiungi una funzione builder in `app/jsonld.ts` che restituisce
+   un oggetto piano
+2. Importala nella `page.tsx` rilevante e aggiungila alla
+   chiamata `combine([...])`
+3. Valida l'output del build su
    [validator.schema.org](https://validator.schema.org/)
 
 ---
 
-## 5. Verification checklist
+## 5. Checklist di verifica
 
-Before promoting any change to production:
+Prima di promuovere qualsiasi modifica in produzione:
 
-1. `bun run build` — no errors, all 60+ static pages emitted
-2. **Schema check**: paste the homepage URL into
+1. `bun run build` — nessun errore, tutte le 60+ pagine statiche
+   emesse
+2. **Schema check**: incolla la URL homepage in
    [search.google.com/test/rich-results](https://search.google.com/test/rich-results) —
-   should show LocalBusiness, AggregateRating, FAQPage, Tour
-3. **Lighthouse mobile**: run from Chrome DevTools on the homepage.
-   Targets: Performance ≥ 90, Accessibility ≥ 95, SEO = 100
-4. **Sitemap**: visit `/sitemap.xml` and confirm new pages appear
-5. **hreflang**: paste any inner page URL into
+   deve mostrare LocalBusiness, AggregateRating, FAQPage, Tour
+3. **Lighthouse mobile**: gira da Chrome DevTools sulla homepage.
+   Target: Performance ≥ 90, Accessibility ≥ 95, SEO = 100
+4. **Sitemap**: visita `/sitemap.xml` e verifica che le nuove
+   pagine compaiano
+5. **hreflang**: incolla qualsiasi URL pagina interna in
    [aleydasolis.com/english/international-seo-tools/hreflang-tags-generator](https://www.aleydasolis.com/english/international-seo-tools/hreflang-tags-generator/) —
-   should validate
-6. **OG previews**: paste each locale homepage into
-   [opengraph.xyz](https://www.opengraph.xyz/) — check that the
-   image, title and description render
-7. **Mobile test**: open the site on a phone, run through the
-   nav, hit a tour page, confirm the toggle works
-8. **Search Console** (post-launch): submit `/sitemap.xml`,
-   request indexing for the 4 locale homepages and 4 lead tour
-   pages
+   deve validare
+6. **OG previews**: incolla ogni homepage di lingua in
+   [opengraph.xyz](https://www.opengraph.xyz/) — verifica che
+   immagine, titolo e descrizione si renderizzino
+7. **Test mobile**: apri il sito su un telefono, gira nella
+   nav, vai su una pagina tour, conferma che il toggle
+   funzioni
+8. **Search Console** (post-launch): submitta `/sitemap.xml`,
+   richiedi indicizzazione per le 4 homepage di lingua e per
+   4 pagine tour principali
 
 ---
 
-## 6. Useful command reference
+## 6. Riferimento comandi utili
 
 ```bash
-# Local dev
+# Dev locale
 bun run dev
 
-# Production build (runs Instagram sync + Next build)
+# Build di produzione (gira sync Instagram + Next build)
 bun run build
 
-# Local preview of the production build
+# Preview locale del build di produzione
 bun run preview
 
-# Manual Instagram refresh (no full build)
+# Refresh manuale Instagram (senza build completo)
 bun run sync:instagram
 ```
 
-Deploy: push to `main` on GitHub, Vercel auto-deploys.
+Deploy: push su `main` su GitHub, Vercel auto-deploya.
 
 ---
 
-## 7. Contact for unresolved questions
+## 7. Contatto per domande non risolte
 
-The original build was pair-programmed by David Francesconi
-(a non-technical person, if you have implementation questions
-he'll relay them) with Claude. The architecture is documented
-inline in every file. If something isn't clear from the file
-comments alone, the next steps are usually:
+Il build originale è stato pair-programmato da David Francesconi
+(non-tecnico, se hai domande di implementazione le inoltra) con
+Claude. L'architettura è documentata inline in ogni file. Se
+qualcosa non è chiaro dai commenti del file da solo, i prossimi
+passi sono di solito:
 
-1. Search the codebase for the constant or function name
-2. Check `app/seo.ts` and `app/jsonld.ts` for the right
-   primitive — most things compose from there
-3. Check this document's section 4 for the extension pattern
+1. Cerca nel codebase il nome della costante o della funzione
+2. Controlla `app/seo.ts` e `app/jsonld.ts` per la primitiva
+   giusta — la maggior parte delle cose si compone da lì
+3. Controlla la sezione 4 di questo documento per il pattern
+   di estensione
 
-Loris and Claudio's WhatsApp is on the homepage. They run the
-business, not the website — for content questions they're the
-authority; for technical questions, fall back to David.
+WhatsApp di Loris e Claudio sono in homepage. Loro gestiscono
+il business, non il sito web — per domande sui contenuti sono
+loro l'autorità; per domande tecniche, fai riferimento a David.
