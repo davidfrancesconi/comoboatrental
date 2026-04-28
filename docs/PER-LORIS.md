@@ -229,7 +229,18 @@ Airbnb ha rilanciato gli Experiences nel 2025. Commissione più
 bassa (15–20%, contro il 20–30% degli altri). Iscrizione su
 **airbnb.com/host/experiences**.
 
-#### 7. Hotel concierge — la cosa con il margine più alto
+#### 7. Booking.com Experiences
+
+Più nuovo e meno trasparente degli altri OTA. Si raggiunge tramite
+il supporto partner di Booking.com (non c'è un portale
+self-service come GetYourGuide). Commissione ~15-20%. Vale la
+pena attivarlo **dopo** che Bokun è in piedi — Booking.com si
+sincronizza automaticamente con Bokun, quindi è solo una flag da
+attivare una volta che il sistema di prenotazione è pronto.
+Aggiunge volume incrementale agli ospiti che cercano "things to
+do" mentre prenotano l'hotel.
+
+#### 8. Hotel concierge — la cosa con il margine più alto
 
 I concierge degli hotel di lusso indirizzano gli ospiti verso
 operatori di fiducia. Una commissione del 10–15% al fondo
@@ -260,26 +271,30 @@ Una sola partnership con Villa d'Este o Passalacqua può valere
 
 ### Priorità 3 (quando hai tempo)
 
-#### 8. Canali italiani spesso ignorati
+#### 9. Canali italiani spesso ignorati
 
 - **Lake Como Tourism Board** (lakecomotourism.it) — chiedi di
   essere nella loro lista preferred supplier. Gratis.
 - **Musement** (di TUI) — buono per gruppi europei. Iscrizione
   su supplier.musement.com
+- **Italyscape** — DMC B2B per il segmento concierge premium.
+  Contattali via mail (sales@italyscape.com)
 - **PagineGialle.it** + **Virgilio.it** — directory italiane,
   iscrizione gratuita
 
-#### 9. Stampa
+#### 10. Stampa
 
 - **HARO** (helpareporter.com): giornalisti pubblicano richieste
   di fonti su Lake Como ogni settimana, ti iscrivi e rispondi
-- **TravMedia**: distribuzione di comunicati stampa
+- **TravMedia** (travmedia.com): distribuzione di comunicati
+  stampa a pubblicazioni travel
 - **Stampa locale** (La Provincia di Como, Corriere Lombardia):
   un articolo = link buono per Google
-- **Stampa matrimoni** (Vogue Sposa, Wedding Italy): pitcha la
-  parte proposte/matrimoni — è quella a margine più alto
+- **Stampa matrimoni** (Vogue Sposa, Wedding Italy, Junebug
+  Weddings): pitcha la parte proposte/matrimoni — è quella a
+  margine più alto
 
-#### 10. Instagram
+#### 11. Instagram
 
 Sei già su @comoboatrental e il sito mostra automaticamente le
 ultime 6 foto. Per crescere:
@@ -291,6 +306,13 @@ ultime 6 foto. Per crescere:
   (#ComoBoatTour, #WoodenBoatLakeComo)
 - Collab con influencer: offri un giro corto gratis in cambio
   di un post
+
+#### 12. TikTok
+
+Salta finché Instagram non gira a regime. Quando sei pronto, lo
+stesso contenuto Reels rebrandato come TikTok funziona
+perfettamente — stesso pubblico viaggiatori, stesse meccaniche
+di hashtag e geotag.
 
 ---
 

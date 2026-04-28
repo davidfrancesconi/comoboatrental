@@ -2,25 +2,28 @@
 
 Questo documento è il passaggio di consegne tra il lavoro di fondazione
 fatto da David e lo sviluppatore front-end che porterà avanti il sito
-per Loris e Claudio. Copre:
+per Loris e Claudio. Copre solo gli aspetti tecnici:
 
 1. **Cosa c'è già nel codice** — ogni superficie SEO e di contenuto
    attualmente in produzione
-2. **Cosa resta da fare in codice** — task concreti che lo sviluppatore
-   dovrebbe prendere subito
-3. **Cosa deve fare Loris (o chiunque gestisca il business) fuori dal
-   sito** — Google Business Profile, listing OTA, sistema di
-   prenotazione, stampa
-4. **Come estendere il sito** — aggiungere tour, destinazioni, articoli
-   blog, lingue, tipi di schema
+2. **Come pubblicare il sito** — comandi, deploy, hosting
+3. **Cosa resta da fare in codice** — task tecnici concreti
+4. **Come estendere il sito** — aggiungere tour, destinazioni,
+   articoli blog, lingue, tipi di schema
+5. **Checklist di verifica**
+6. **Comandi utili e contatti**
+
+Per le attività **fuori dal sito** che servono a far rendere il
+progetto (Google Business Profile, OTA come GetYourGuide e
+Viator, sistema di prenotazione Bokun, partnership con concierge
+degli hotel, stampa, foto da commissionare, decisioni di copy
+e palette) leggi il documento parallelo
+[`PER-LORIS.md`](./PER-LORIS.md). Quel documento è scritto per
+Loris in italiano-discorsivo, non tecnico, e contiene tutte le
+checklist di iscrizione alle piattaforme.
 
 Se prendi in mano il progetto da zero, leggi nell'ordine — le sezioni
 si costruiscono l'una sull'altra.
-
-Tutta la documentazione tecnica (commenti nei file, README, questo
-documento) è in inglese o italiano a seconda del file. Il codice
-stesso è in inglese standard. La parte rivolta a Loris vive in
-`docs/PER-LORIS.md`.
 
 ---
 
@@ -125,7 +128,7 @@ resta da fare, G".
   di colore. Salvataggio in localStorage. **Per revisione cliente
   solamente — non impatta sulla SEO** (i metadati sono indipendenti
   dalla variante e bakerati al build). Da rimuovere quando Loris ha
-  scelto; vedi sezione "Cosa resta da fare" sotto.
+  scelto; vedi sezione "Cosa resta da fare, D" sotto.
 - **Feed Instagram live**: `scripts/sync-instagram.mjs` gira come
   `prebuild` e prende gli ultimi 6 post pubblici da `@comoboatrental`
   scrivendoli in `public/instagram-feed.json`, con ogni tile che
@@ -137,15 +140,66 @@ resta da fare, G".
 
 ---
 
-## 2. Cosa resta da fare in codice
+## 2. Come pubblicare il sito
 
-Affronta nell'ordine di impatto-per-ora. Nessuna è bloccante — il sito
-parte e si posiziona competitivo così com'è.
+### Setup locale
 
-### A. Ottimizzazione immagini (altrimenti penalità Lighthouse)
+```bash
+git clone https://github.com/davidfrancesconi/comoboatrental.git
+cd comoboatrental
+bun install            # oppure: npm install / pnpm install
+bun run dev            # dev locale — http://localhost:3000
+```
+
+Niente env var, niente API key, niente backend.
+
+### Build di produzione
+
+```bash
+bun run build          # → ./out/ (HTML/CSS/JS statici)
+bun run preview        # build + preview locale su server statico
+```
+
+Il `prebuild` hook gira `scripts/sync-instagram.mjs` che pulla i
+6 post più recenti da `@comoboatrental` e li scrive in
+`public/instagram-feed.json`. Se la sync fallisce (rate limit,
+endpoint cambiato, no rete) il build continua e il feed cade su
+foto interne curate.
+
+### Deploy
+
+- **Vercel** (configurazione attuale): push su `main` su GitHub e
+  Vercel auto-deploya. Rileva automaticamente `output: "export"`
+  e pubblica la cartella `out/`. Nessuna env var necessaria.
+- **Netlify / Cloudflare Pages**: build command `bun run build`,
+  publish directory `out`.
+- **Qualsiasi host statico** (S3, GitHub Pages, FTP): gira
+  `bun run build` e carica il contenuto di `out/`.
+
+### Cron per Instagram (opzionale)
+
+Siccome il feed è bakerato al build, la freschezza dipende dal
+deploy. Per tenere la griglia Instagram aggiornata senza
+intervento manuale:
+
+- Vercel → Settings → Cron Jobs
+- POST a un deploy hook ogni 6 ore
+
+In alternativa Loris può chiedere un rebuild manuale o si può
+sostituire il feed con un widget embedded ([Behold.so](https://behold.so)
+gratis, o l'API Graph ufficiale che richiede Meta Business).
+
+---
+
+## 3. Cosa resta da fare in codice
+
+Nessuno di questi è bloccante — il sito parte e si posiziona
+competitivo così com'è. Affronta nell'ordine di impatto-per-ora.
+
+### A. Ottimizzazione immagini (penalità Lighthouse)
 
 È il TODO più vecchio del README. Tutte le foto sono JPG, nessuna
-ha varianti AVIF/WebP, non tutti i tag img portano width/height
+ha varianti AVIF/WebP, non tutti i tag `<img>` portano width/height
 (la maggior parte sì, alcuni no). Il Cumulative Layout Shift è
 mediocre.
 
@@ -193,7 +247,7 @@ barca) usando [realfavicongenerator.net](https://realfavicongenerator.net).
 ### D. Lock-in della variante + palette
 
 In questo momento i visitatori vedono un toggle flottante in alto
-a destra. Quando Loris sceglie una combinazione:
+a destra. Quando Loris sceglie una combinazione (vedi `PER-LORIS.md`):
 
 1. Modifica `DEFAULT_VARIANT` e `DEFAULT_PALETTE` in cima a
    `app/components/HomePage.tsx` con i codici scelti
@@ -206,11 +260,15 @@ Il copy della variante e il CSS della palette rimangono dove sono
 
 ### E. Widget di prenotazione sulle pagine tour
 
-Quando Loris si iscrive a **Bokun** (vedi sezione 3 sotto), ogni
-pagina tour riceve un calendario di disponibilità embeddato sopra
-il blocco FAQ. Bokun fornisce uno snippet iframe — incollalo in
-`app/[locale]/tours/[slug]/page.tsx` tra il blocco CTA e il
-blocco FAQ.
+Loris potrebbe iscriversi a **Bokun** (sistema di prenotazione di
+proprietà di Tripadvisor) — vedi `PER-LORIS.md`. Quando lo fa,
+ogni pagina tour può ricevere un calendario di disponibilità
+embeddato sopra il blocco FAQ. Bokun fornisce uno snippet iframe.
+
+Inseriscilo in `app/[locale]/tours/[slug]/page.tsx` tra il blocco
+CTA e il blocco FAQ. Considera anche di mostrare uno stato di
+"loading" mentre l'iframe Bokun si carica e di garantire che
+l'altezza dell'iframe non causi CLS.
 
 ### F. Cadenza blog
 
@@ -222,8 +280,7 @@ Il blog ha un solo articolo seed. Aggiungere articoli è meccanico:
    articolo a `/<locale>/blog/<slug>/`
 
 Articoli successivi suggeriti:
-- "How to visit Villa del Balbianello by boat" (corrisponde al
-  contenuto #1 di Nagi nei ranking)
+- "How to visit Villa del Balbianello by boat"
 - "Wooden boats vs fibreglass on Lake Como — what to look for"
 - "Lake Como wedding proposal by boat: a planning guide"
 - "George Clooney's Villa Oleandra: what you can and can't see"
@@ -268,211 +325,10 @@ Vincite veloci rimaste:
   la barca animata sulla mappa Leaflet (`HomePage.tsx`, il loop
   rAF `step()`)
 - Sostituisci gli accordion FAQ `<details>` con bottoni
-  aria-expanded propri per friendliness con screen reader
+  `aria-expanded` propri per accessibilità con screen reader
 - Audita i tag `<img>` che mancano width/height (qualcuno è
   scivolato — cerca nel codice)
 - Aggiungi polyfill `inert` per il menu mobile quando chiuso
-
----
-
-## 3. Cosa deve fare Loris (o David) fuori dal sito
-
-Il sito è una fondazione. La maggior parte del traffico per un
-operatore del Lago di Como arriva da canali che non crawlano il
-tuo sito — ti listano nel proprio catalogo. Il sito comunque deve
-*supportare* quei canali (con schema corretto, OG card, deep link),
-e questo è fatto — ma registrazioni e attività continua sono
-lavoro fuori sito.
-
-Ordinato per impatto-per-ora per un operatore di barche private
-sul Lago di Como:
-
-### Tier 1 — must-have
-
-#### 1. Google Business Profile
-
-Gratis. Driver delle ricerche mobile "near me". Setup ~30 min,
-manutenzione continua ~30 min/settimana.
-
-**Checklist setup:**
-
-- Iscriviti a [business.google.com](https://business.google.com/)
-  con la mail con cui Loris gestisce il business
-- **Categoria primaria**: "Boat tour agency"
-- **Categorie secondarie**: "Tour operator", "Sightseeing tour
-  agency"
-- **Indirizzo**: Lungolago Viale Geno, 10, 22100 Como CO, Italy
-- **Telefono**: +39 340 6487574
-- **Sito web**: https://comoboatrental.com/it/
-- **Orari**: Lun–Dom 09:00–20:00 (tutto l'anno)
-- **Service area**: Lake Como (la regione geografica, non solo
-  Como)
-- **Attributi**: "Accepts reservations", "Family-friendly",
-  "Wheelchair accessible" (se vero), "LGBTQ+ friendly"
-- **Lista servizi** (come voci separate con descrizione + prezzo):
-  1. *Lake Como Highlights* · 1h · €220
-  2. *Balbianello & Nesso* · 2.5h · €480
-  3. *Half-Day Top Villas* · 4h · €780
-  4. *Full-Day Bespoke Charter* · 6–8h · da €1.400
-  5. *Charter matrimoni e occasioni speciali*
-  6. *Charter shooting fotografici e produzioni*
-- **Foto**: caricane almeno 25 — barche, ville viste dall'acqua,
-  skipper al timone, ospiti a bordo (con consenso), dettagli
-  (cruscotto in mogano, sedute in pelle)
-- **Q&A seeding**: copia le FAQ da `app/content/faq.ts` e
-  pre-popola la sezione Q&A in modo che i visitatori vedano
-  subito le risposte
-- **Cadenza post** (continua nel tempo, ~30 min/settimana):
-  - Lun — meteo della settimana + disponibilità
-  - Gio — foto del tour del weekend precedente
-  - Dom (in stagione) — foto del tramonto
-
-#### 2. Tripadvisor
-
-Gratis. La singola piattaforma di recensioni più importante per
-il Lago di Como. Obiettivo: top 10 in "Things to Do in Como".
-
-- Rivendica il profilo su [tripadvisor.com/Owners](https://www.tripadvisor.com/Owners)
-- Categoria: "Tours & Activities" → "Boat Tours"
-- **Rispondi a ogni recensione entro 48 ore** (l'algoritmo
-  Tripadvisor premia la velocità di risposta)
-- Dopo ogni tour: manda al cliente un breve messaggio
-  WhatsApp con il link Tripadvisor per lasciare la recensione.
-  Obiettivo: 1 recensione ogni 10 tour (baseline di settore)
-- Quando arrivi a 50+ recensioni, il posizionamento parte da
-  solo
-
-#### 3. GetYourGuide
-
-L'OTA con più volume per il Lago di Como. Commissione ~20-30%.
-Application su [getyourguide.supply](https://www.getyourguide.supply/).
-
-Cose richieste dal sito (già spedite):
-- AggregateRating + schema Review ✓
-- Schema TouristTrip per ogni tour ✓
-- Immagini ad alta risoluzione 16:9 (alcune in `public/images/`
-  sono già 16:9; lo sviluppatore deve generare crop appropriati
-  1200×675 per ogni tour — vedi "Cosa resta da fare, A.
-  Ottimizzazione immagini")
-
-#### 4. Viator (Tripadvisor Experiences)
-
-Sorella di Tripadvisor; lo stesso listing va in entrambi.
-Application su [supplier.viator.com](https://supplier.viator.com/sign-up-info).
-Stessa documentazione di GetYourGuide.
-
-### Tier 2 — alto impatto, urgenza inferiore
-
-#### 5. Bokun (sistema di prenotazione) — **consigliato rispetto a FareHarbor**
-
-Bokun è il sistema di prenotazione di proprietà di Tripadvisor.
-Una volta integrato, **un solo calendario si sincronizza con 50+
-OTA** (Viator, Tripadvisor, GetYourGuide, Klook, Civitatis, Tiqets,
-Headout, Manawa, e altri). Elimina il rischio di doppie
-prenotazioni che viene dal gestire più OTA manualmente.
-
-1. Iscriviti su [bokun.io](https://www.bokun.io)
-2. Crea i prodotti che rispecchiano `app/content/tours.ts`
-   (4 tour)
-3. Prendi lo snippet embed per ogni tour
-4. Passalo allo sviluppatore per inserirlo nelle pagine tour
-   (vedi "Cosa resta da fare in codice, E")
-
-Perché Bokun e non FareHarbor:
-- Sync nativo con Viator + Tripadvisor (FareHarbor è di
-  Booking Holdings, ottimizzato per Booking.com)
-- Minore frizione di setup in Europa
-- Migliore supporto per IVA europea e fatturazione tasse del lago
-
-#### 6. Airbnb Experiences
-
-Rilanciato nel 2025 con "Airbnb Originals". Margine migliore
-(Airbnb prende 15-20%). Application su
-[airbnb.com/experiences](https://www.airbnb.com/host/experiences).
-Onboarding più veloce di Viator.
-
-#### 7. Booking.com Experiences
-
-Più nuovo, meno trasparente degli altri. Si raggiunge tramite il
-supporto partner di Booking.com. Commissione ~15-20%. Vale la
-pena farlo una volta che Bokun è in piedi — aggiunge volume
-incrementale senza grande sforzo.
-
-#### 8. Canali specifici italiani (spesso ignorati dagli operatori stranieri)
-
-- **Lake Como Tourism Board** (lakecomotourism.it) — fai domanda
-  per essere preferred-supplier listing. Gratis, credibilità
-  istituzionale.
-- **Musement** (di TUI) — forte per gruppi turistici europei.
-  Application via [supplier.musement.com](https://supplier.musement.com/)
-- **Italyscape** — DMC B2B. Contattali direttamente
-  (sales@italyscape.com) per partnership concierge premium
-- **PagineGialle.it / Virgilio.it** — directory locali italiane,
-  iscrizione gratuita. Impatto basso ma frizione nulla
-
-### Tier 3 — slow-burn, brand-building
-
-#### 9. Stampa & editoriale
-
-Vincite più lente (settimane-mesi) ma compongono per anni
-attraverso i backlink.
-
-- **HARO** (helpareporter.com) — giornalisti pubblicano
-  richieste di fonti su Lake Como ogni settimana. Iscriviti,
-  imposta alert su Italia/travel, rispondi a quelle rilevanti
-- **TravMedia** (travmedia.com) — distribuisci comunicati
-  stampa a pubblicazioni travel
-- **Stampa locale Lake Como** — La Provincia di Como, Corriere
-  della Sera (edizione Lombardia). Un articolo feature = link
-  juice locale + interesse walk-in
-- **Stampa wedding** — Junebug Weddings, Vogue Sposa, Wedding
-  Italy. Pitcha l'angolo proposta/matrimonio — è il prodotto a
-  margine più alto
-
-#### 10. Partnership concierge hotel
-
-Il singolo canale a margine più alto. Gli hotel indirizzano
-i loro ospiti verso operatori barca di fiducia; in cambio si
-aspettano che la barca passi al loro pontile e riporti gli
-ospiti puntuali.
-
-Target principali (in ordine di priorità):
-- **Villa d'Este** (Cernobbio) — il top
-- **Passalacqua** (Moltrasio)
-- **Mandarin Oriental** (Blevio)
-- **Il Sereno** (Torno)
-- **Grand Hotel Tremezzo** (Tremezzo)
-- **Grand Hotel Villa Serbelloni** (Bellagio)
-- **Filario** (Lezzeno)
-- **Casta Diva Resort** (Blevio)
-
-Processo: manda un PDF di una pagina al concierge desk (un
-"preferred-supplier pitch" — barche, foto, qualche testimonial
-con i nomi degli hotel), richiama dopo qualche giorno, offri
-un giro di familiarizzazione (1 ora di tour gratuito per il
-head concierge + famiglia). Commissione: 10-15% al fondo
-concierge dell'hotel è standard.
-
-### Tier 4 — discovery
-
-#### 11. Instagram
-
-Già su @comoboatrental. Il sito mostra automaticamente le ultime
-6 foto in homepage. Tattiche di crescita suggerite:
-
-- Post 3-5 volte a settimana — barche, ville, esperienze ospiti
-  (con consenso)
-- Reels con riprese drone geotaggati "Lake Como"
-- Mix hashtag per post: 2 mega (#LakeComo, #LagodiComo), 8 medi
-  (#PrivateBoatTour, #BellagioBySea, #ItalyVacation), 8 piccoli
-  (#ComoBoatTour, #WoodenBoatLakeComo)
-- **Collab post** con influencer in visita (offri un giro
-  corto gratuito in cambio di un post collab)
-
-#### 12. TikTok
-
-Salta finché Instagram non gira a regime. Quando sei pronto, lo
-stesso contenuto rebrandato come TikTok funziona perfettamente.
 
 ---
 
@@ -563,7 +419,7 @@ Prima di promuovere qualsiasi modifica in produzione:
 
 ---
 
-## 6. Riferimento comandi utili
+## 6. Comandi utili e contatti
 
 ```bash
 # Dev locale
@@ -581,9 +437,7 @@ bun run sync:instagram
 
 Deploy: push su `main` su GitHub, Vercel auto-deploya.
 
----
-
-## 7. Contatto per domande non risolte
+### Contatto per domande non risolte
 
 Il build originale è stato pair-programmato da David Francesconi
 (non-tecnico, se hai domande di implementazione le inoltra) con
