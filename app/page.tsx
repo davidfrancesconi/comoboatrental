@@ -27,25 +27,26 @@ const FLEET_IMGS = ["/images/taxi-boat.jpg", "/images/luxury-caddy.jpg"];
 const EXP_IMGS = ["/images/wedding.jpg", "/images/photoshoot.jpg", "/images/tour-experience.jpg"];
 const CONTACT_BG = "/images/lake-como-discover.jpg";
 
-// Static curated grid that mimics the WordPress Smash Balloon Instagram feed
-// from the legacy site. Each tile links to the live Instagram profile.
-// Order chosen to match the rough sequence shown on the legacy comoboatrental.it
-// — flagship boat shot first, then alternating wide/scenic ↔ portrait/lifestyle:
-//   1. Flagship: portrait of model on the Riva, Villa d'Este behind  (hero-1)
-//   2. Scenic:   the Riva at sunset on open water                    (hero-sunset)
-//   3. People:   wedding/proposal moment on board                    (wedding)
-//   4. Architecture: Villa del Balbianello                          (balbianello)
-//   5. Lifestyle: aerial of the wooden caddy at speed                (luxury-cruise)
-//   6. Town:     Bellagio waterfront                                  (bellagio)
-// To swap for a real auto-updating feed, see README "Instagram feed" section.
-const INSTAGRAM_TILES = [
-  "/images/hero-1.jpg",
-  "/images/hero-sunset.jpg",
-  "/images/wedding.jpg",
-  "/images/balbianello.jpg",
-  "/images/luxury-cruise.jpg",
-  "/images/bellagio.jpg",
+// Live Instagram feed: pulled from @comoboatrental at build time by
+// `scripts/sync-instagram.mjs`, written to /public/instagram-feed.json.
+// Each tile links to the actual post on Instagram.
+//
+// If the JSON manifest is missing (sync script failed / not run), we fall
+// back to a curated static grid pulled from /public/images.
+import instagramManifest from "../public/instagram-feed.json";
+type IgPost = { shortcode: string; src: string; permalink: string; alt: string };
+const INSTAGRAM_FALLBACK: IgPost[] = [
+  { shortcode: "fallback-1", src: "/images/hero-1.jpg",        permalink: "https://www.instagram.com/comoboatrental/", alt: "" },
+  { shortcode: "fallback-2", src: "/images/hero-sunset.jpg",   permalink: "https://www.instagram.com/comoboatrental/", alt: "" },
+  { shortcode: "fallback-3", src: "/images/wedding.jpg",       permalink: "https://www.instagram.com/comoboatrental/", alt: "" },
+  { shortcode: "fallback-4", src: "/images/balbianello.jpg",   permalink: "https://www.instagram.com/comoboatrental/", alt: "" },
+  { shortcode: "fallback-5", src: "/images/luxury-cruise.jpg", permalink: "https://www.instagram.com/comoboatrental/", alt: "" },
+  { shortcode: "fallback-6", src: "/images/bellagio.jpg",      permalink: "https://www.instagram.com/comoboatrental/", alt: "" },
 ];
+const INSTAGRAM_POSTS: IgPost[] =
+  Array.isArray(instagramManifest) && instagramManifest.length > 0
+    ? (instagramManifest as IgPost[])
+    : INSTAGRAM_FALLBACK;
 
 // Render <em>...</em> as italic accent inside a heading without dangerouslySetInnerHTML.
 function RichText({ text }: { text: string }) {
@@ -677,16 +678,17 @@ export default function Home() {
           </div>
 
           <div className="ig-grid reveal">
-            {INSTAGRAM_TILES.map((src, i) => (
+            {INSTAGRAM_POSTS.map((post) => (
               <a
-                key={i}
+                key={post.shortcode}
                 className="ig-tile"
-                href={INSTAGRAM_URL}
+                href={post.permalink}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`Open @comoboatrental on Instagram (post ${i + 1})`}
+                aria-label={post.alt || `Open Instagram post ${post.shortcode}`}
+                title={post.alt || undefined}
               >
-                <img src={src} alt="" loading="lazy" />
+                <img src={post.src} alt={post.alt} loading="lazy" />
                 <span className="ig-overlay" aria-hidden>
                   <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.5">
                     <rect x="3" y="3" width="18" height="18" rx="5" />
