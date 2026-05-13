@@ -20,7 +20,6 @@ import {
   localePath,
   SITE_NAME,
   SITE_URL,
-  WHATSAPP_URL,
   LOCALE_OG,
 } from "../../../seo";
 import {
@@ -267,11 +266,12 @@ export default async function TourPage({
               </div>
               <div style={{ fontFamily: "var(--display)", fontSize: 36 }}>€{tour.priceEUR}</div>
             </div>
+            {/* Single consolidated CTA — replaces the old WhatsApp +
+                Reserve pair. Lands the visitor on the homepage
+                #contact (BookingForm) section, which already holds
+                every channel (form + WhatsApp + email + phone). */}
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-              <a className="btn primary primary-gold" href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
-                {t.contact.whatsapp} <span className="arrow">→</span>
-              </a>
-              <a className="btn light" href={`${localePath(locale, "/")}#contact`}>
+              <a className="btn primary primary-gold" href={`${localePath(locale, "/")}#contact`}>
                 {t.hero.ctaReserve} <span className="arrow">→</span>
               </a>
             </div>

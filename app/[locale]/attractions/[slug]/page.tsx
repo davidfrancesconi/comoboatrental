@@ -16,19 +16,13 @@ import { InnerPageShell, renderRich } from "../../../components/InnerPage";
 import { TourCard, TOUR_SLUG_TO_INDEX, TOUR_CARD_IMAGES } from "../../../components/TourCard";
 import { MiniLakeMap } from "../../../components/MiniLakeMap";
 import {
-  EMAIL,
-  PHONE_DISPLAY_PRIMARY,
-  PHONE_TEL_PRIMARY,
   GEO_LAT,
   GEO_LNG,
-} from "../../../seo";
-import {
   alternateLanguages,
   localeUrl,
   localePath,
   SITE_NAME,
   SITE_URL,
-  WHATSAPP_URL,
   LOCALE_OG,
 } from "../../../seo";
 import {
@@ -295,25 +289,17 @@ export default async function AttractionDetailPage({
               </div>
             </div>
 
-            <a href="#contact" className="side-cta">
+            {/* Single consolidated CTA — replaces the old "Add to a tour"
+                + 3-row contact stack (WhatsApp / email / phone). Sends
+                the visitor to the homepage's #contact (BookingForm)
+                section where every channel and the form live together. */}
+            <a href={`${localePath(locale, "/")}#contact`} className="side-cta">
               <div className="k">{addToTourLabel}</div>
               <div className="v">
                 {reserveBoatToLabel} <em>{pin?.name?.split(" · ")[0] ?? c.name}</em>
                 <span className="arr">→</span>
               </div>
             </a>
-
-            <div className="side-secondary">
-              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
-                <span>{t.contact.whatsapp}</span><span className="arr">→</span>
-              </a>
-              <a href={`mailto:${EMAIL}`}>
-                <span>{EMAIL}</span><span className="arr">→</span>
-              </a>
-              <a href={`tel:${PHONE_TEL_PRIMARY}`}>
-                <span>{PHONE_DISPLAY_PRIMARY}</span><span className="arr">→</span>
-              </a>
-            </div>
           </aside>
         </article>
 

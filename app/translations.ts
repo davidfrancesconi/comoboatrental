@@ -168,6 +168,16 @@ export type Translation = {
     title: string;
     allCta: string;
   };
+  /** Policies block shown in the booking-form sidebar — disclosure
+   * line + links to Rent / Privacy / Cookie policies (all external,
+   * hosted on the legacy comoboatrental.it / Iubenda). */
+  policies: {
+    label: string;
+    body: string;
+    rent: string;
+    privacy: string;
+    cookie: string;
+  };
   /** Slim lead-capture band — "send me a sample itinerary" email field
    * sitting just before the booking form. Opens a pre-filled mailto: so
    * the dev can wire Formspree / serverless later. */
@@ -483,6 +493,13 @@ export const translations: Record<Locale, Translation> = {
       title: "Before you <em>get in touch.</em>",
       allCta: "Read all questions",
     },
+    policies: {
+      label: "Policies",
+      body: "By confirming a service you agree to our terms and conditions and privacy policy. Our boats are regularly checked, comply with nautical transport regulations and carry the licences required to operate; full safety equipment is provided on board.",
+      rent: "Rent Policy",
+      privacy: "Privacy Policy",
+      cookie: "Cookie Policy",
+    },
     newsletter: {
       indexLabel: "(09) — Sample itinerary",
       title: "Want a <em>sample itinerary?</em>",
@@ -717,6 +734,13 @@ export const translations: Record<Locale, Translation> = {
       indexLabel: "(08) — Domande frequenti",
       title: "Prima di <em>scriverci.</em>",
       allCta: "Leggi tutte le domande",
+    },
+    policies: {
+      label: "Policy",
+      body: "Confermando il servizio si accettano i termini e condizioni e la privacy policy. Le nostre barche sono regolarmente controllate, conformi alla normativa sul trasporto nautico e in possesso delle licenze necessarie all'attività; a bordo è presente la dotazione di sicurezza completa.",
+      rent: "Rent Policy",
+      privacy: "Privacy Policy",
+      cookie: "Cookie Policy",
     },
     newsletter: {
       indexLabel: "(09) — Itinerario campione",
@@ -953,6 +977,13 @@ export const translations: Record<Locale, Translation> = {
       title: "Перед тем как <em>написать нам.</em>",
       allCta: "Все вопросы",
     },
+    policies: {
+      label: "Правила",
+      body: "Подтверждая заказ, вы соглашаетесь с условиями обслуживания и политикой конфиденциальности. Наши лодки регулярно проходят проверку, соответствуют нормам морского транспорта и имеют все необходимые лицензии; полное защитное снаряжение предоставляется на борту.",
+      rent: "Условия аренды",
+      privacy: "Конфиденциальность",
+      cookie: "Cookies",
+    },
     newsletter: {
       indexLabel: "(09) — Пример маршрута",
       title: "Хотите <em>пример маршрута?</em>",
@@ -1187,6 +1218,13 @@ export const translations: Record<Locale, Translation> = {
       indexLabel: "(08) — أسئلة متكررة",
       title: "قبل أن <em>تتواصلوا معنا.</em>",
       allCta: "كل الأسئلة",
+    },
+    policies: {
+      label: "السياسات",
+      body: "بتأكيدك للحجز فإنك توافق على الشروط والأحكام وسياسة الخصوصية. تخضع قواربنا للفحص الدوري، وتمتثل للوائح النقل البحري، وتحمل جميع التراخيص اللازمة لمزاولة النشاط، ومجهّزة بمعدات السلامة الكاملة على متنها.",
+      rent: "سياسة الإيجار",
+      privacy: "سياسة الخصوصية",
+      cookie: "سياسة الكوكيز",
     },
     newsletter: {
       indexLabel: "(09) — برنامج مقترح",

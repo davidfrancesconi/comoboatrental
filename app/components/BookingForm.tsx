@@ -23,6 +23,9 @@ import {
   RATING_VALUE,
   RATING_COUNT,
   RATING_PERIOD,
+  RENT_POLICY_URL,
+  PRIVACY_POLICY_URL,
+  COOKIE_POLICY_URL,
 } from "../seo";
 import type { Locale, Translation } from "../translations";
 import { renderRich } from "./InnerPage";
@@ -186,11 +189,15 @@ export default function BookingForm({ t, locale }: { t: Translation; locale: Loc
               <button type="submit" className="btn-submit">
                 {submitted ? `✓ ${b.requestSent}` : <>{b.submitCta} <span className="arr">→</span></>}
               </button>
-              <a href={WHATSAPP_URL} className="btn-whatsapp" target="_blank" rel="noopener noreferrer">
-                <svg viewBox="0 0 32 32" aria-hidden>
-                  <path d="M16 3C8.8 3 3 8.8 3 16c0 2.5.7 4.9 2 7L3 29l6.2-1.9c2 1.1 4.4 1.7 6.8 1.7 7.2 0 13-5.8 13-13S23.2 3 16 3zm6 18.4c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2s-.8 1-1 1.2c-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.7-1.6-1-.9-1.7-2-1.9-2.3-.2-.3 0-.5.2-.7.2-.2.3-.4.5-.6.2-.2.2-.3.3-.5.1-.2 0-.4 0-.6-.1-.2-.7-1.7-1-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4s-1.2 1.2-1.2 2.8 1.2 3.3 1.4 3.5c.2.2 2.4 3.7 5.8 5.1 3.4 1.4 3.4.9 4 .9.6 0 1.9-.8 2.2-1.5.3-.7.3-1.3.2-1.5z" />
+              <a href={WHATSAPP_URL} className="btn-whatsapp" target="_blank" rel="noopener noreferrer" aria-label={`WhatsApp · ${b.orWhatsApp}`}>
+                {/* Official WhatsApp glyph rendered in the brand green so
+                    the secondary CTA reads as a channel switch, not a
+                    second submit. */}
+                <svg className="wa-logo" viewBox="0 0 32 32" aria-hidden xmlns="http://www.w3.org/2000/svg">
+                  <path fill="#25D366" d="M16.001 0C7.165 0 .003 7.162.003 15.998a15.93 15.93 0 0 0 2.137 7.997L0 32l8.21-2.151a15.953 15.953 0 0 0 7.79 2.015h.001C24.836 31.864 32 24.7 32 15.864 32 7.028 24.836 0 16.001 0Z"/>
+                  <path fill="#FFF" d="M23.472 19.518c-.39-.195-2.31-1.139-2.67-1.27-.358-.131-.62-.196-.88.196-.26.39-1.008 1.269-1.236 1.529-.227.26-.456.293-.846.098-.39-.195-1.65-.608-3.144-1.94-1.162-1.036-1.948-2.317-2.176-2.707-.228-.39-.024-.6.17-.795.176-.175.39-.456.585-.684.196-.228.26-.39.39-.65.13-.26.066-.488-.032-.683-.098-.195-.88-2.117-1.205-2.897-.317-.762-.64-.66-.88-.672-.227-.012-.487-.014-.747-.014-.26 0-.683.098-1.041.488-.358.39-1.366 1.334-1.366 3.256 0 1.922 1.398 3.779 1.594 4.039.195.26 2.753 4.203 6.671 5.895.932.402 1.659.642 2.225.821.935.298 1.785.256 2.458.156.75-.112 2.31-.944 2.635-1.855.325-.911.325-1.692.228-1.855-.098-.163-.358-.26-.748-.456Z"/>
                 </svg>
-                {b.orWhatsApp}
+                <span>{b.orWhatsApp}</span>
               </a>
               <span className="bform-reply">
                 <span className="dot" />
@@ -261,6 +268,27 @@ export default function BookingForm({ t, locale }: { t: Translation; locale: Loc
                   {b.trustInsuredLabel}
                   <small>{b.trustInsuredNote}</small>
                 </span>
+              </div>
+            </div>
+
+            {/* Policies — disclosure + external links to the rent /
+                privacy / cookie policies. URLs stay external (PDF on
+                comoboatrental.it, Iubenda for privacy + cookies). */}
+            <div className="bside-policies">
+              <h4>{t.policies.label}</h4>
+              <p>{t.policies.body}</p>
+              <div className="bside-policies-links">
+                <a href={RENT_POLICY_URL} target="_blank" rel="noopener noreferrer">
+                  {t.policies.rent}
+                </a>
+                <span aria-hidden>·</span>
+                <a href={PRIVACY_POLICY_URL} target="_blank" rel="noopener noreferrer">
+                  {t.policies.privacy}
+                </a>
+                <span aria-hidden>·</span>
+                <a href={COOKIE_POLICY_URL} target="_blank" rel="noopener noreferrer">
+                  {t.policies.cookie}
+                </a>
               </div>
             </div>
           </aside>

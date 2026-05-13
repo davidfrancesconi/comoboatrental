@@ -2302,22 +2302,31 @@ html[dir="rtl"] nav.top.inner .logo.back-link:hover .back-arrow { transform: sca
 .btn-whatsapp {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-family: var(--mono);
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--bg);
-  background: transparent;
-  border: 1px solid rgba(245, 239, 228, 0.3);
-  padding: 15px 22px;
+  color: #fff;
+  background: #25D366;
+  border: 1px solid #1ebe57;
+  padding: 14px 22px;
   cursor: pointer;
   text-decoration: none;
-  transition: border-color 0.2s ease, color 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
 }
-.btn-whatsapp:hover { border-color: var(--gold-light); color: var(--gold-light); }
-.btn-whatsapp svg { width: 14px; height: 14px; fill: currentColor; }
+.btn-whatsapp:hover {
+  background: #1ebe57;
+  border-color: #189c47;
+  transform: translateY(-1px);
+}
+.btn-whatsapp .wa-logo {
+  width: 20px;
+  height: 20px;
+  display: block;
+  flex: none;
+}
 
 .bform-reply {
   font-family: var(--mono);
@@ -2493,104 +2502,89 @@ html[dir="rtl"] nav.top.inner .logo.back-link:hover .back-arrow { transform: sca
   .attr-aside { position: static; }
 }
 
-/* The SVG mini-map */
+/* Mini Leaflet map used in the attraction-page sticky sidebar.
+ * Same tile source as the homepage hero map (CartoDB Voyager); the
+ * active pin is gold + has a permanent label tooltip styled to feel
+ * like the rest of the editorial type system. */
 .minimap {
   position: relative;
   width: 100%;
   aspect-ratio: 4 / 5;
-  background: radial-gradient(120% 80% at 50% 110%, #b8a98c 0%, #d8cdb6 38%, #ece3cf 70%, #f2ead6 100%);
   border: 1px solid var(--rule);
   overflow: hidden;
   margin-bottom: 24px;
+  background: #f2ead6;
 }
-.minimap .label {
+.minimap-canvas {
   position: absolute;
-  top: 12px; left: 12px;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+/* Leaflet's own container has a default tile-grey bg — paint it crema
+ * so the lake panel never flashes grey before tiles load. */
+.minimap-canvas .leaflet-container {
+  background: #f2ead6;
+  font-family: inherit;
+}
+.minimap-corner-label {
+  position: absolute;
+  top: 10px; left: 10px;
   font-family: var(--mono);
   font-size: 9px;
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--ink-soft);
-  background: rgba(245, 239, 228, 0.88);
+  background: rgba(245, 239, 228, 0.92);
   padding: 5px 8px;
+  z-index: 401;
+  pointer-events: none;
 }
-.minimap .stats {
+.minimap-stats {
   position: absolute;
-  bottom: 12px; right: 12px;
+  bottom: 10px; right: 10px;
+  background: rgba(245, 239, 228, 0.92);
+  padding: 7px 10px;
+  z-index: 401;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  pointer-events: none;
+}
+.minimap-stats .hd {
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+}
+.minimap-stats .sub {
   font-family: var(--mono);
   font-size: 9px;
-  font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--ink-soft);
-  text-align: right;
-  background: rgba(245, 239, 228, 0.88);
-  padding: 6px 9px;
 }
-.minimap .stats b {
+/* Override Leaflet tooltip defaults for the active-pin label so it
+ * blends with the editorial typography. */
+.leaflet-tooltip.minimap-label {
+  background: rgba(245, 239, 228, 0.94);
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  padding: 3px 8px;
   color: var(--ink);
   font-family: var(--display);
   font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0;
-  text-transform: none;
-}
-.minimap svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-.minimap-pins {
-  position: absolute;
-  inset: 0;
-}
-.minimap-pin {
-  position: absolute;
-  transform: translate(-50%, -50%);
-}
-.minimap-pin .dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--ink-soft);
-  opacity: 0.4;
-  display: block;
-}
-.minimap-pin.is-active .dot {
-  width: 14px;
-  height: 14px;
-  background: var(--gold);
-  border: 2px solid var(--ink);
-  opacity: 1;
-  box-shadow: 0 0 0 6px rgba(176, 138, 74, 0.18), 0 0 0 12px rgba(176, 138, 74, 0.08);
-}
-.minimap-pin.is-active::after {
-  content: "";
-  position: absolute;
-  width: 70px;
-  height: 1px;
-  left: 14px;
-  top: 50%;
-  background: var(--gold);
-  opacity: 0.55;
-}
-.minimap-pin .tag {
-  position: absolute;
-  left: 90px;
-  top: 50%;
-  transform: translateY(-50%);
-  white-space: nowrap;
-  font-family: var(--display);
-  font-size: 15px;
   font-style: italic;
   font-weight: 500;
-  color: var(--ink);
-  background: rgba(245, 239, 228, 0.94);
-  border: 1px solid var(--rule);
-  padding: 4px 9px;
+  line-height: 1.1;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  white-space: nowrap;
+}
+.leaflet-tooltip.minimap-label::before {
+  display: none;
 }
 
 /* Quick-facts card */
@@ -2786,6 +2780,57 @@ html[dir="rtl"] .attr-adj a:hover.prev .arr { transform: translateX(4px); }
 .bside-block .bside-directions:hover {
   color: var(--gold-light);
   border-color: var(--gold-light);
+}
+
+/* Policies block at the bottom of the booking-form sidebar. Sits on
+   the same dark "ink" background as the rest of the sidebar; mono
+   eyebrow + disclosure paragraph + inline list of three external
+   links (rent / privacy / cookie). */
+.bside-policies {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(245, 239, 228, 0.16);
+  color: rgba(245, 239, 228, 0.72);
+}
+.bside-policies h4 {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bg);
+  margin: 0 0 12px;
+}
+.bside-policies p {
+  font-size: 13px;
+  line-height: 1.55;
+  margin: 0 0 14px;
+  color: rgba(245, 239, 228, 0.62);
+}
+.bside-policies-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.bside-policies-links a {
+  color: rgba(245, 239, 228, 0.85);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(245, 239, 228, 0.25);
+  padding-bottom: 1px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.bside-policies-links a:hover {
+  color: var(--gold-light);
+  border-color: var(--gold-light);
+}
+.bside-policies-links span {
+  color: rgba(245, 239, 228, 0.35);
 }
 
 /* ===== Condensed Experiences section =====

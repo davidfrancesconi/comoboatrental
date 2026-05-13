@@ -19,6 +19,14 @@ export const EMAIL = "info@comoboatrental.it";
 export const WHATSAPP_URL = "https://wa.me/393406487574";
 export const INSTAGRAM_URL = "https://www.instagram.com/comoboatrental";
 
+// External policy URLs — live on the legacy comoboatrental.it host
+// (Iubenda for privacy & cookies, a PDF for the rent policy). These
+// stay external because the legal copy is maintained there, not in
+// this repo.
+export const RENT_POLICY_URL = "https://www.comoboatrental.it/pdf/policy.pdf";
+export const PRIVACY_POLICY_URL = "https://www.iubenda.com/privacy-policy/37777144";
+export const COOKIE_POLICY_URL = "https://www.iubenda.com/privacy-policy/37777144/cookie-policy";
+
 export const ADDRESS_STREET = "Lungolago Viale Geno, 10";
 export const ADDRESS_LOCALITY = "Como";
 export const ADDRESS_REGION = "Lombardy";
