@@ -88,6 +88,12 @@ type Translation = {
     sideBody: string;
     pins: MapPin[];
   };
+  attractions: {
+    indexLabel: string;
+    lead: string;
+    title: string;
+    right: string;
+  };
   experiences: {
     indexLabel: string;
     lead: string;
@@ -148,15 +154,23 @@ type Translation = {
 // cruise itinerary (south up the west shore, cross east for Nesso, back to west,
 // continue up to Bellagio, then cross east to Varenna).
 const PIN_BASE: { id: string; name: string; type: MapPin["type"]; lat: number; lng: number }[] = [
-  { id: "como",        name: "Como",                       type: "port",   lat: 45.808, lng: 9.085 },
-  { id: "cernobbio",   name: "Cernobbio · Villa d'Este",   type: "villa",  lat: 45.844, lng: 9.082 },
-  { id: "oleandra",    name: "Villa Oleandra",             type: "villa",  lat: 45.864, lng: 9.106 },
-  { id: "nesso",       name: "Orrido di Nesso",            type: "nature", lat: 45.871, lng: 9.158 },
-  { id: "argegno",     name: "Argegno",                    type: "town",   lat: 45.929, lng: 9.130 },
-  { id: "balbianello", name: "Villa del Balbianello",      type: "villa",  lat: 45.971, lng: 9.197 },
-  { id: "carlotta",    name: "Villa Carlotta",             type: "villa",  lat: 45.988, lng: 9.222 },
-  { id: "bellagio",    name: "Bellagio",                   type: "town",   lat: 45.987, lng: 9.260 },
-  { id: "varenna",     name: "Varenna",                    type: "town",   lat: 46.013, lng: 9.284 },
+  // Orbit pins (the boat's automatic cruise route — south to north along the western shore)
+  { id: "como",          name: "Como",                       type: "port",   lat: 45.808, lng: 9.085 },
+  { id: "cernobbio",     name: "Cernobbio · Villa d'Este",   type: "villa",  lat: 45.844, lng: 9.082 },
+  { id: "oleandra",      name: "Villa Oleandra",             type: "villa",  lat: 45.864, lng: 9.106 },
+  { id: "nesso",         name: "Orrido di Nesso",            type: "nature", lat: 45.871, lng: 9.158 },
+  { id: "argegno",       name: "Argegno",                    type: "town",   lat: 45.929, lng: 9.130 },
+  { id: "balbianello",   name: "Villa del Balbianello",      type: "villa",  lat: 45.971, lng: 9.197 },
+  { id: "carlotta",      name: "Villa Carlotta",             type: "villa",  lat: 45.988, lng: 9.222 },
+  { id: "bellagio",      name: "Bellagio",                   type: "town",   lat: 45.987, lng: 9.260 },
+  { id: "varenna",       name: "Varenna",                    type: "town",   lat: 46.013, lng: 9.284 },
+  // Additional attraction pins (off the orbit route — boat doesn't auto-orbit through these,
+  // but they're visible as markers and respond to hover from the side-list and attractions section)
+  { id: "blevio_torno",  name: "Blevio · Torno",             type: "town",   lat: 45.834, lng: 9.108 },
+  { id: "isola_comacina",name: "Isola Comacina",             type: "nature", lat: 45.965, lng: 9.171 },
+  { id: "cassinella",    name: "Villa Cassinella",           type: "villa",  lat: 45.972, lng: 9.202 },
+  { id: "menaggio",      name: "Menaggio",                   type: "town",   lat: 46.022, lng: 9.241 },
+  { id: "lecco",         name: "Lecco",                      type: "town",   lat: 45.853, lng: 9.394 },
 ];
 
 const buildPins = (notes: string[]): MapPin[] =>
@@ -256,7 +270,13 @@ export const translations: Record<Locale, Translation> = {
       right: "From the southern tip at Como up the west shore to Bellagio, Varenna and the lake's quietest corners. Hover or tap any destination to locate it.",
       sideTitle: "Iconic <em>destinations.</em>",
       sideBody: "Nine stops, traced south to north along the lake's most photographed shoreline. Your captain weaves them into one private itinerary, at your pace.",
-      pins: buildPins(["Departure", "15 min", "Clooney", "Waterfall", "Mid-lake", "Iconic", "Tremezzo", "The Pearl", "East shore"]),
+      pins: buildPins(["Departure", "15 min", "Clooney", "Waterfall", "Mid-lake", "Iconic", "Tremezzo", "The Pearl", "East shore", "Twin villages", "Hidden island", "Most exclusive", "Upper west", "Lecco arm"]),
+    },
+    attractions: {
+      indexLabel: "(03) — Attractions",
+      lead: "Every corner of the lake.",
+      title: "The thirteen places worth <em>arriving by boat.</em>",
+      right: "Hover any pin on the map or any card below to centre it on both. The boat will navigate to it.",
     },
     experiences: {
       indexLabel: "(04) — Beyond a Tour",
@@ -409,7 +429,13 @@ export const translations: Record<Locale, Translation> = {
       right: "Dalla punta sud di Como su per la sponda ovest fino a Bellagio, Varenna e gli angoli più silenziosi del lago. Passa il mouse o tocca una destinazione per individuarla.",
       sideTitle: "Destinazioni <em>iconiche.</em>",
       sideBody: "Nove tappe, da sud a nord lungo la sponda più fotografata del lago. Il tuo skipper le intreccia in un unico itinerario privato, al tuo ritmo.",
-      pins: buildPins(["Partenza", "15 min", "Clooney", "Cascata", "Centro lago", "Iconica", "Tremezzo", "La Perla", "Sponda est"]),
+      pins: buildPins(["Partenza", "15 min", "Clooney", "Cascata", "Centro lago", "Iconica", "Tremezzo", "La Perla", "Sponda est", "Borghi gemelli", "Isola nascosta", "Più esclusiva", "Alto ovest", "Ramo di Lecco"]),
+    },
+    attractions: {
+      indexLabel: "(03) — Attrazioni",
+      lead: "Ogni angolo del lago.",
+      title: "Le tredici tappe che <em>meritano l'arrivo in barca.</em>",
+      right: "Passa il mouse su un pin della mappa o su una card qui sotto: l'altro si allinea e la barca naviga verso quel punto.",
     },
     experiences: {
       indexLabel: "(04) — Oltre il Tour",
@@ -562,7 +588,13 @@ export const translations: Record<Locale, Translation> = {
       right: "От южной оконечности у Комо вверх по западному берегу до Белладжо, Варенны и самых тихих уголков озера. Наведите курсор или коснитесь точки, чтобы её найти.",
       sideTitle: "Знаковые <em>места.</em>",
       sideBody: "Девять остановок, прослеженных с юга на север вдоль самого фотографируемого берега озера. Капитан собирает их в единый частный маршрут, в вашем темпе.",
-      pins: buildPins(["Отправление", "15 мин", "Клуни", "Водопад", "Центр озера", "Знаковая", "Тремеццо", "Жемчужина", "Восточный берег"]),
+      pins: buildPins(["Отправление", "15 мин", "Клуни", "Водопад", "Центр озера", "Знаковая", "Тремеццо", "Жемчужина", "Восточный берег", "Деревни-близнецы", "Скрытый остров", "Самая эксклюзивная", "Верхний запад", "Рукав Лекко"]),
+    },
+    attractions: {
+      indexLabel: "(03) — Достопримечательности",
+      lead: "Каждый уголок озера.",
+      title: "Тринадцать мест, к которым <em>стоит подойти на лодке.</em>",
+      right: "Наведите курсор на пин на карте или на карточку ниже — другой выровняется, и лодка пойдёт к этой точке.",
     },
     experiences: {
       indexLabel: "(04) — Больше чем тур",
@@ -715,7 +747,13 @@ export const translations: Record<Locale, Translation> = {
       right: "من الطرف الجنوبي عند كومو صعوداً على طول الضفة الغربية إلى بيلاجيو وفارينا وأهدأ زوايا البحيرة. مرّر فوق وجهة أو انقرها لتحديد موقعها.",
       sideTitle: "وجهات <em>أيقونية.</em>",
       sideBody: "تسع محطات، متتبَّعة من الجنوب إلى الشمال على طول أكثر شواطئ البحيرة تصويراً. يضفّرها قبطانك في مسار خاص واحد, بإيقاعك.",
-      pins: buildPins(["انطلاق", "15 دقيقة", "كلوني", "شلال", "وسط البحيرة", "أيقونية", "تريميتزو", "اللؤلؤة", "الضفة الشرقية"]),
+      pins: buildPins(["انطلاق", "15 دقيقة", "كلوني", "شلال", "وسط البحيرة", "أيقونية", "تريميتزو", "اللؤلؤة", "الضفة الشرقية", "قريتان توأمتان", "جزيرة مخفية", "الأكثر حصرية", "أعلى الغرب", "ذراع ليكو"]),
+    },
+    attractions: {
+      indexLabel: "(03) — معالم",
+      lead: "كل زاوية من البحيرة.",
+      title: "ثلاث عشرة وجهة <em>تستحقّ الوصول بالقارب.</em>",
+      right: "مرّر فوق أي دبوس على الخريطة أو أي بطاقة بالأسفل: يتمحور الآخر معه ويتجه القارب إليه.",
     },
     experiences: {
       indexLabel: "(04) — أكثر من جولة",

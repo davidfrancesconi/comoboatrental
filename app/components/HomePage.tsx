@@ -15,6 +15,7 @@ import {
   type Variant,
 } from "../copy-variants";
 import { localePath } from "../seo";
+import { attractions, ORBIT_PIN_IDS } from "../content/attractions";
 
 // Five interchangeable colour palettes — defined in app/globals.css under
 // html[data-palette="A|B|C|D|E"]. The toggle just sets the attribute;
@@ -107,17 +108,29 @@ function LakeComoMap({
   activeId,
   onActivate,
   sectionRef,
+  userInteracting,
 }: {
   pins: Pin[];
   activeId: string;
   onActivate: (id: string) => void;
   sectionRef: React.RefObject<HTMLElement | null>;
+  /** When true, the boat lerps toward `activeId` instead of running
+   * the automatic orbit. Driven by mouse hover on the pin list or
+   * attractions section in the parent component. */
+  userInteracting: boolean;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapRef = useRef<any>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const markersRef = useRef<Record<string, any>>({});
+
+  // Mirror reactive state into refs so the long-lived rAF loop can read
+  // current values without being torn down and rebuilt every render.
+  const userInteractingRef = useRef(false);
+  const targetPinIdRef = useRef<string | null>(null);
+  useEffect(() => { userInteractingRef.current = userInteracting; }, [userInteracting]);
+  useEffect(() => { targetPinIdRef.current = activeId; }, [activeId]);
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
@@ -141,8 +154,14 @@ function LakeComoMap({
         maxZoom: 19,
       }).addTo(map);
 
+      // Separate orbit pins (boat auto-cruises through these) from extra
+      // attraction pins (markers only, no orbit). The polyline traces only
+      // the orbit route, which is the editorial cruise itinerary; the rest
+      // are reachable via hover from the side-list / attractions section.
+      const orbitPins = pins.filter((p) => ORBIT_PIN_IDS.includes(p.id));
+
       L.polyline(
-        pins.map((p) => [p.lat, p.lng] as [number, number]),
+        orbitPins.map((p) => [p.lat, p.lng] as [number, number]),
         { color: "#2a3943", weight: 1.6, opacity: 0.55, dashArray: "4, 6" },
       ).addTo(map);
 
@@ -179,7 +198,7 @@ function LakeComoMap({
         iconSize: [40, 60],
         iconAnchor: [20, 30],
       });
-      const boat = L.marker([pins[0].lat, pins[0].lng], { icon: boatIcon, interactive: false }).addTo(map);
+      const boat = L.marker([orbitPins[0].lat, orbitPins[0].lng], { icon: boatIcon, interactive: false }).addTo(map);
 
       const bearing = (from: [number, number], to: [number, number]) => {
         const dLng = ((to[1] - from[1]) * Math.PI) / 180;
@@ -196,32 +215,54 @@ function LakeComoMap({
 
       const LEG_MS = 3500;
       const PAUSE_MS = 700;
+      // Boat auto-orbits along the orbit pins (editorial cruise itinerary).
+      // Hovering side-list pins or attraction cards switches the boat into
+      // "follow target" mode via userInteractingRef + targetPinIdRef.
+      const orbitCoords = orbitPins.map((p) => [p.lat, p.lng] as [number, number]);
       let legIdx = 0;
       let legStart = performance.now();
       let pausing = false;
       let pauseUntil = 0;
-      const coords = pins.map((p) => [p.lat, p.lng] as [number, number]);
-      let curBearing = bearing(coords[0], coords[1]);
+      let curBearing = bearing(orbitCoords[0], orbitCoords[1]);
       const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+      const LERP_SPEED = 0.12; // per-frame lerp toward hover target (~0.5s at 60fps to traverse a leg)
       const step = (now: number) => {
-        if (pausing) {
+        if (userInteractingRef.current && targetPinIdRef.current) {
+          // User-driven mode: smoothly chase the active pin's coordinates.
+          const target = pins.find((p) => p.id === targetPinIdRef.current);
+          if (target) {
+            const cur = boat.getLatLng();
+            const dLat = target.lat - cur.lat;
+            const dLng = target.lng - cur.lng;
+            const newLat = cur.lat + dLat * LERP_SPEED;
+            const newLng = cur.lng + dLng * LERP_SPEED;
+            boat.setLatLng([newLat, newLng]);
+            // Only rotate when we're meaningfully moving (avoid jitter near target).
+            if (Math.hypot(dLat, dLng) > 0.0003) {
+              rotate(bearing([cur.lat, cur.lng], [target.lat, target.lng]));
+            }
+            // Reset orbit phase so when user disengages, it resumes cleanly.
+            legStart = now;
+            pausing = false;
+          }
+        } else if (pausing) {
           if (now >= pauseUntil) {
             pausing = false;
-            legIdx = (legIdx + 1) % (coords.length - 1 || 1);
+            legIdx = (legIdx + 1) % (orbitCoords.length - 1 || 1);
             legStart = now;
-            curBearing = bearing(coords[legIdx], coords[(legIdx + 1) % coords.length]);
+            curBearing = bearing(orbitCoords[legIdx], orbitCoords[(legIdx + 1) % orbitCoords.length]);
             rotate(curBearing);
           }
         } else {
-          const from = coords[legIdx];
-          const to = coords[(legIdx + 1) % coords.length];
+          const from = orbitCoords[legIdx];
+          const to = orbitCoords[(legIdx + 1) % orbitCoords.length];
           const t = Math.min((now - legStart) / LEG_MS, 1);
           boat.setLatLng([lerp(from[0], to[0], t), lerp(from[1], to[1], t)]);
           rotate(curBearing);
           if (t >= 1) {
             pausing = true;
             pauseUntil = now + PAUSE_MS;
-            if (legIdx >= coords.length - 1) legIdx = -1;
+            if (legIdx >= orbitCoords.length - 1) legIdx = -1;
           }
         }
         rafId = requestAnimationFrame(step);
@@ -232,7 +273,9 @@ function LakeComoMap({
 
       const sec = sectionRef.current;
       if (sec) {
-        const bounds = L.latLngBounds(coords);
+        // Fit the bounds around ALL pins (orbit + attraction extras) so the
+        // fly-zoom takes in the whole lake even with Lecco/Menaggio added.
+        const bounds = L.latLngBounds(pins.map((p) => [p.lat, p.lng] as [number, number]));
         const io = new IntersectionObserver(
           (entries) => {
             entries.forEach((e) => {
@@ -295,8 +338,13 @@ export default function HomePage({ locale }: { locale: Locale }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activePin, setActivePin] = useState<string>("bellagio");
+  // True whenever the user is hovering the pin list or the attractions
+  // scroller. Disengages the boat's automatic orbit and switches it to
+  // "follow target pin" mode (see LakeComoMap rAF loop).
+  const [userInteracting, setUserInteracting] = useState(false);
   const heroImgRef = useRef<HTMLDivElement>(null);
   const mapSectionRef = useRef<HTMLElement>(null);
+  const attractionsScrollRef = useRef<HTMLDivElement>(null);
 
   // Apply variant copy override on top of the active locale. Variant copy
   // is English-only.
@@ -361,6 +409,21 @@ export default function HomePage({ locale }: { locale: Locale }) {
     document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
     return () => io.disconnect();
   }, [locale]);
+
+  // When the user is hovering pin-list / attractions, smoothly scroll the
+  // attractions scroller so the card matching the active pin is centered.
+  // We only auto-scroll the attractions container (not the page), so this
+  // has no effect on visitor scroll position.
+  useEffect(() => {
+    if (!userInteracting || !attractionsScrollRef.current) return;
+    const container = attractionsScrollRef.current;
+    const card = container.querySelector<HTMLElement>(`[data-pin-id="${activePin}"]`);
+    if (!card) return;
+    const containerRect = container.getBoundingClientRect();
+    const cardRect = card.getBoundingClientRect();
+    const delta = (cardRect.left + cardRect.width / 2) - (containerRect.left + containerRect.width / 2);
+    container.scrollBy({ left: delta, behavior: "smooth" });
+  }, [activePin, userInteracting]);
 
   const fromLabel = locale === "en" ? "From" : locale === "it" ? "Da" : locale === "ru" ? "От" : "من";
 
@@ -578,7 +641,11 @@ export default function HomePage({ locale }: { locale: Locale }) {
           <div className="map-wrap">
             <div className="map-side reveal">
               <p className="map-intro">{t.map.sideBody}</p>
-              <div className="map-pin-list">
+              <div
+                className="map-pin-list"
+                onMouseEnter={() => setUserInteracting(true)}
+                onMouseLeave={() => setUserInteracting(false)}
+              >
                 {t.map.pins.map((pin, i) => (
                   <a
                     key={pin.id}
@@ -616,8 +683,57 @@ export default function HomePage({ locale }: { locale: Locale }) {
                 activeId={activePin}
                 onActivate={setActivePin}
                 sectionRef={mapSectionRef}
+                userInteracting={userInteracting}
               />
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ATTRACTIONS — horizontally-scrollable strip of the 13 places worth
+          arriving by boat. Hovering a card moves the boat marker on the map
+          above and highlights the matching pin in the side-list (and vice
+          versa — see the .map-pin-list mouseenter wiring). */}
+      <section className="attractions-section" id="attractions">
+        <div className="container-x">
+          <div className="section-head reveal">
+            <div className="label">
+              <span className="eyebrow">{t.attractions.indexLabel}</span>
+              <p className="lead">{t.attractions.lead}</p>
+            </div>
+            <div className="title">
+              <h2 className="display"><RichText text={t.attractions.title} /></h2>
+              <p>{t.attractions.right}</p>
+            </div>
+          </div>
+
+          <div
+            className="attractions-scroller"
+            ref={attractionsScrollRef}
+            onMouseEnter={() => setUserInteracting(true)}
+            onMouseLeave={() => setUserInteracting(false)}
+            aria-label="Lake Como attractions, scroll horizontally"
+          >
+            {attractions.map((a) => (
+              <article
+                key={a.id}
+                className={`attraction-card ${a.pinId === activePin ? "active" : ""}`}
+                data-pin-id={a.pinId}
+                onMouseEnter={() => setActivePin(a.pinId)}
+              >
+                <div className="img-wrap">
+                  <img
+                    src={a.image}
+                    alt={a.copy[locale].name}
+                    loading="lazy"
+                    width="640"
+                    height="480"
+                  />
+                </div>
+                <h3>{a.copy[locale].name}</h3>
+                <p>{a.copy[locale].blurb}</p>
+              </article>
+            ))}
           </div>
         </div>
       </section>
