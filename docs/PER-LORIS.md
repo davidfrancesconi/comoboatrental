@@ -376,25 +376,37 @@ Tutto è documentato in `docs/HANDOFF.md` (per lui, in inglese).
 
 ## Domande / decisioni che vorrei sentire da te
 
-1. **Quale variante di copy preferisci?** Ce ne sono tre — apri
-   il sito, vedi il bottoncino in alto a destra "Variant A · Palette
-   A", clicca e prova **B (Founder-led — voi due in prima
-   persona)** e **C (Concierge — focus su servizio)**. La A è
-   quella editoriale/luxury. Famme sapere quale ti suona meglio.
+1. **Da quando lavorate sul lago?** Su una sezione di prossima
+   pubblicazione vorrei mettere "Family-run since [ANNO] · three
+   generations on this water" — è una formula che funziona molto
+   bene per la fiducia del visitatore. Mandami l'anno corretto
+   (o se preferisci una formula diversa).
 
-2. **Quale palette colori?** Nello stesso bottoncino c'è anche
-   la riga "Palette". A è la default (parchment + oro), B è
-   grigio-verde più sobrio, C è terracotta caldo, D è
-   mono-elegante, E è dark mode. La D potrebbe essere
-   interessante per il vostro tono; la E è bella per le foto.
+2. **Quale dei due numeri di telefono è il primario?**
+   +39 340 6487574 o +39 348 0689769? In tutti i contatti uno
+   diventa quello in evidenza, l'altro un secondario. Decidi
+   tu (se uno è il personale di Loris e l'altro un fisso/ufficio,
+   tipicamente il personale è il primario).
 
-3. **Le 25 foto per Google Business Profile**: le hai già o
+3. **Foto per la gallery delle pagine attrazioni**: ogni pagina
+   attrazione potrebbe avere 4 foto (1 grande + 3 piccole). Oggi
+   abbiamo solo 1 foto eroe per attrazione. Se mandi 3 foto extra
+   per le attrazioni che vuoi più rilevanti (Bellagio, Villa
+   Balbianello, Varenna), le inseriamo.
+
+4. **About / pagina founder**: una mini-pagina /about con foto di
+   te e Claudio + 200 parole di storia (chi siete, come avete
+   iniziato, cosa rende le vostre giornate diverse) aiuta molto
+   il posizionamento Google per query "owner-operator". Se mi
+   mandi foto e testo lo costruisco.
+
+5. **Le 25 foto per Google Business Profile**: le hai già o
    serve uno shooting?
 
-4. **Avete un PDF "preferred-supplier" pronto** per gli hotel?
+6. **Avete un PDF "preferred-supplier" pronto** per gli hotel?
    Se no possiamo metterlo insieme.
 
-5. **Il blog** — c'è un articolo seed scritto come se l'aveste
+7. **Il blog** — c'è un articolo seed scritto come se l'aveste
    scritto voi due. Va bene il tono o vuoi cambiare? E vuoi
    che ne aggiunga altri prima di consegnare al dev?
 

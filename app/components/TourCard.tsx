@@ -33,6 +33,10 @@ export function TourCard({
     .replace(/^[^\d]*/, "")
     .replace(/[^\d.,]/g, "")
     .replace(/^/, "€");
+  // Strip the "from/da/от/من" prefix from the price string for the meta-row
+  // since the row already has a "FROM" label above the value — avoids the
+  // double-from rendering ("FROM / from €220" → "FROM / €220").
+  const priceValue = tour.price.replace(/^[^\d€]*/, "").trim();
   return (
     <article className="tour-card">
       <a href={localePath(locale, `/tours/${slug}`)} style={{ display: "contents" }}>
@@ -68,7 +72,7 @@ export function TourCard({
           </div>
           <div className="meta-cell">
             <span className="k">{t.tours.factFrom ?? "From"}</span>
-            <span className="v">{tour.price}</span>
+            <span className="v">{priceValue}</span>
           </div>
         </div>
       </a>

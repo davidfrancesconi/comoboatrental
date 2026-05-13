@@ -58,6 +58,8 @@ export type Translation = {
     ctaWhatsapp: string;
     scroll: string;
     trust: string[];
+    /** Price tier line under the subhead — anchors the entry price */
+    priceTier: string;
   };
   intro: { eyebrow: string; title: string; body: string };
   tours: {
@@ -151,6 +153,53 @@ export type Translation = {
     rights: string;
     safety: string;
   };
+  /** Inline booking-request form (replaces the old static contact block). */
+  bookingForm: {
+    indexLabel: string;        // e.g. "06 — Reservations"
+    lead: string;              // small italic, e.g. "Plan a tour."
+    title: string;             // headline with <em>, e.g. "Tell us when you're <em>here.</em>"
+    subtitle: string;
+    fieldDate: string;
+    fieldTime: string;
+    timeMorning: string;
+    timeAfternoon: string;
+    timeSunset: string;
+    timeFull: string;
+    timeUndecided: string;
+    fieldTour: string;
+    fieldParty: string;
+    partyHint: string;
+    partyMore: string;
+    partyFewer: string;
+    fieldPickup: string;
+    pickupComo: string;
+    pickupVillaDEste: string;
+    pickupBellagio: string;
+    pickupHotel: string;
+    pickupOther: string;
+    fieldName: string;
+    namePlaceholder: string;
+    fieldEmail: string;
+    fieldMessage: string;
+    messagePlaceholder: string;
+    optional: string;
+    submitCta: string;
+    orWhatsApp: string;
+    replySoon: string;
+    requestSent: string;
+    emailSubject: string;
+    // Sidebar
+    sidePhoneLabel: string;
+    sidePhoneNote: string;
+    sideEmailLabel: string;
+    sideEmailNote: string;
+    sideAddressLabel: string;
+    sideAddressNote: string;
+    trustGoogleReviews: string;
+    trustReviewsGuests: string;
+    trustInsuredLabel: string;
+    trustInsuredNote: string;
+  };
   floatPill: string;
 };
 
@@ -194,6 +243,7 @@ export const translations: Record<Locale, Translation> = {
       ctaWhatsapp: "Chat on WhatsApp",
       scroll: "Scroll",
       trust: ["Fully insured", "Certified captains", "Since 2018", "★ 4.9 / 87 reviews"],
+      priceTier: "From €220 · 1-hour tour up to €1,400 · full-day charter",
     },
     intro: {
       eyebrow: "Como Boat Rental, Est. on the Lake",
@@ -237,7 +287,7 @@ export const translations: Record<Locale, Translation> = {
       ],
     },
     fleet: {
-      indexLabel: "(03) — Fleet",
+      indexLabel: "(04) — Fleet",
       lead: "Hand-built wooden boats.",
       title: "Two boats. Both <em>mahogany.</em>",
       right: "Maintained to a higher standard than the lake demands. Sliding sunroofs, leather seating, full HiFi, every detail considered.",
@@ -292,7 +342,7 @@ export const translations: Record<Locale, Translation> = {
       readMore: "Read more",
     },
     experiences: {
-      indexLabel: "(04) — Beyond a Tour",
+      indexLabel: "(05) — Beyond a Tour",
       lead: "Tailor-made experiences.",
       title: "For the moments that <em>matter most.</em>",
       right: "From wedding proposals at sunset to editorial productions at Villa d'Este, we orchestrate the moment, on the water.",
@@ -303,7 +353,7 @@ export const translations: Record<Locale, Translation> = {
       ],
     },
     testimonials: {
-      indexLabel: "(05) — Guests",
+      indexLabel: "(06) — Guests",
       lead: "What people say.",
       title: "Reviewed across <em>three seasons.</em>",
       right: "Reviews collected from Google, verified guests of Como Boat Rental.",
@@ -319,14 +369,14 @@ export const translations: Record<Locale, Translation> = {
       ],
     },
     instagram: {
-      indexLabel: "(06) — Follow",
+      indexLabel: "(07) — Follow",
       lead: "@comoboatrental",
       title: "Lake Como, <em>every day.</em>",
       right: "From sunrise photoshoots to sunset proposals, follow along on Instagram.",
       cta: "Follow on Instagram",
     },
     ourBase: {
-      indexLabel: "(07) — Our Base",
+      indexLabel: "(08) — Our Base",
       countLabel: "45.81°N · 9.09°E",
       title: "Where you'll <em>find us.</em>",
       body: "Our pontoon sits on the Lungolago Viale Geno in Como, a five-minute walk from Como city centre. Boarding, departures and pick-ups happen here.",
@@ -346,6 +396,51 @@ export const translations: Record<Locale, Translation> = {
       rights: "© 2026 Como Boat Rental, P.IVA IT03998950137",
       safety: "All boats fully insured · Safety gear on board",
     },
+    bookingForm: {
+      indexLabel: "(09) — Reservations",
+      lead: "Plan a tour.",
+      title: "Tell us when you're <em>here.</em>",
+      subtitle: "Pick a day, a tour and your party size — we confirm availability the same day, every day, year-round.",
+      fieldDate: "When",
+      fieldTime: "Time of day",
+      timeMorning: "Morning (9 – 12)",
+      timeAfternoon: "Afternoon (13 – 17)",
+      timeSunset: "Sunset (17 – sundown)",
+      timeFull: "Full day (flexible)",
+      timeUndecided: "Not sure yet",
+      fieldTour: "Tour",
+      fieldParty: "Party size",
+      partyHint: "2 – 10 guests",
+      partyMore: "More guests",
+      partyFewer: "Fewer guests",
+      fieldPickup: "Pick-up point",
+      pickupComo: "Como · Viale Geno (default)",
+      pickupVillaDEste: "Cernobbio · Villa d'Este pier",
+      pickupBellagio: "Bellagio · Pescallo dock",
+      pickupHotel: "Hotel pick-up (we arrange transfer)",
+      pickupOther: "Other — tell us below",
+      fieldName: "Name",
+      namePlaceholder: "First & last name",
+      fieldEmail: "Email",
+      fieldMessage: "Anything we should know?",
+      messagePlaceholder: "Hotel, dietary preferences, special occasion, etc.",
+      optional: "optional",
+      submitCta: "Request availability",
+      orWhatsApp: "Or WhatsApp",
+      replySoon: "We reply within the hour",
+      requestSent: "Request sent — we reply within the hour",
+      emailSubject: "Lake Como private boat tour request",
+      sidePhoneLabel: "Direct contact",
+      sidePhoneNote: "Loris or Claudio · Italian and English fluent",
+      sideEmailLabel: "Email",
+      sideEmailNote: "Replied within the hour, every hour we're awake",
+      sideAddressLabel: "Where you board",
+      sideAddressNote: "Boat parking · five minutes from Como city centre on foot",
+      trustGoogleReviews: "Google reviews",
+      trustReviewsGuests: "verified guests",
+      trustInsuredLabel: "Insured",
+      trustInsuredNote: "Full Italian commercial passenger licence",
+    },
     floatPill: "Chat on WhatsApp",
   },
 
@@ -360,6 +455,7 @@ export const translations: Record<Locale, Translation> = {
       ctaWhatsapp: "Scrivici su WhatsApp",
       scroll: "Scorri",
       trust: ["Tutto assicurato", "Skipper certificati", "Dal 2018", "★ 4.9 / 87 recensioni"],
+      priceTier: "Da €220 · tour di 1 ora fino a €1.400 · charter giornata intera",
     },
     intro: {
       eyebrow: "Como Boat Rental, Sul Lago dal 2010",
@@ -403,7 +499,7 @@ export const translations: Record<Locale, Translation> = {
       ],
     },
     fleet: {
-      indexLabel: "(03) — Flotta",
+      indexLabel: "(04) — Flotta",
       lead: "Barche in legno fatte a mano.",
       title: "Due barche. Entrambe <em>in mogano.</em>",
       right: "Mantenute a uno standard più alto di quanto il lago richieda. Tetti apribili, sedute in pelle, HiFi completo, ogni dettaglio considerato.",
@@ -458,7 +554,7 @@ export const translations: Record<Locale, Translation> = {
       readMore: "Scopri di più",
     },
     experiences: {
-      indexLabel: "(04) — Oltre il Tour",
+      indexLabel: "(05) — Oltre il Tour",
       lead: "Esperienze su misura.",
       title: "Per i momenti che <em>contano di più.</em>",
       right: "Dalle proposte di matrimonio al tramonto alle produzioni editoriali a Villa d'Este, orchestriamo il momento, sull'acqua.",
@@ -469,7 +565,7 @@ export const translations: Record<Locale, Translation> = {
       ],
     },
     testimonials: {
-      indexLabel: "(05) — Ospiti",
+      indexLabel: "(06) — Ospiti",
       lead: "Cosa dicono.",
       title: "Recensiti in <em>tre stagioni.</em>",
       right: "Recensioni raccolte da Google, ospiti verificati di Como Boat Rental.",
@@ -485,14 +581,14 @@ export const translations: Record<Locale, Translation> = {
       ],
     },
     instagram: {
-      indexLabel: "(06) — Seguici",
+      indexLabel: "(07) — Seguici",
       lead: "@comoboatrental",
       title: "Il Lago di Como, <em>ogni giorno.</em>",
       right: "Dai servizi fotografici all'alba alle proposte al tramonto, seguici su Instagram.",
       cta: "Segui su Instagram",
     },
     ourBase: {
-      indexLabel: "(07) — La nostra base",
+      indexLabel: "(08) — La nostra base",
       countLabel: "45,81°N · 9,09°E",
       title: "Dove ci <em>trovi.</em>",
       body: "Il nostro pontile si trova sul Lungolago Viale Geno a Como, a cinque minuti a piedi dal centro città. Imbarco, partenze e pick-up avvengono qui.",
@@ -512,6 +608,51 @@ export const translations: Record<Locale, Translation> = {
       rights: "© 2026 Como Boat Rental, P.IVA IT03998950137",
       safety: "Tutte le barche assicurate · Equipaggiamento di sicurezza a bordo",
     },
+    bookingForm: {
+      indexLabel: "(09) — Prenotazioni",
+      lead: "Pianifica un tour.",
+      title: "Dicci quando <em>arrivi.</em>",
+      subtitle: "Scegli giorno, tour e numero di ospiti — confermiamo la disponibilità in giornata, tutto l'anno.",
+      fieldDate: "Quando",
+      fieldTime: "Fascia oraria",
+      timeMorning: "Mattina (9 – 12)",
+      timeAfternoon: "Pomeriggio (13 – 17)",
+      timeSunset: "Tramonto (17 – al tramonto)",
+      timeFull: "Tutto il giorno (flessibile)",
+      timeUndecided: "Da decidere",
+      fieldTour: "Tour",
+      fieldParty: "Numero ospiti",
+      partyHint: "2 – 10 ospiti",
+      partyMore: "Più ospiti",
+      partyFewer: "Meno ospiti",
+      fieldPickup: "Pick-up",
+      pickupComo: "Como · Viale Geno (default)",
+      pickupVillaDEste: "Cernobbio · pontile Villa d'Este",
+      pickupBellagio: "Bellagio · molo di Pescallo",
+      pickupHotel: "Pick-up in hotel (organizziamo il transfer)",
+      pickupOther: "Altro — diccelo sotto",
+      fieldName: "Nome",
+      namePlaceholder: "Nome e cognome",
+      fieldEmail: "Email",
+      fieldMessage: "Qualcosa che dobbiamo sapere?",
+      messagePlaceholder: "Hotel, preferenze alimentari, occasione speciale, ecc.",
+      optional: "facoltativo",
+      submitCta: "Richiedi disponibilità",
+      orWhatsApp: "O via WhatsApp",
+      replySoon: "Rispondiamo entro l'ora",
+      requestSent: "Richiesta inviata — rispondiamo entro l'ora",
+      emailSubject: "Richiesta tour privato in barca Lago di Como",
+      sidePhoneLabel: "Contatto diretto",
+      sidePhoneNote: "Loris o Claudio · italiano e inglese fluenti",
+      sideEmailLabel: "Email",
+      sideEmailNote: "Rispondiamo entro l'ora, tutte le ore in cui siamo svegli",
+      sideAddressLabel: "Dove ci si imbarca",
+      sideAddressNote: "Posto barca · cinque minuti a piedi dal centro di Como",
+      trustGoogleReviews: "Recensioni Google",
+      trustReviewsGuests: "ospiti verificati",
+      trustInsuredLabel: "Assicurati",
+      trustInsuredNote: "Licenza italiana per trasporto passeggeri commerciale",
+    },
     floatPill: "Scrivici su WhatsApp",
   },
 
@@ -526,6 +667,7 @@ export const translations: Record<Locale, Translation> = {
       ctaWhatsapp: "Написать в WhatsApp",
       scroll: "Прокрутка",
       trust: ["Полная страховка", "Сертифицированные капитаны", "С 2018 года", "★ 4.9 / 87 отзывов"],
+      priceTier: "От €220 · тур на 1 час до €1,400 · чартер на целый день",
     },
     intro: {
       eyebrow: "Como Boat Rental, На озере",
@@ -569,7 +711,7 @@ export const translations: Record<Locale, Translation> = {
       ],
     },
     fleet: {
-      indexLabel: "(03) — Флот",
+      indexLabel: "(04) — Флот",
       lead: "Деревянные лодки ручной работы.",
       title: "Две лодки. Обе <em>из красного дерева.</em>",
       right: "Поддерживаемые на уровне выше, чем требует озеро. Раздвижные крыши, кожаные сиденья, полное HiFi, каждая деталь продумана.",
@@ -624,7 +766,7 @@ export const translations: Record<Locale, Translation> = {
       readMore: "Узнать больше",
     },
     experiences: {
-      indexLabel: "(04) — Больше чем тур",
+      indexLabel: "(05) — Больше чем тур",
       lead: "Индивидуальные опыты.",
       title: "Для моментов, которые <em>важнее всего.</em>",
       right: "От предложений руки и сердца на закате до редакционных съёмок на Вилле д'Эсте, мы оркестрируем момент, на воде.",
@@ -635,7 +777,7 @@ export const translations: Record<Locale, Translation> = {
       ],
     },
     testimonials: {
-      indexLabel: "(05) — Гости",
+      indexLabel: "(06) — Гости",
       lead: "Что говорят.",
       title: "Проверено в <em>трёх сезонах.</em>",
       right: "Отзывы с Google, проверенные гости Como Boat Rental.",
@@ -651,14 +793,14 @@ export const translations: Record<Locale, Translation> = {
       ],
     },
     instagram: {
-      indexLabel: "(06) — Подписаться",
+      indexLabel: "(07) — Подписаться",
       lead: "@comoboatrental",
       title: "Озеро Комо, <em>каждый день.</em>",
       right: "От рассветных фотосессий до закатных предложений — следите в Instagram.",
       cta: "Подписаться в Instagram",
     },
     ourBase: {
-      indexLabel: "(07) — Наша база",
+      indexLabel: "(08) — Наша база",
       countLabel: "45,81°N · 9,09°E",
       title: "Где <em>нас найти.</em>",
       body: "Наш причал находится на набережной Lungolago Viale Geno в Комо, в пяти минутах ходьбы от центра города. Посадка, отправление и трансферы, здесь.",
@@ -678,6 +820,51 @@ export const translations: Record<Locale, Translation> = {
       rights: "© 2026 Como Boat Rental, НДС IT03998950137",
       safety: "Все лодки застрахованы · Спасательное оборудование на борту",
     },
+    bookingForm: {
+      indexLabel: "(09) — Бронирование",
+      lead: "Спланируйте тур.",
+      title: "Скажите, когда <em>будете здесь.</em>",
+      subtitle: "Выберите день, тур и число гостей — подтверждаем доступность в день обращения, круглый год.",
+      fieldDate: "Когда",
+      fieldTime: "Время дня",
+      timeMorning: "Утро (9 – 12)",
+      timeAfternoon: "День (13 – 17)",
+      timeSunset: "Закат (17 – закат)",
+      timeFull: "Весь день (гибко)",
+      timeUndecided: "Ещё не решил(а)",
+      fieldTour: "Тур",
+      fieldParty: "Количество гостей",
+      partyHint: "2 – 10 гостей",
+      partyMore: "Больше гостей",
+      partyFewer: "Меньше гостей",
+      fieldPickup: "Место подачи",
+      pickupComo: "Комо · Viale Geno (по умолчанию)",
+      pickupVillaDEste: "Черноббио · пристань Villa d'Este",
+      pickupBellagio: "Беладжо · причал Pescallo",
+      pickupHotel: "Подача в отель (организуем трансфер)",
+      pickupOther: "Другое — напишите ниже",
+      fieldName: "Имя",
+      namePlaceholder: "Имя и фамилия",
+      fieldEmail: "Email",
+      fieldMessage: "Что нам стоит знать?",
+      messagePlaceholder: "Отель, предпочтения, особый случай и т. д.",
+      optional: "необязательно",
+      submitCta: "Проверить доступность",
+      orWhatsApp: "Или WhatsApp",
+      replySoon: "Отвечаем в течение часа",
+      requestSent: "Запрос отправлен — ответим в течение часа",
+      emailSubject: "Запрос частного тура на лодке озеро Комо",
+      sidePhoneLabel: "Прямой контакт",
+      sidePhoneNote: "Лорис или Клаудио · итальянский и английский свободно",
+      sideEmailLabel: "Email",
+      sideEmailNote: "Отвечаем в течение часа, в часы бодрствования",
+      sideAddressLabel: "Где садитесь на лодку",
+      sideAddressNote: "Стоянка лодок · пять минут пешком от центра Комо",
+      trustGoogleReviews: "Отзывы Google",
+      trustReviewsGuests: "проверенных гостей",
+      trustInsuredLabel: "Застрахованы",
+      trustInsuredNote: "Полная итальянская коммерческая пассажирская лицензия",
+    },
     floatPill: "Написать в WhatsApp",
   },
 
@@ -692,6 +879,7 @@ export const translations: Record<Locale, Translation> = {
       ctaWhatsapp: "تواصل عبر واتساب",
       scroll: "تمرير",
       trust: ["تأمين شامل", "قباطنة معتمدون", "منذ 2018", "★ 4.9 / 87 تقييماً"],
+      priceTier: "من €220 · جولة لمدة ساعة وحتى €1,400 · يوم كامل خاص",
     },
     intro: {
       eyebrow: "Como Boat Rental, على البحيرة",
@@ -735,7 +923,7 @@ export const translations: Record<Locale, Translation> = {
       ],
     },
     fleet: {
-      indexLabel: "(03) — الأسطول",
+      indexLabel: "(04) — الأسطول",
       lead: "قوارب خشبية مصنوعة يدوياً.",
       title: "قاربان. كلاهما <em>من الماهوغني.</em>",
       right: "تتم صيانتهما بمعيار أعلى مما تتطلبه البحيرة. سقوف منزلقة، مقاعد جلدية، نظام HiFi كامل, كل تفصيلة مدروسة.",
@@ -790,7 +978,7 @@ export const translations: Record<Locale, Translation> = {
       readMore: "اقرأ المزيد",
     },
     experiences: {
-      indexLabel: "(04) — أكثر من جولة",
+      indexLabel: "(05) — أكثر من جولة",
       lead: "تجارب مفصّلة.",
       title: "للحظات التي <em>تعني أكثر.</em>",
       right: "من طلبات الزواج عند الغروب إلى الإنتاج التحريري في فيلا ديستي, نُنسّق اللحظة، على الماء.",
@@ -801,7 +989,7 @@ export const translations: Record<Locale, Translation> = {
       ],
     },
     testimonials: {
-      indexLabel: "(05) — الضيوف",
+      indexLabel: "(06) — الضيوف",
       lead: "ماذا يقولون.",
       title: "مُقَيَّمون عبر <em>ثلاثة مواسم.</em>",
       right: "مراجعات من Google, ضيوف موثَّقون لـ Como Boat Rental.",
@@ -817,14 +1005,14 @@ export const translations: Record<Locale, Translation> = {
       ],
     },
     instagram: {
-      indexLabel: "(06) — تابعنا",
+      indexLabel: "(07) — تابعنا",
       lead: "@comoboatrental",
       title: "بحيرة كومو، <em>كل يوم.</em>",
       right: "من جلسات تصوير الفجر إلى عروض الزواج عند الغروب، تابعنا على إنستغرام.",
       cta: "تابعنا على إنستغرام",
     },
     ourBase: {
-      indexLabel: "(07) — قاعدتنا",
+      indexLabel: "(08) — قاعدتنا",
       countLabel: "45.81°N · 9.09°E",
       title: "أين <em>تجدنا.</em>",
       body: "يقع رصيفنا على Lungolago Viale Geno في كومو، على بُعد خمس دقائق سيراً من وسط المدينة. الصعود والمغادرة والاستقبال يتم هنا.",
@@ -843,6 +1031,51 @@ export const translations: Record<Locale, Translation> = {
       whatsapp: "واتساب", emailCta: "مراسلتنا", instagramCta: "إنستغرام",
       rights: "© 2026 Como Boat Rental, الرقم الضريبي IT03998950137",
       safety: "جميع القوارب مؤمَّنة · معدات السلامة على المتن",
+    },
+    bookingForm: {
+      indexLabel: "(09) — الحجوزات",
+      lead: "خطّط لجولة.",
+      title: "أخبِرنا متى <em>تأتي.</em>",
+      subtitle: "اختر اليوم والجولة وعدد الضيوف — نؤكّد التوفر في اليوم نفسه، طوال العام.",
+      fieldDate: "متى",
+      fieldTime: "وقت اليوم",
+      timeMorning: "الصباح (9 – 12)",
+      timeAfternoon: "بعد الظهر (13 – 17)",
+      timeSunset: "الغروب (17 – حتى الغروب)",
+      timeFull: "اليوم كامل (مرن)",
+      timeUndecided: "غير محدد بعد",
+      fieldTour: "الجولة",
+      fieldParty: "عدد الضيوف",
+      partyHint: "2 – 10 ضيوف",
+      partyMore: "ضيوف أكثر",
+      partyFewer: "ضيوف أقل",
+      fieldPickup: "نقطة الانطلاق",
+      pickupComo: "كومو · Viale Geno (افتراضي)",
+      pickupVillaDEste: "تشيرنوبيو · رصيف Villa d'Este",
+      pickupBellagio: "بيلاجيو · رصيف Pescallo",
+      pickupHotel: "الاستلام من الفندق (ننسّق النقل)",
+      pickupOther: "أخرى — أخبرنا أدناه",
+      fieldName: "الاسم",
+      namePlaceholder: "الاسم واللقب",
+      fieldEmail: "البريد الإلكتروني",
+      fieldMessage: "هل هناك ما ينبغي أن نعرفه؟",
+      messagePlaceholder: "الفندق، التفضيلات الغذائية، مناسبة خاصة، إلخ.",
+      optional: "اختياري",
+      submitCta: "اطلب التوفر",
+      orWhatsApp: "أو واتساب",
+      replySoon: "نرد خلال ساعة",
+      requestSent: "تم إرسال الطلب — نرد خلال ساعة",
+      emailSubject: "طلب جولة قارب خاصة على بحيرة كومو",
+      sidePhoneLabel: "تواصل مباشر",
+      sidePhoneNote: "لوريس أو كلاوديو · الإيطالية والإنجليزية بطلاقة",
+      sideEmailLabel: "البريد الإلكتروني",
+      sideEmailNote: "نردّ خلال ساعة، كل ساعة نكون فيها مستيقظين",
+      sideAddressLabel: "حيث تصعد على القارب",
+      sideAddressNote: "موقف القوارب · خمس دقائق سيراً من وسط كومو",
+      trustGoogleReviews: "تقييمات Google",
+      trustReviewsGuests: "ضيوف موثّقون",
+      trustInsuredLabel: "مؤمَّنون",
+      trustInsuredNote: "ترخيص إيطالي تجاري كامل لنقل الركاب",
     },
     floatPill: "تواصل عبر واتساب",
   },

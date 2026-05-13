@@ -244,19 +244,14 @@ Aggiorna l'array icons in `manifest.webmanifest` e
 un SVG pulito del wordmark "Como Boat Rental" (o di una sagoma di
 barca) usando [realfavicongenerator.net](https://realfavicongenerator.net).
 
-### D. Lock-in della variante + palette
+### D. Lock-in della variante + palette ✓ FATTO
 
-In questo momento i visitatori vedono un toggle flottante in alto
-a destra. Quando Loris sceglie una combinazione (vedi `PER-LORIS.md`):
-
-1. Modifica `DEFAULT_VARIANT` e `DEFAULT_PALETTE` in cima a
-   `app/components/HomePage.tsx` con i codici scelti
-2. Cancella l'intero blocco `<div className="vp-toggle">…</div>`
-3. Cancella le regole `===== Variant + Palette toggle =====` in
-   fondo a `app/globals.css`
-
-Il copy della variante e il CSS della palette rimangono dove sono
-— il toggle diventa solo hardcoded.
+Il toggle flottante (Variant + Palette) è stato rimosso dalla
+produzione. Variante e palette sono ora hardcoded a "A · A"
+(Editorial + Parchment). Il CSS delle altre 4 palette e il copy
+delle altre 2 varianti restano nei file per riferimento futuro —
+se Loris vuole rivisitare la scelta, basta ripristinare il
+blocco `<div className="vp-toggle">…</div>` dalla git history.
 
 ### E. Widget di prenotazione sulle pagine tour
 
@@ -269,6 +264,31 @@ Inseriscilo in `app/[locale]/tours/[slug]/page.tsx` tra il blocco
 CTA e il blocco FAQ. Considera anche di mostrare uno stato di
 "loading" mentre l'iframe Bokun si carica e di garantire che
 l'altezza dell'iframe non causi CLS.
+
+### E-bis. Booking Form sulla home — mailto fallback
+
+La sezione contatti della home è stata sostituita con una
+**Booking Form inline** (`app/components/BookingForm.tsx`) con
+data, fascia oraria, tour, party-size, pick-up, nome, email,
+messaggio. **Il submit oggi apre il client email dell'utente
+via `mailto:` precompilato** — soluzione zero-backend per il sito
+statico Vercel. Quando il dev vuole upgradare a un flow vero che
+arrivi in inbox senza passare dal client utente, tre opzioni
+ordinate da semplice a complessa:
+
+1. **Formspree** (formspree.io, free 50 submissions/mese) —
+   sostituire `onSubmit` con `<form action="https://formspree.io/f/XXX" method="POST">`,
+   togliere il preventDefault. Email automatica a info@. Zero
+   codice backend, 5 minuti di setup.
+2. **Vercel serverless function** — creare
+   `app/api/booking/route.ts` (richiede passare a output
+   "standalone" invece di "export", o usare Edge Function),
+   POST via fetch, Vercel manda mail via Resend / SendGrid.
+   Più lavoro ma controllo totale.
+3. **Web3Forms** o **Netlify Forms** — simili a Formspree.
+
+Per ora il mailto: funziona, è universale, gratis, e mantiene
+zero dipendenze.
 
 ### F. Cadenza blog
 

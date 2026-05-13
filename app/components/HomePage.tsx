@@ -11,24 +11,18 @@ import {
 import {
   copyVariants,
   mergeVariant,
-  variants,
   type Variant,
 } from "../copy-variants";
 import { localePath } from "../seo";
 import { attractions, ORBIT_PIN_IDS } from "../content/attractions";
 import { TourCard, TOUR_CARD_IMAGES } from "./TourCard";
+import BookingForm from "./BookingForm";
 
 // Five interchangeable colour palettes — defined in app/globals.css under
-// html[data-palette="A|B|C|D|E"]. The toggle just sets the attribute;
-// every CSS rule consumes the same tokens and re-paints automatically.
+// html[data-palette="A|B|C|D|E"]. Locked to "A" (Parchment) in production
+// after the design review. The state/effects remain so a future toggle
+// can be re-introduced quickly if the client wants to A/B again.
 type Palette = "A" | "B" | "C" | "D" | "E";
-const PALETTES: { code: Palette; label: string; tagline: string }[] = [
-  { code: "A", label: "Parchment", tagline: "Warm cream + ink" },
-  { code: "B", label: "Fog", tagline: "Cool grey-green" },
-  { code: "C", label: "Terracotta", tagline: "Warm Mediterranean" },
-  { code: "D", label: "Mono", tagline: "Near-monochrome" },
-  { code: "E", label: "Dusk", tagline: "Dark mode · sunset" },
-];
 
 const DEFAULT_VARIANT: Variant = "A";
 const DEFAULT_PALETTE: Palette = "A";
@@ -36,11 +30,9 @@ const VARIANT_LS_KEY = "cbr.variant";
 const PALETTE_LS_KEY = "cbr.palette";
 
 // === Site constants (locale-independent) ===
-const PHONE_1_DISP = "+39 340 6487574";
-const PHONE_2_DISP = "+39 348 0689769";
-const PHONE_1_TEL = "+393406487574";
-const PHONE_2_TEL = "+393480689769";
-const EMAIL = "info@comoboatrental.it";
+// WhatsApp URL still used for the floating pill at the bottom of the page;
+// Instagram for the IG section CTA. Phone/email/booking moved to the
+// BookingForm component which reads from app/seo.ts.
 const WHATSAPP_URL = "https://wa.me/393406487574";
 const INSTAGRAM_URL = "https://www.instagram.com/comoboatrental";
 
@@ -53,7 +45,6 @@ const TOUR_IMGS = [
   "/images/luxury-cruise.jpg",
 ];
 const FLEET_IMGS = ["/images/taxi-boat.jpg", "/images/luxury-caddy.jpg"];
-const CONTACT_BG = "/images/lake-como-discover.jpg";
 
 import instagramManifest from "../../public/instagram-feed.json";
 type IgPost = { shortcode: string; src: string; permalink: string; alt: string };
@@ -531,7 +522,9 @@ function LakeComoMap({
 export default function HomePage({ locale }: { locale: Locale }) {
   const [variant, setVariant] = useState<Variant>(DEFAULT_VARIANT);
   const [palette, setPalette] = useState<Palette>(DEFAULT_PALETTE);
-  const [togglePanelOpen, setTogglePanelOpen] = useState(false);
+  // (Variant + Palette toggle has been removed from production. Locked to
+  // Variant A · Palette A. Code path kept for posterity in case Loris
+  // wants to revisit the choice later — see git history for the toggle.)
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activePin, setActivePin] = useState<string>("bellagio");
@@ -627,60 +620,6 @@ export default function HomePage({ locale }: { locale: Locale }) {
 
   return (
     <>
-      {/* Editorial preview toggle — see README. */}
-      <div className={`vp-toggle ${togglePanelOpen ? "open" : ""}`} aria-label="Editorial preview controls">
-        <button
-          className="vp-toggle-pill"
-          onClick={() => setTogglePanelOpen((v) => !v)}
-          aria-expanded={togglePanelOpen}
-        >
-          <span className="vp-dot" />
-          <span className="vp-pill-label">
-            <span>Variant {variant}</span>
-            <span className="vp-sep">·</span>
-            <span>Palette {palette}</span>
-          </span>
-          <span className="vp-caret">{togglePanelOpen ? "×" : "▾"}</span>
-        </button>
-        {togglePanelOpen && (
-          <div className="vp-panel" role="dialog">
-            <div className="vp-row">
-              <div className="vp-row-label">Copy</div>
-              <div className="vp-row-options">
-                {variants.map((v) => (
-                  <button
-                    key={v.code}
-                    className={`vp-chip ${variant === v.code ? "active" : ""}`}
-                    onClick={() => setVariant(v.code)}
-                    title={v.tagline}
-                  >
-                    <span className="vp-chip-code">{v.code}</span>
-                    <span className="vp-chip-label">{v.label}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="vp-row">
-              <div className="vp-row-label">Palette</div>
-              <div className="vp-row-options">
-                {PALETTES.map((p) => (
-                  <button
-                    key={p.code}
-                    className={`vp-chip ${palette === p.code ? "active" : ""}`}
-                    onClick={() => setPalette(p.code)}
-                    title={p.tagline}
-                  >
-                    <span className="vp-chip-code">{p.code}</span>
-                    <span className="vp-chip-label">{p.label}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="vp-foot">English copy only · SEO baked in regardless</div>
-          </div>
-        )}
-      </div>
-
       <nav className={`top ${scrolled ? "scrolled" : ""} ${menuOpen ? "menu-open" : ""}`} id="topnav">
         <a href={localePath(locale, "/")} className="logo">
           <span className="mark"></span>Como Boat Rental
@@ -742,8 +681,13 @@ export default function HomePage({ locale }: { locale: Locale }) {
           </div>
           <h1 className="display reveal is-visible"><RichText text={t.hero.title} /></h1>
           <p className="sub reveal is-visible reveal-delay-1">{t.hero.sub}</p>
+          {/* Single primary CTA + price tier under the subhead — pulls the
+              eye to one action, anchors the price tier before the visitor
+              has to scroll. */}
+          <p className="hero-price-tier reveal is-visible reveal-delay-1">
+            {t.hero.priceTier}
+          </p>
           <div className="cta-row reveal is-visible reveal-delay-2">
-            <a className="btn" href="#tours">{t.hero.ctaPrimary}</a>
             <a className="btn primary primary-gold" href="#contact">
               {t.hero.ctaReserve} <span className="arrow">→</span>
             </a>
@@ -1119,65 +1063,14 @@ export default function HomePage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      {/* CONTACT */}
-      <section className="contact" id="contact">
-        <div className="bg-img">
-          <img src={CONTACT_BG} alt="Lake Como at golden hour, the western shore from a private boat" loading="lazy" width="2000" height="1200" />
-        </div>
+      {/* BOOKING — inline form replacing the previous static contact section.
+          Pre-fills a mailto: on submit; falls back to WhatsApp as secondary. */}
+      <BookingForm t={t} locale={locale} />
+
+      {/* Minimal footer bar — legal + FAQ/Reviews + safety. Sits below the
+          booking section on the dark background. */}
+      <section className="home-footer-bar">
         <div className="container-x">
-          <div
-            className="reveal"
-            style={{ borderTop: "1px solid rgba(245,239,228,0.18)", paddingTop: 32, marginBottom: 48 }}
-          >
-            <div
-              className="index"
-              style={{
-                fontFamily: "var(--mono)", fontSize: 11, letterSpacing: "0.15em",
-                color: "rgba(245,239,228,0.4)", display: "flex", justifyContent: "space-between",
-                gap: 24, flexWrap: "wrap",
-              }}
-            >
-              <span>{t.contact.indexLabel}</span>
-              <span className="section-lead" style={{ color: "rgba(245,239,228,0.7)" }}>{t.contact.lead}</span>
-            </div>
-          </div>
-
-          <h2 className="reveal reveal-delay-1"><RichText text={t.contact.title} /></h2>
-
-          <div className="contact-grid reveal reveal-delay-1" itemScope itemType="https://schema.org/PostalAddress">
-            <div className="col">
-              <h3>{t.contact.phoneLabel}</h3>
-              <a href={`tel:${PHONE_1_TEL}`} itemProp="telephone">{PHONE_1_DISP}</a>
-              <a href={`tel:${PHONE_2_TEL}`}>{PHONE_2_DISP}</a>
-            </div>
-            <div className="col">
-              <h3>{t.contact.emailLabel}</h3>
-              <a href={`mailto:${EMAIL}`} itemProp="email">{EMAIL}</a>
-            </div>
-            <div className="col">
-              <h3>{t.contact.headOfficeLabel}</h3>
-              <p dangerouslySetInnerHTML={{ __html: t.contact.headOffice }} />
-            </div>
-            <div className="col">
-              <h3>{t.contact.boatParkingLabel}</h3>
-              <p dangerouslySetInnerHTML={{ __html: t.contact.boatParking }} />
-            </div>
-          </div>
-
-          <div className="cta-block reveal">
-            <a className="btn primary" href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
-              {t.contact.whatsapp} <span className="arrow">→</span>
-            </a>
-            <a className="btn" href={`mailto:${EMAIL}`}
-               style={{ borderColor: "rgba(245,239,228,0.5)", color: "var(--cream)" }}>
-              {t.contact.emailCta} <span className="arrow">→</span>
-            </a>
-            <a className="btn" href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer"
-               style={{ borderColor: "rgba(245,239,228,0.5)", color: "var(--cream)" }}>
-              {t.contact.instagramCta} <span className="arrow">→</span>
-            </a>
-          </div>
-
           <div className="footer-bottom" style={{ flexWrap: "wrap", gap: 16 }}>
             <span>{t.contact.rights}</span>
             <span>
