@@ -741,10 +741,16 @@ html[dir="rtl"] .btn:hover .arrow { transform: scaleX(-1) translateX(4px); }
   display: flex;
   flex-direction: column;
   flex: 0 0 clamp(300px, 32vw, 440px);
-  scroll-snap-align: start;
+  /* Centered snap means adjacent cards peek on each side when the
+   * card width is smaller than the visible area — visual hint that
+   * there's more to scroll. */
+  scroll-snap-align: center;
 }
 @media (max-width: 720px) {
-  .tour-card { flex: 0 0 85vw; }
+  /* Squeezed mobile view: card is 78vw so the next/previous cards
+   * peek ~11vw on each side. Visitor immediately understands the
+   * carousel scrolls. */
+  .tour-card { flex: 0 0 78vw; }
 }
 .tour-card .img-wrap {
   position: relative;
@@ -1720,4 +1726,45 @@ html[dir="rtl"] .scroll-arrow-right { right: auto; left: 8px; }
   }
   .scroll-arrow-left { left: 4px; }
   .scroll-arrow-right { right: 4px; }
+}
+
+/* ===== Carousel dots =====
+   Small dot indicators under the tours and attractions horizontal
+   scrollers. Active dot tracks the card currently centred in the
+   scroller. Tapping a dot scrolls that card into view. On mobile the
+   carousel auto-advances one dot every 2s (see CarouselDots in
+   HomePage.tsx). */
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ink);
+  opacity: 0.25;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.25s ease, background 0.25s ease, transform 0.25s ease;
+}
+.carousel-dot:hover { opacity: 0.55; }
+.carousel-dot.active {
+  opacity: 1;
+  background: var(--ink);
+  transform: scale(1.4);
+}
+.carousel-dot:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+@media (max-width: 720px) {
+  .carousel-dots { gap: 6px; margin-top: 18px; }
+  .carousel-dot { width: 7px; height: 7px; }
 }

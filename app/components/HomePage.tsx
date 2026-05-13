@@ -162,6 +162,137 @@ function ScrollArrows({
   );
 }
 
+// Dot indicators under a horizontal scroller — like the bottom of the
+// Il Medeghino carousel screenshot. Tracks which card is currently
+// closest to centre via a scroll listener, lets the user jump to any
+// card by clicking the matching dot.
+//
+// When `autoAdvanceMobile` is true and the viewport is mobile-sized
+// (≤720px), the carousel auto-advances one card every 2 seconds.
+// Any user interaction (touchstart, mousedown, wheel) pauses the
+// auto-advance for 5 seconds so it doesn't fight the visitor.
+function CarouselDots({
+  scrollerRef,
+  count,
+  autoAdvanceMobile = false,
+}: {
+  scrollerRef: React.RefObject<HTMLDivElement | null>;
+  count: number;
+  autoAdvanceMobile?: boolean;
+}) {
+  const [activeIdx, setActiveIdx] = useState(0);
+  const activeIdxRef = useRef(0);
+  const lastUserInteractionRef = useRef(0);
+  useEffect(() => { activeIdxRef.current = activeIdx; }, [activeIdx]);
+
+  // Find the card whose centre is closest to the scroller's viewport
+  // centre, and mark its dot active.
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const update = () => {
+      const containerCenter = el.scrollLeft + el.clientWidth / 2;
+      let bestIdx = 0;
+      let bestDist = Infinity;
+      const cards = el.children;
+      for (let i = 0; i < cards.length; i++) {
+        const card = cards[i] as HTMLElement;
+        const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+        const dist = Math.abs(cardCenter - containerCenter);
+        if (dist < bestDist) {
+          bestDist = dist;
+          bestIdx = i;
+        }
+      }
+      setActiveIdx(bestIdx);
+    };
+    update();
+    el.addEventListener("scroll", update, { passive: true });
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => {
+      el.removeEventListener("scroll", update);
+      ro.disconnect();
+    };
+  }, [scrollerRef, count]);
+
+  // Track user interaction so auto-advance can pause politely.
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const mark = () => {
+      lastUserInteractionRef.current = Date.now();
+    };
+    el.addEventListener("touchstart", mark, { passive: true });
+    el.addEventListener("mousedown", mark);
+    el.addEventListener("wheel", mark, { passive: true });
+    return () => {
+      el.removeEventListener("touchstart", mark);
+      el.removeEventListener("mousedown", mark);
+      el.removeEventListener("wheel", mark);
+    };
+  }, [scrollerRef]);
+
+  // Auto-advance every 2s on mobile only.
+  useEffect(() => {
+    if (!autoAdvanceMobile) return;
+    if (typeof window === "undefined") return;
+    const mql = window.matchMedia("(max-width: 720px)");
+    let intervalId: number | undefined;
+    const tick = () => {
+      // Pause for 5s after any user interaction.
+      if (Date.now() - lastUserInteractionRef.current < 5000) return;
+      const el = scrollerRef.current;
+      if (!el) return;
+      const next = (activeIdxRef.current + 1) % count;
+      const card = el.children[next] as HTMLElement | undefined;
+      if (!card) return;
+      const target = card.offsetLeft - (el.clientWidth - card.offsetWidth) / 2;
+      el.scrollTo({ left: target, behavior: "smooth" });
+    };
+    const setup = (isMobile: boolean) => {
+      if (intervalId !== undefined) {
+        window.clearInterval(intervalId);
+        intervalId = undefined;
+      }
+      if (isMobile) intervalId = window.setInterval(tick, 2000);
+    };
+    setup(mql.matches);
+    const onChange = () => setup(mql.matches);
+    mql.addEventListener("change", onChange);
+    return () => {
+      mql.removeEventListener("change", onChange);
+      if (intervalId !== undefined) window.clearInterval(intervalId);
+    };
+  }, [autoAdvanceMobile, count, scrollerRef]);
+
+  const goTo = (idx: number) => {
+    lastUserInteractionRef.current = Date.now();
+    const el = scrollerRef.current;
+    if (!el) return;
+    const card = el.children[idx] as HTMLElement | undefined;
+    if (!card) return;
+    const target = card.offsetLeft - (el.clientWidth - card.offsetWidth) / 2;
+    el.scrollTo({ left: target, behavior: "smooth" });
+  };
+
+  return (
+    <div className="carousel-dots" role="tablist" aria-label="Carousel position">
+      {Array.from({ length: count }).map((_, i) => (
+        <button
+          key={i}
+          type="button"
+          role="tab"
+          className={`carousel-dot ${i === activeIdx ? "active" : ""}`}
+          aria-label={`Go to slide ${i + 1}`}
+          aria-selected={i === activeIdx}
+          onClick={() => goTo(i)}
+        />
+      ))}
+    </div>
+  );
+}
+
 // === Lake Como map — interactive Leaflet with CartoDB Voyager tiles ===
 type Pin = { id: string; name: string; note: string; type: string; lat: number; lng: number };
 
@@ -691,6 +822,7 @@ export default function HomePage({ locale }: { locale: Locale }) {
             })}
             </div>
             <ScrollArrows scrollerRef={toursScrollRef} label="Tours" />
+            <CarouselDots scrollerRef={toursScrollRef} count={t.tours.items.length} autoAdvanceMobile />
           </div>
         </div>
       </section>
@@ -810,6 +942,7 @@ export default function HomePage({ locale }: { locale: Locale }) {
             ))}
             </div>
             <ScrollArrows scrollerRef={attractionsScrollRef} label="Attractions" />
+            <CarouselDots scrollerRef={attractionsScrollRef} count={attractions.length} autoAdvanceMobile />
           </div>
         </div>
       </section>
