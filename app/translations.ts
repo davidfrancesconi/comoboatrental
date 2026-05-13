@@ -402,6 +402,7 @@ export const translations: Record<Locale, Translation> = {
         { title: "Weddings & special occasions",  desc: "Weddings, proposals, anniversaries by boat. Champagne on board and bespoke service for unforgettable moments on the water." },
         { title: "Photoshoots & productions",     desc: "Editorial, wedding and commercial shoots aboard our wooden boats, Villa d'Este, Villa Balbianello, golden hour on the lake." },
         { title: "Local captains as concierges",  desc: "Certified, multilingual captains who know the lake like a backyard, restaurant tips, hidden coves, perfect timing with the wind." },
+        { title: "Private boat tours",            desc: "Half-day and full-day private charters on classic wooden boats. Bellagio, Balbianello, Varenna at your own pace, with a captain who knows every cove." },
       ],
     },
     testimonials: {
@@ -646,6 +647,7 @@ export const translations: Record<Locale, Translation> = {
         { title: "Matrimoni e occasioni speciali", desc: "Matrimoni, proposte, anniversari in barca. Champagne a bordo e servizio personalizzato per momenti indimenticabili sull'acqua." },
         { title: "Servizi fotografici e produzioni", desc: "Riprese editoriali, di matrimonio e commerciali a bordo delle nostre barche in legno, Villa d'Este, Villa Balbianello, ora dorata sul lago." },
         { title: "Skipper come concierge",         desc: "Skipper certificati e multilingue che conoscono il lago come il proprio giardino, consigli ristoranti, calette nascoste, tempi perfetti con il vento." },
+        { title: "Tour privati in barca",          desc: "Charter privati di mezza giornata o giornata intera su barche classiche in legno. Bellagio, Balbianello, Varenna al tuo ritmo, con uno skipper che conosce ogni caletta." },
       ],
     },
     testimonials: {
@@ -890,6 +892,7 @@ export const translations: Record<Locale, Translation> = {
         { title: "Свадьбы и особые случаи",   desc: "Свадьбы, предложения, юбилеи на лодке. Шампанское на борту и индивидуальный сервис для незабываемых моментов на воде." },
         { title: "Фотосъёмки и производство", desc: "Редакционные, свадебные и коммерческие съёмки на наших деревянных лодках, Вилла д'Эсте, Вилла Бальбьянелло, золотой час на озере." },
         { title: "Капитаны как консьержи",    desc: "Сертифицированные многоязычные капитаны, знающие озеро как свой двор, рестораны, скрытые бухты, идеальное время с ветром." },
+        { title: "Частные туры на лодке",     desc: "Частные чартеры на полдня и целый день на классических деревянных лодках. Белладжо, Бальбьянелло, Варенна в вашем темпе, с капитаном, знающим каждую бухту." },
       ],
     },
     testimonials: {
@@ -1134,6 +1137,7 @@ export const translations: Record<Locale, Translation> = {
         { title: "حفلات الزفاف والمناسبات الخاصة", desc: "حفلات زفاف، طلبات زواج، ذكرى سنوية على القارب. شامبانيا على المتن وخدمة مخصصة للحظات لا تُنسى على الماء." },
         { title: "جلسات التصوير والإنتاج",         desc: "تصوير تحريري وأعراس وتجاري على متن قواربنا الخشبية, فيلا ديستي، فيلا بالبيانيلو، الساعة الذهبية على البحيرة." },
         { title: "قباطنة كأمناء استقبال",          desc: "قباطنة معتمدون يتحدثون عدة لغات يعرفون البحيرة كحديقتهم, توصيات مطاعم، خلجان مخفية، توقيت مثالي مع الريح." },
+        { title: "جولات قارب خاصة",                desc: "تأجير قارب خاص لنصف يوم أو يوم كامل على قوارب خشبية كلاسيكية. بيلاجيو، بالبيانيلو، فارينا بإيقاعك الخاص، مع قبطان يعرف كل خليج." },
       ],
     },
     testimonials: {

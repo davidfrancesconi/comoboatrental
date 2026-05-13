@@ -18,6 +18,10 @@ needed.
 | `nesso.jpg` | [Cascata Nesso, 01.06.2019](https://commons.wikimedia.org/wiki/File:Cascata_Nesso,_01.06.2019_1.jpg) | Wikimedia |
 | `menaggio.jpg` | [Menaggio Lago di Como](https://commons.wikimedia.org/wiki/File:Menaggio_Lago_di_Como.jpg) | Wikimedia |
 | `lecco.jpg` | [19LC12.jpg](https://commons.wikimedia.org/wiki/File:19LC12.jpg) | Wikimedia |
+| `bellagio.jpg` | [Sentiero del Viandante (Bellagio)](https://commons.wikimedia.org/wiki/File:Sentiero_del_Viandante_DSC_6340_(14020554463).jpg) | Wikimedia |
+| `villa-del-balbianello.jpg` | [06VillaBalbianello.jpg](https://commons.wikimedia.org/wiki/File:06VillaBalbianello.jpg) | Wikimedia |
+| `argegno.jpg` | [Argegno-Panorama.JPG](https://commons.wikimedia.org/wiki/File:Argegno-Panorama.JPG) | Wikimedia |
+| `villa-oleandra.jpg` | [Laglio from Lake Como ferry](https://commons.wikimedia.org/wiki/File:Laglio_from_Lake_Como_ferry.jpg) | Wikimedia · *Used for the moltrasio-laglio attraction (Clooney's Villa Oleandra is in Laglio).* |
 
 These photos are stand-ins. Replace them with Como Boat Rental's
 own photography when available (preferably shots from the water,

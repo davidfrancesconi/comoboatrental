@@ -48,12 +48,13 @@ const FLEET_IMGS = ["/images/taxi-boat.jpg", "/images/luxury-caddy.jpg"];
 
 // Experience photos for the "Beyond a Tour" strip — pulled from the
 // legacy comoboatrental.it (under "OUR BOAT EXPERIENCES"). One photo
-// per item; order matches the items in t.experiences.items
-// (weddings → photoshoot → captains).
+// per item; order matches t.experiences.items
+// (weddings → photoshoots → captains → private-tours).
 const EXPERIENCE_IMGS = [
   "/images/experiences/weddings.jpg",
   "/images/experiences/photoshoots.jpg",
   "/images/experiences/captains.jpg",
+  "/images/experiences/private-tours.jpg",
 ];
 
 import instagramManifest from "../../public/instagram-feed.json";
@@ -616,18 +617,40 @@ export default function HomePage({ locale }: { locale: Locale }) {
   }, [locale]);
 
   // When the user is hovering pin-list / attractions, smoothly scroll the
-  // destinations list so the card matching the active pin is centered
-  // vertically. We only auto-scroll the list container (not the page).
+  // destinations list — auto-scroll the active card into view ONLY
+  // when the activation came from the map (pin hover/click), not when
+  // it came from hovering the list itself. Without that guard every
+  // tiny hover over the list re-triggers a scrollBy and the list
+  // jumps around under the cursor.
+  //
+  // We also gate on a deadband: ignore deltas smaller than ~25% of
+  // the container height so a card that's already comfortably in
+  // view doesn't trigger scrolling.
+  const activatedFromMapRef = useRef(false);
   useEffect(() => {
-    if (!userInteracting || !destListRef.current) return;
+    if (!activatedFromMapRef.current || !destListRef.current) return;
+    activatedFromMapRef.current = false;
     const container = destListRef.current;
     const card = container.querySelector<HTMLElement>(`[data-pin-id="${activePin}"]`);
     if (!card) return;
     const containerRect = container.getBoundingClientRect();
     const cardRect = card.getBoundingClientRect();
+    // Only scroll if the card is more than 25% out of the visible
+    // window — that way a card already mostly visible doesn't jump.
+    const isAbove = cardRect.top < containerRect.top + 8;
+    const isBelow = cardRect.bottom > containerRect.bottom - 8;
+    if (!isAbove && !isBelow) return;
     const delta = (cardRect.top + cardRect.height / 2) - (containerRect.top + containerRect.height / 2);
     container.scrollBy({ top: delta, behavior: "smooth" });
-  }, [activePin, userInteracting]);
+  }, [activePin]);
+
+  // Wrap setActivePin so callers can mark "this came from the map"
+  // explicitly. Map markers / pin clicks call setActivePinFromMap,
+  // hover-from-list calls setActivePin directly with no auto-scroll.
+  const setActivePinFromMap = (id: string) => {
+    activatedFromMapRef.current = true;
+    setActivePin(id);
+  };
 
   const fromLabel = locale === "en" ? "From" : locale === "it" ? "Da" : locale === "ru" ? "От" : "من";
 
@@ -729,7 +752,6 @@ export default function HomePage({ locale }: { locale: Locale }) {
         <div className="container-x">
           <div className="section-head reveal">
             <div className="label">
-              <span className="eyebrow">{t.tours.indexLabel}</span>
               <p className="lead">{t.tours.lead}</p>
             </div>
             <div className="title">
@@ -769,7 +791,6 @@ export default function HomePage({ locale }: { locale: Locale }) {
         <div className="container-x">
           <div className="section-head reveal" style={{ marginBottom: 36 }}>
             <div className="label">
-              <span className="eyebrow">{t.explore.indexLabel}</span>
               <p className="lead">{t.explore.lead}</p>
             </div>
             <div className="title">
@@ -827,7 +848,7 @@ export default function HomePage({ locale }: { locale: Locale }) {
                     <LakeComoMap
                       pins={t.map.pins}
                       activeId={activePin}
-                      onActivate={setActivePin}
+                      onActivate={setActivePinFromMap}
                       sectionRef={mapSectionRef}
                       userInteracting={userInteracting}
                     />
@@ -848,7 +869,10 @@ export default function HomePage({ locale }: { locale: Locale }) {
                       const a = attractions.find((x) => x.pinId === pin.id);
                       const href = a ? localePath(locale, `/attractions/${a.slug}`) : "#";
                       const blurb = a?.copy[locale].blurb ?? pin.note;
-                      const thumb = a?.image;
+                      // Fall back to pin-id-based filename for pins
+                      // that don't have an attraction page yet (e.g.
+                      // Argegno) — keeps every card thumbnailed.
+                      const thumb = a?.image ?? `/images/attractions/${pin.id}.jpg`;
                       return (
                         <a
                           key={pin.id}
@@ -892,7 +916,6 @@ export default function HomePage({ locale }: { locale: Locale }) {
         <div className="container-x">
           <div className="section-head reveal">
             <div className="label">
-              <span className="eyebrow">{t.fleet.indexLabel}</span>
               <p className="lead">{t.fleet.lead}</p>
             </div>
             <div className="title">
@@ -938,7 +961,6 @@ export default function HomePage({ locale }: { locale: Locale }) {
       <section className="experiences experiences-condensed" id="experiences">
         <div className="container-x">
           <div className="exp-condensed-head reveal">
-            <span className="eyebrow">{t.experiences.indexLabel}</span>
             <h2 className="display"><RichText text={t.experiences.title} /></h2>
           </div>
           <div className="exp-row">
@@ -967,7 +989,6 @@ export default function HomePage({ locale }: { locale: Locale }) {
         <div className="container-x">
           <div className="section-head reveal" style={{ marginBottom: 36 }}>
             <div className="label">
-              <span className="eyebrow">{t.testimonials.indexLabel}</span>
               <p className="lead">{t.testimonials.lead}</p>
             </div>
             <div className="title">
@@ -1008,7 +1029,7 @@ export default function HomePage({ locale }: { locale: Locale }) {
       <section className="instagram instagram-strip" id="instagram">
         <div className="container-x">
           <div className="ig-strip-head reveal">
-            <span className="eyebrow">{t.instagram.indexLabel}</span>
+            <h3 className="ig-strip-title">Instagram</h3>
             <a className="ig-strip-cta" href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">
               {t.instagram.cta} <span className="arrow">→</span>
             </a>

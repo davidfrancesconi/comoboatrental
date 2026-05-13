@@ -159,7 +159,7 @@ export const attractions: Attraction[] = [
   {
     slug: "bellagio",
     pinId: "bellagio",
-    image: "/images/bellagio.jpg",
+    image: "/images/attractions/bellagio.jpg",
     toursThatVisit: ["top-villas-half-day", "bespoke-full-day"],
     copy: {
       en: {
@@ -245,7 +245,7 @@ export const attractions: Attraction[] = [
   {
     slug: "villa-del-balbianello",
     pinId: "balbianello",
-    image: "/images/balbianello.jpg",
+    image: "/images/attractions/villa-del-balbianello.jpg",
     toursThatVisit: ["balbianello-nesso", "top-villas-half-day", "bespoke-full-day"],
     copy: {
       en: {
@@ -846,8 +846,12 @@ export const attractions: Attraction[] = [
   // ─── Moltrasio / Carate Urio / Laglio (Clooney area) ─────────────
   {
     slug: "moltrasio-laglio",
+    // Iconic image for this attraction is George Clooney's Villa
+    // Oleandra on the Laglio waterfront — used to be a generic hero
+    // shot, now a Wikipedia/Commons photo of Laglio from the lake
+    // ferry (CC-BY-SA, credit in /images/attractions/CREDITS.md).
     pinId: "oleandra",
-    image: "/images/hero-1.jpg",
+    image: "/images/attractions/villa-oleandra.jpg",
     toursThatVisit: ["highlights-1h", "balbianello-nesso", "top-villas-half-day", "bespoke-full-day"],
     copy: {
       en: {
