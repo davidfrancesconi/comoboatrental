@@ -6,8 +6,17 @@
 // props and renders pure HTML.
 
 import { translations, locales, type Locale } from "../translations";
-import { localePath, EMAIL, WHATSAPP_URL, INSTAGRAM_URL } from "../seo";
-import { PHONE_DISPLAY_PRIMARY, PHONE_TEL_PRIMARY } from "../seo";
+import {
+  localePath,
+  EMAIL,
+  WHATSAPP_URL,
+  INSTAGRAM_URL,
+  PHONE_DISPLAY_PRIMARY,
+  PHONE_TEL_PRIMARY,
+  RENT_POLICY_URL,
+  PRIVACY_POLICY_URL,
+  COOKIE_POLICY_URL,
+} from "../seo";
 
 // Render <em>...</em> markup as italic accents inside text content.
 export function renderRich(text: string): React.ReactNode[] {
@@ -114,6 +123,21 @@ export function InnerPageFooter({ locale }: { locale: Locale }) {
             </a>
           </div>
         </div>
+        {/* Policies disclosure — mirrors the legacy comoboatrental.it
+            footer. External links stay external (legal copy maintained
+            on the legacy host / Iubenda). */}
+        <div className="footer-policies">
+          <h4>{t.policies.label}</h4>
+          <p>{t.policies.body}</p>
+          <div className="footer-policies-links">
+            <a href={RENT_POLICY_URL} target="_blank" rel="noopener noreferrer">{t.policies.rent}</a>
+            <span aria-hidden>·</span>
+            <a href={PRIVACY_POLICY_URL} target="_blank" rel="noopener noreferrer">{t.policies.privacy}</a>
+            <span aria-hidden>·</span>
+            <a href={COOKIE_POLICY_URL} target="_blank" rel="noopener noreferrer">{t.policies.cookie}</a>
+          </div>
+        </div>
+
         <div style={{
           borderTop: "1px solid rgba(245,239,228,0.18)",
           paddingTop: 24,

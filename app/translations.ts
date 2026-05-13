@@ -98,6 +98,10 @@ export type Translation = {
     lead: string;
     title: string;
     right: string;
+    /** Filter pill labels above the destinations list. */
+    filters: { all: string; villas: string; towns: string; hidden: string; islands: string };
+    /** Tag labels shown on each destination card. */
+    tags: { town: string; villa: string; hidden: string; island: string };
   };
   attractions: {
     indexLabel: string;
@@ -364,6 +368,8 @@ export const translations: Record<Locale, Translation> = {
       lead: "Where we cruise.",
       title: "Iconic <em>destinations,</em> woven into a single day.",
       right: "From the southern tip at Como up the west shore to Bellagio, Varenna and the lake's quietest corners. Hover or tap any pin to centre it on the map and the cards below.",
+      filters: { all: "All", villas: "Villas", towns: "Towns", hidden: "Hidden gems", islands: "Islands" },
+      tags: { town: "Town", villa: "Villa", hidden: "Hidden", island: "Island" },
     },
     map: {
       indexLabel: "(02) — The Lake",
@@ -472,7 +478,7 @@ export const translations: Record<Locale, Translation> = {
       messagePlaceholder: "Hotel, dietary preferences, special occasion, etc.",
       optional: "optional",
       submitCta: "Request availability",
-      orWhatsApp: "Or WhatsApp",
+      orWhatsApp: "WhatsApp",
       replySoon: "We reply within the hour",
       requestSent: "Request sent — we reply within the hour",
       emailSubject: "Lake Como private boat tour request",
@@ -606,6 +612,8 @@ export const translations: Record<Locale, Translation> = {
       lead: "Dove navighiamo.",
       title: "Destinazioni <em>iconiche,</em> intrecciate in una sola giornata.",
       right: "Dalla punta sud di Como su per la sponda ovest fino a Bellagio, Varenna e gli angoli più silenziosi. Passa il mouse su un pin per centrarlo su mappa e card qui sotto.",
+      filters: { all: "Tutte", villas: "Ville", towns: "Borghi", hidden: "Angoli nascosti", islands: "Isole" },
+      tags: { town: "Borgo", villa: "Villa", hidden: "Angolo nascosto", island: "Isola" },
     },
     map: {
       indexLabel: "(02) — Il Lago",
@@ -714,7 +722,7 @@ export const translations: Record<Locale, Translation> = {
       messagePlaceholder: "Hotel, preferenze alimentari, occasione speciale, ecc.",
       optional: "facoltativo",
       submitCta: "Richiedi disponibilità",
-      orWhatsApp: "O via WhatsApp",
+      orWhatsApp: "WhatsApp",
       replySoon: "Rispondiamo entro l'ora",
       requestSent: "Richiesta inviata — rispondiamo entro l'ora",
       emailSubject: "Richiesta tour privato in barca Lago di Como",
@@ -848,6 +856,8 @@ export const translations: Record<Locale, Translation> = {
       lead: "Где мы плаваем.",
       title: "Знаковые <em>места,</em> сплетённые в один день.",
       right: "От южной оконечности у Комо вверх по западному берегу до Белладжо, Варенны и самых тихих уголков. Наведите на пин — он центрируется на карте и на карточке ниже.",
+      filters: { all: "Все", villas: "Виллы", towns: "Городки", hidden: "Тайные уголки", islands: "Острова" },
+      tags: { town: "Городок", villa: "Вилла", hidden: "Тайное", island: "Остров" },
     },
     map: {
       indexLabel: "(02) — Озеро",
@@ -956,7 +966,7 @@ export const translations: Record<Locale, Translation> = {
       messagePlaceholder: "Отель, предпочтения, особый случай и т. д.",
       optional: "необязательно",
       submitCta: "Проверить доступность",
-      orWhatsApp: "Или WhatsApp",
+      orWhatsApp: "WhatsApp",
       replySoon: "Отвечаем в течение часа",
       requestSent: "Запрос отправлен — ответим в течение часа",
       emailSubject: "Запрос частного тура на лодке озеро Комо",
@@ -1090,6 +1100,8 @@ export const translations: Record<Locale, Translation> = {
       lead: "أين نُبحر.",
       title: "وجهات <em>أيقونية،</em> منسوجة في يوم واحد.",
       right: "من الطرف الجنوبي عند كومو صعوداً على طول الضفة الغربية إلى بيلاجيو وفارينا وأهدأ الزوايا. مرّر فوق دبوس ليتمحور على الخريطة والبطاقة بالأسفل.",
+      filters: { all: "الكل", villas: "الفلل", towns: "البلدات", hidden: "أماكن مخفية", islands: "الجزر" },
+      tags: { town: "بلدة", villa: "فيلا", hidden: "مخفي", island: "جزيرة" },
     },
     map: {
       indexLabel: "(02) — البحيرة",
@@ -1198,7 +1210,7 @@ export const translations: Record<Locale, Translation> = {
       messagePlaceholder: "الفندق، التفضيلات الغذائية، مناسبة خاصة، إلخ.",
       optional: "اختياري",
       submitCta: "اطلب التوفر",
-      orWhatsApp: "أو واتساب",
+      orWhatsApp: "واتساب",
       replySoon: "نرد خلال ساعة",
       requestSent: "تم إرسال الطلب — نرد خلال ساعة",
       emailSubject: "طلب جولة قارب خاصة على بحيرة كومو",

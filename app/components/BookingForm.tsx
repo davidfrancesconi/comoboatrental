@@ -20,12 +20,6 @@ import {
   WHATSAPP_URL,
   ADDRESS_STREET,
   ADDRESS_LOCALITY,
-  RATING_VALUE,
-  RATING_COUNT,
-  RATING_PERIOD,
-  RENT_POLICY_URL,
-  PRIVACY_POLICY_URL,
-  COOKIE_POLICY_URL,
 } from "../seo";
 import type { Locale, Translation } from "../translations";
 import { renderRich } from "./InnerPage";
@@ -185,24 +179,28 @@ export default function BookingForm({ t, locale }: { t: Translation; locale: Loc
               <textarea id="b-msg" name="message" placeholder={b.messagePlaceholder} />
             </div>
 
+            {/* Action row — submit stands alone on the left; WhatsApp +
+                "we reply within the hour" sit together on the right so
+                the reply note visually anchors against the green CTA. */}
             <div className="bform-actions span-2">
               <button type="submit" className="btn-submit">
                 {submitted ? `✓ ${b.requestSent}` : <>{b.submitCta} <span className="arr">→</span></>}
               </button>
-              <a href={WHATSAPP_URL} className="btn-whatsapp" target="_blank" rel="noopener noreferrer" aria-label={`WhatsApp · ${b.orWhatsApp}`}>
-                {/* Official WhatsApp glyph rendered in the brand green so
-                    the secondary CTA reads as a channel switch, not a
-                    second submit. */}
-                <svg className="wa-logo" viewBox="0 0 32 32" aria-hidden xmlns="http://www.w3.org/2000/svg">
-                  <path fill="#25D366" d="M16.001 0C7.165 0 .003 7.162.003 15.998a15.93 15.93 0 0 0 2.137 7.997L0 32l8.21-2.151a15.953 15.953 0 0 0 7.79 2.015h.001C24.836 31.864 32 24.7 32 15.864 32 7.028 24.836 0 16.001 0Z"/>
-                  <path fill="#FFF" d="M23.472 19.518c-.39-.195-2.31-1.139-2.67-1.27-.358-.131-.62-.196-.88.196-.26.39-1.008 1.269-1.236 1.529-.227.26-.456.293-.846.098-.39-.195-1.65-.608-3.144-1.94-1.162-1.036-1.948-2.317-2.176-2.707-.228-.39-.024-.6.17-.795.176-.175.39-.456.585-.684.196-.228.26-.39.39-.65.13-.26.066-.488-.032-.683-.098-.195-.88-2.117-1.205-2.897-.317-.762-.64-.66-.88-.672-.227-.012-.487-.014-.747-.014-.26 0-.683.098-1.041.488-.358.39-1.366 1.334-1.366 3.256 0 1.922 1.398 3.779 1.594 4.039.195.26 2.753 4.203 6.671 5.895.932.402 1.659.642 2.225.821.935.298 1.785.256 2.458.156.75-.112 2.31-.944 2.635-1.855.325-.911.325-1.692.228-1.855-.098-.163-.358-.26-.748-.456Z"/>
-                </svg>
-                <span>{b.orWhatsApp}</span>
-              </a>
-              <span className="bform-reply">
-                <span className="dot" />
-                {b.replySoon}
-              </span>
+              <div className="bform-whatsapp-group">
+                <a href={WHATSAPP_URL} className="btn-whatsapp" target="_blank" rel="noopener noreferrer" aria-label={`WhatsApp · ${b.orWhatsApp}`}>
+                  {/* Official WhatsApp glyph rendered in the brand green
+                      so the secondary CTA reads as a channel switch. */}
+                  <svg className="wa-logo" viewBox="0 0 32 32" aria-hidden xmlns="http://www.w3.org/2000/svg">
+                    <path fill="#25D366" d="M16.001 0C7.165 0 .003 7.162.003 15.998a15.93 15.93 0 0 0 2.137 7.997L0 32l8.21-2.151a15.953 15.953 0 0 0 7.79 2.015h.001C24.836 31.864 32 24.7 32 15.864 32 7.028 24.836 0 16.001 0Z"/>
+                    <path fill="#FFF" d="M23.472 19.518c-.39-.195-2.31-1.139-2.67-1.27-.358-.131-.62-.196-.88.196-.26.39-1.008 1.269-1.236 1.529-.227.26-.456.293-.846.098-.39-.195-1.65-.608-3.144-1.94-1.162-1.036-1.948-2.317-2.176-2.707-.228-.39-.024-.6.17-.795.176-.175.39-.456.585-.684.196-.228.26-.39.39-.65.13-.26.066-.488-.032-.683-.098-.195-.88-2.117-1.205-2.897-.317-.762-.64-.66-.88-.672-.227-.012-.487-.014-.747-.014-.26 0-.683.098-1.041.488-.358.39-1.366 1.334-1.366 3.256 0 1.922 1.398 3.779 1.594 4.039.195.26 2.753 4.203 6.671 5.895.932.402 1.659.642 2.225.821.935.298 1.785.256 2.458.156.75-.112 2.31-.944 2.635-1.855.325-.911.325-1.692.228-1.855-.098-.163-.358-.26-.748-.456Z"/>
+                  </svg>
+                  <span>{b.orWhatsApp}</span>
+                </a>
+                <span className="bform-reply">
+                  <span className="dot" />
+                  {b.replySoon}
+                </span>
+              </div>
             </div>
           </form>
 
@@ -252,45 +250,6 @@ export default function BookingForm({ t, locale }: { t: Translation; locale: Loc
               </div>
             </div>
 
-            <div className="trust">
-              <div className="item">
-                <span className="gold">{RATING_VALUE}</span>
-                <span>
-                  ★ {b.trustGoogleReviews}
-                  <small>
-                    {RATING_COUNT} {b.trustReviewsGuests} · {RATING_PERIOD}
-                  </small>
-                </span>
-              </div>
-              <div className="item">
-                <span className="gold">€5M</span>
-                <span>
-                  {b.trustInsuredLabel}
-                  <small>{b.trustInsuredNote}</small>
-                </span>
-              </div>
-            </div>
-
-            {/* Policies — disclosure + external links to the rent /
-                privacy / cookie policies. URLs stay external (PDF on
-                comoboatrental.it, Iubenda for privacy + cookies). */}
-            <div className="bside-policies">
-              <h4>{t.policies.label}</h4>
-              <p>{t.policies.body}</p>
-              <div className="bside-policies-links">
-                <a href={RENT_POLICY_URL} target="_blank" rel="noopener noreferrer">
-                  {t.policies.rent}
-                </a>
-                <span aria-hidden>·</span>
-                <a href={PRIVACY_POLICY_URL} target="_blank" rel="noopener noreferrer">
-                  {t.policies.privacy}
-                </a>
-                <span aria-hidden>·</span>
-                <a href={COOKIE_POLICY_URL} target="_blank" rel="noopener noreferrer">
-                  {t.policies.cookie}
-                </a>
-              </div>
-            </div>
           </aside>
         </div>
       </div>

@@ -13,12 +13,10 @@ import {
   mergeVariant,
   type Variant,
 } from "../copy-variants";
-import { localePath } from "../seo";
+import { localePath, RENT_POLICY_URL, PRIVACY_POLICY_URL, COOKIE_POLICY_URL } from "../seo";
 import { attractions, ORBIT_PIN_IDS } from "../content/attractions";
-import { FAQS } from "../content/faq";
 import { TourCard, TOUR_CARD_IMAGES } from "./TourCard";
 import BookingForm from "./BookingForm";
-import Newsletter from "./Newsletter";
 
 // Five interchangeable colour palettes — defined in app/globals.css under
 // html[data-palette="A|B|C|D|E"]. Locked to "A" (Parchment) in production
@@ -47,6 +45,16 @@ const TOUR_IMGS = [
   "/images/luxury-cruise.jpg",
 ];
 const FLEET_IMGS = ["/images/taxi-boat.jpg", "/images/luxury-caddy.jpg"];
+
+// Experience photos for the "Beyond a Tour" strip — pulled from the
+// legacy comoboatrental.it (under "OUR BOAT EXPERIENCES"). One photo
+// per item; order matches the items in t.experiences.items
+// (weddings → photoshoot → captains).
+const EXPERIENCE_IMGS = [
+  "/images/experiences/weddings.jpg",
+  "/images/experiences/photoshoots.jpg",
+  "/images/experiences/captains.jpg",
+];
 
 import instagramManifest from "../../public/instagram-feed.json";
 type IgPost = { shortcode: string; src: string; permalink: string; alt: string };
@@ -530,13 +538,17 @@ export default function HomePage({ locale }: { locale: Locale }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activePin, setActivePin] = useState<string>("bellagio");
+  // Filter pill state for the destinations list next to the map.
+  // Categories derive from PIN_BASE.type with Isola Comacina overridden
+  // to "islands". One of: all | villas | towns | hidden | islands.
+  const [exploreFilter, setExploreFilter] = useState<"all" | "villas" | "towns" | "hidden" | "islands">("all");
   // True whenever the user is hovering the pin list or the attractions
   // scroller. Disengages the boat's automatic orbit and switches it to
   // "follow target pin" mode (see LakeComoMap rAF loop).
   const [userInteracting, setUserInteracting] = useState(false);
   const heroImgRef = useRef<HTMLDivElement>(null);
   const mapSectionRef = useRef<HTMLElement>(null);
-  const attractionsScrollRef = useRef<HTMLDivElement>(null);
+  const destListRef = useRef<HTMLDivElement>(null);
   const toursScrollRef = useRef<HTMLDivElement>(null);
 
   // Apply variant copy override on top of the active locale. Variant copy
@@ -604,18 +616,17 @@ export default function HomePage({ locale }: { locale: Locale }) {
   }, [locale]);
 
   // When the user is hovering pin-list / attractions, smoothly scroll the
-  // attractions scroller so the card matching the active pin is centered.
-  // We only auto-scroll the attractions container (not the page), so this
-  // has no effect on visitor scroll position.
+  // destinations list so the card matching the active pin is centered
+  // vertically. We only auto-scroll the list container (not the page).
   useEffect(() => {
-    if (!userInteracting || !attractionsScrollRef.current) return;
-    const container = attractionsScrollRef.current;
+    if (!userInteracting || !destListRef.current) return;
+    const container = destListRef.current;
     const card = container.querySelector<HTMLElement>(`[data-pin-id="${activePin}"]`);
     if (!card) return;
     const containerRect = container.getBoundingClientRect();
     const cardRect = card.getBoundingClientRect();
-    const delta = (cardRect.left + cardRect.width / 2) - (containerRect.left + containerRect.width / 2);
-    container.scrollBy({ left: delta, behavior: "smooth" });
+    const delta = (cardRect.top + cardRect.height / 2) - (containerRect.top + containerRect.height / 2);
+    container.scrollBy({ top: delta, behavior: "smooth" });
   }, [activePin, userInteracting]);
 
   const fromLabel = locale === "en" ? "From" : locale === "it" ? "Da" : locale === "ru" ? "От" : "من";
@@ -756,7 +767,7 @@ export default function HomePage({ locale }: { locale: Locale }) {
           between the side pin list and the attraction cards is kept. */}
       <section className="map-section explore-section" id="map" ref={mapSectionRef}>
         <div className="container-x">
-          <div className="section-head reveal" style={{ marginBottom: 60 }}>
+          <div className="section-head reveal" style={{ marginBottom: 36 }}>
             <div className="label">
               <span className="eyebrow">{t.explore.indexLabel}</span>
               <p className="lead">{t.explore.lead}</p>
@@ -767,97 +778,112 @@ export default function HomePage({ locale }: { locale: Locale }) {
             </div>
           </div>
 
-          <div className="map-wrap">
-            <div className="map-side reveal">
-              <p className="map-intro">{t.map.sideBody}</p>
-              <div
-                className="map-pin-list"
-                onMouseEnter={() => setUserInteracting(true)}
-                onMouseLeave={() => setUserInteracting(false)}
-              >
-                {t.map.pins.map((pin, i) => {
-                  // Map pin id (PIN_BASE) → attraction slug. Built from
-                  // the attractions content data so adding a new pin/attraction
-                  // pair automatically wires the link.
-                  const pinSlug = attractions.find((a) => a.pinId === pin.id)?.slug;
-                  return (
-                  <a
-                    key={pin.id}
-                    href={pinSlug ? localePath(locale, `/attractions/${pinSlug}`) : "#"}
-                    className={`pin-row ${pin.id === activePin ? "active" : ""}`}
-                    onMouseEnter={() => setActivePin(pin.id)}
-                    onClick={(e) => {
-                      // Pins without an attraction page (e.g. Argegno) just
-                      // activate the hover state, don't navigate.
-                      if (!pinSlug) {
-                        e.preventDefault();
-                        setActivePin(pin.id);
-                      }
-                    }}
-                  >
-                    <span className="pin-num">{String(i + 1).padStart(2, "0")}</span>
-                    <span className="pin-name">{pin.name}</span>
-                    <span className="pin-meta">{pin.note}</span>
-                  </a>
-                  );
-                })}
-              </div>
-            </div>
+          {/* Filter pill row — derives counts from the actual pin set
+              so adding a new attraction auto-updates the badges. */}
+          {(() => {
+            const categoryFor = (pinId: string, type: string): "villas" | "towns" | "hidden" | "islands" => {
+              if (pinId === "isola_comacina") return "islands";
+              if (type === "villa") return "villas";
+              if (type === "nature") return "hidden";
+              return "towns"; // town + port
+            };
+            const counts = { all: t.map.pins.length, villas: 0, towns: 0, hidden: 0, islands: 0 };
+            t.map.pins.forEach((p) => { counts[categoryFor(p.id, p.type)] += 1; });
+            const filters: { key: typeof exploreFilter; label: string; count: number }[] = [
+              { key: "all", label: t.explore.filters.all, count: counts.all },
+              { key: "villas", label: t.explore.filters.villas, count: counts.villas },
+              { key: "towns", label: t.explore.filters.towns, count: counts.towns },
+              { key: "hidden", label: t.explore.filters.hidden, count: counts.hidden },
+              { key: "islands", label: t.explore.filters.islands, count: counts.islands },
+            ];
+            const tagFor = (cat: "villas" | "towns" | "hidden" | "islands") =>
+              cat === "villas" ? t.explore.tags.villa
+              : cat === "towns" ? t.explore.tags.town
+              : cat === "hidden" ? t.explore.tags.hidden
+              : t.explore.tags.island;
 
-            <div className="map-canvas reveal reveal-delay-1">
-              <LakeComoMap
-                pins={t.map.pins}
-                activeId={activePin}
-                onActivate={setActivePin}
-                sectionRef={mapSectionRef}
-                userInteracting={userInteracting}
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+            return (
+              <>
+                <div className="explore-filter-row reveal" role="tablist" aria-label="Filter destinations">
+                  <span className="explore-filter-label">Filter</span>
+                  {filters.filter((f) => f.count > 0 || f.key === "all").map((f) => (
+                    <button
+                      key={f.key}
+                      type="button"
+                      role="tab"
+                      aria-selected={exploreFilter === f.key}
+                      className={`explore-filter-pill ${exploreFilter === f.key ? "active" : ""}`}
+                      onClick={() => setExploreFilter(f.key)}
+                    >
+                      <span className="lbl">{f.label}</span>
+                      <span className="cnt">{String(f.count).padStart(2, "0")}</span>
+                    </button>
+                  ))}
+                </div>
 
-      {/* Attraction carousel — directly under the map, NO separate
-          section-head. The unified "Explore the Lake" heading above
-          covers both. */}
-      <section className="attractions-section attractions-condensed" id="attractions">
-        <div className="container-x">
-          <div
-            className="scroller-frame"
-            onMouseEnter={() => setUserInteracting(true)}
-            onMouseLeave={() => setUserInteracting(false)}
-          >
-            <div
-              className="attractions-scroller"
-              ref={attractionsScrollRef}
-              aria-label="Lake Como attractions, scroll horizontally"
-            >
-            {attractions.map((a) => (
-              <article
-                key={a.slug}
-                className={`attraction-card ${a.pinId === activePin ? "active" : ""}`}
-                data-pin-id={a.pinId}
-                onMouseEnter={() => setActivePin(a.pinId)}
-              >
-                <a href={localePath(locale, `/attractions/${a.slug}`)} style={{ display: "contents" }}>
-                  <div className="img-wrap">
-                    <img
-                      src={a.image}
-                      alt={a.copy[locale].name}
-                      loading="lazy"
-                      width="640"
-                      height="480"
+                <div className="explore-grid">
+                  {/* LEFT — interactive Leaflet map (sticky on desktop). */}
+                  <div className="explore-map reveal reveal-delay-1">
+                    <LakeComoMap
+                      pins={t.map.pins}
+                      activeId={activePin}
+                      onActivate={setActivePin}
+                      sectionRef={mapSectionRef}
+                      userInteracting={userInteracting}
                     />
                   </div>
-                  <h3>{a.copy[locale].name}</h3>
-                  <p>{a.copy[locale].blurb}</p>
-                </a>
-              </article>
-            ))}
-            </div>
-            <ScrollArrows scrollerRef={attractionsScrollRef} label="Attractions" />
-            <CarouselDots scrollerRef={attractionsScrollRef} count={attractions.length} autoAdvanceMobile />
-          </div>
+
+                  {/* RIGHT — destinations list. Vertical scroller with
+                      filtered cards. Hover sets activePin to drive the
+                      map's bidirectional highlight. */}
+                  <div
+                    className="explore-list reveal"
+                    ref={destListRef}
+                    onMouseEnter={() => setUserInteracting(true)}
+                    onMouseLeave={() => setUserInteracting(false)}
+                  >
+                    {t.map.pins.map((pin, i) => {
+                      const cat = categoryFor(pin.id, pin.type);
+                      if (exploreFilter !== "all" && cat !== exploreFilter) return null;
+                      const a = attractions.find((x) => x.pinId === pin.id);
+                      const href = a ? localePath(locale, `/attractions/${a.slug}`) : "#";
+                      const blurb = a?.copy[locale].blurb ?? pin.note;
+                      const thumb = a?.image;
+                      return (
+                        <a
+                          key={pin.id}
+                          href={href}
+                          className={`dest-card ${pin.id === activePin ? "active" : ""}`}
+                          data-pin-id={pin.id}
+                          onMouseEnter={() => setActivePin(pin.id)}
+                          onClick={(e) => {
+                            if (!a) { e.preventDefault(); setActivePin(pin.id); }
+                          }}
+                        >
+                          <div className="dest-thumb">
+                            {thumb ? (
+                              <img src={thumb} alt={pin.name} loading="lazy" width="160" height="160" />
+                            ) : (
+                              <span className="dest-thumb-placeholder" aria-hidden>{pin.name.charAt(0)}</span>
+                            )}
+                            <span className="dest-thumb-tag">{String(i + 1).padStart(2, "0")}</span>
+                          </div>
+                          <div className="dest-body">
+                            <h3 className="dest-name">{pin.name}</h3>
+                            <p className="dest-blurb">{blurb}</p>
+                          </div>
+                          <div className="dest-meta">
+                            <span className="dest-tag">{tagFor(cat)}</span>
+                            <span className="dest-more">{t.attractions.readMore} <span aria-hidden>→</span></span>
+                          </div>
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+              </>
+            );
+          })()}
         </div>
       </section>
 
@@ -918,6 +944,15 @@ export default function HomePage({ locale }: { locale: Locale }) {
           <div className="exp-row">
             {t.experiences.items.map((exp, i) => (
               <article key={i} className={`exp-card reveal ${i > 0 ? `reveal-delay-${i}` : ""}`}>
+                <div className="exp-img">
+                  <img
+                    src={EXPERIENCE_IMGS[i] ?? "/images/hero-sunset.jpg"}
+                    alt={exp.title.replace(/<[^>]+>/g, "")}
+                    loading="lazy"
+                    width="800"
+                    height="600"
+                  />
+                </div>
                 <div className="num">{String(i + 1).padStart(2, "0")} /</div>
                 <h3><RichText text={exp.title} /></h3>
                 <p>{exp.desc}</p>
@@ -930,7 +965,7 @@ export default function HomePage({ locale }: { locale: Locale }) {
       {/* TESTIMONIALS */}
       <section className="testimonials">
         <div className="container-x">
-          <div className="section-head reveal" style={{ marginBottom: 60 }}>
+          <div className="section-head reveal" style={{ marginBottom: 36 }}>
             <div className="label">
               <span className="eyebrow">{t.testimonials.indexLabel}</span>
               <p className="lead">{t.testimonials.lead}</p>
@@ -996,49 +1031,33 @@ export default function HomePage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      {/* FAQ — compact accordion of the 6 most-asked questions, placed
-          just above the booking form so visitors get their objection
-          handled before they reach the form. Same data as the dedicated
-          /faq/ page (FAQS in app/content/faq.ts); links to /faq for the
-          full list. Picks up the FAQPage JSON-LD already emitted at
-          the homepage level. */}
-      <section className="home-faq" id="faq">
-        <div className="container-x">
-          <div className="home-faq-head reveal">
-            <span className="eyebrow">{t.homeFaq.indexLabel}</span>
-            <h2 className="display"><RichText text={t.homeFaq.title} /></h2>
-          </div>
-          <div className="home-faq-list reveal">
-            {FAQS[locale].slice(0, 6).map((q, i) => (
-              <details key={i} className="home-faq-item" open={i === 0}>
-                <summary>{q.question}</summary>
-                <p>{q.answer}</p>
-              </details>
-            ))}
-          </div>
-          <a className="home-faq-link" href={localePath(locale, "/faq")}>
-            {t.homeFaq.allCta} <span className="arrow">→</span>
-          </a>
-        </div>
-      </section>
-
-      {/* NEWSLETTER — slim "send me a sample itinerary" lead capture.
-          Single email field, mailto: handler. Lower-commitment ask than
-          the booking form below for visitors not yet ready to pick a
-          date. Dev can swap the mailto: for Formspree / Mailchimp /
-          Vercel serverless when Loris wants real list-building. */}
-      <Newsletter t={t} locale={locale} />
-
       {/* BOOKING — inline form. Includes the Google Maps embed of the
           Como pontoon (formerly its own "Our Base" section, now merged
           into the booking sidebar so visitors see where to board
-          directly inside the booking flow). */}
+          directly inside the booking flow). FAQ accordion + Newsletter
+          band removed per Loris feedback: FAQs live at /faq, and the
+          lead-capture pattern duplicated the booking form's ask. */}
       <BookingForm t={t} locale={locale} />
 
-      {/* Minimal footer bar — legal + FAQ/Reviews + safety. Sits below the
-          booking section on the dark background. */}
+      {/* Footer — legal + FAQ/Reviews + safety + policies disclosure +
+          links. Sits below the booking section on the dark background.
+          The policies block mirrors the layout used on the legacy
+          comoboatrental.it footer (Rent Policy PDF · Iubenda Privacy ·
+          Iubenda Cookie). External links stay external — legal copy
+          is maintained on the legacy host. */}
       <section className="home-footer-bar">
-        <div className="container-x">
+        <div className="container-x footer-bar-inner">
+          <div className="footer-policies">
+            <h4>{t.policies.label}</h4>
+            <p>{t.policies.body}</p>
+            <div className="footer-policies-links">
+              <a href={RENT_POLICY_URL} target="_blank" rel="noopener noreferrer">{t.policies.rent}</a>
+              <span aria-hidden>·</span>
+              <a href={PRIVACY_POLICY_URL} target="_blank" rel="noopener noreferrer">{t.policies.privacy}</a>
+              <span aria-hidden>·</span>
+              <a href={COOKIE_POLICY_URL} target="_blank" rel="noopener noreferrer">{t.policies.cookie}</a>
+            </div>
+          </div>
           <div className="footer-bottom" style={{ flexWrap: "wrap", gap: 16 }}>
             <span>{t.contact.rights}</span>
             <span>

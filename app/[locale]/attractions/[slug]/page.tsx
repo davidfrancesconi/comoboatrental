@@ -344,7 +344,12 @@ export default async function AttractionDetailPage({
                       ? "جولات تشمل هذه المحطة"
                       : "Tours that include this attraction"}
               </h2>
-              <div className="attraction-tours-grid">
+              {/* Horizontal scroller — same .tours-grid class as the
+                  homepage carousel so cards have identical sizing,
+                  snap and scrollbar behaviour. Static export, so no
+                  arrows / dots client widget here; native scroll +
+                  drag is the interaction. */}
+              <div className="tours-grid attraction-tours-scroller" aria-label="Tours that visit this attraction">
                 {visitingTourIndices.map(({ slug: tourSlug, idx }) => {
                   const tour = t.tours.items[idx];
                   if (!tour) return null;
