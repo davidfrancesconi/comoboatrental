@@ -724,11 +724,6 @@ html[dir="rtl"] .btn:hover .arrow { transform: scaleX(-1) translateX(4px); }
   scroll-behavior: smooth;
   padding-top: 8px;
   padding-bottom: 24px;
-  /* Bleed off the container so the first/last card can scroll past centre */
-  margin-left: calc(-1 * var(--gutter));
-  margin-right: calc(-1 * var(--gutter));
-  padding-left: var(--gutter);
-  padding-right: var(--gutter);
   /* Subtle scrollbar styling */
   scrollbar-width: thin;
   scrollbar-color: var(--ink-mute) transparent;
@@ -1616,11 +1611,6 @@ html[dir="rtl"] .vp-toggle { right: auto; left: 14px; }
   scroll-behavior: smooth;
   padding-top: 8px;
   padding-bottom: 24px;
-  /* Bleed off the container so the cards can scroll past centre */
-  margin-left: calc(-1 * var(--gutter));
-  margin-right: calc(-1 * var(--gutter));
-  padding-left: var(--gutter);
-  padding-right: var(--gutter);
   scrollbar-width: thin;
   scrollbar-color: var(--ink-mute) transparent;
 }
@@ -1677,4 +1667,57 @@ html[dir="rtl"] .vp-toggle { right: auto; left: 14px; }
 
 @media (max-width: 720px) {
   .attraction-card { flex: 0 0 70vw; }
+}
+
+/* ===== Horizontal scroller arrows =====
+   Wraps any horizontally-scrollable carousel (.tours-grid, .attractions-scroller).
+   Renders <ScrollArrows> (in HomePage.tsx) at the left/right edges; the
+   arrows scroll the inner container by ~80% of its visible width on click,
+   and hide themselves when there's nothing more to scroll to in that
+   direction. Matches the pattern used on lakecomoboattour.it. */
+.scroller-frame {
+  position: relative;
+}
+.scroll-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  background: var(--ink);
+  color: var(--bg);
+  border: none;
+  cursor: pointer;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  transition: background 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+}
+.scroll-arrow:hover:not(:disabled) {
+  background: var(--gold-deep);
+  transform: translateY(-50%) scale(1.04);
+}
+.scroll-arrow:disabled {
+  opacity: 0;
+  pointer-events: none;
+  cursor: default;
+}
+.scroll-arrow-left { left: 8px; }
+.scroll-arrow-right { right: 8px; }
+html[dir="rtl"] .scroll-arrow-left { left: auto; right: 8px; }
+html[dir="rtl"] .scroll-arrow-right { right: auto; left: 8px; }
+
+/* Don't shift the icon when the arrow is hovered */
+.scroll-arrow svg { display: block; }
+
+@media (max-width: 720px) {
+  .scroll-arrow {
+    width: 38px;
+    height: 38px;
+  }
+  .scroll-arrow-left { left: 4px; }
+  .scroll-arrow-right { right: 4px; }
 }

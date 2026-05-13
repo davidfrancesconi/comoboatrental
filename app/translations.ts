@@ -48,7 +48,7 @@ type MapPin = {
 };
 
 type Translation = {
-  nav: { tours: string; fleet: string; map: string; experiences: string; contact: string };
+  nav: { tours: string; fleet: string; map: string; attractions: string; experiences: string; contact: string };
   hero: {
     location: string;
     title: string; // <em> markup allowed
@@ -178,7 +178,7 @@ const buildPins = (notes: string[]): MapPin[] =>
 
 export const translations: Record<Locale, Translation> = {
   en: {
-    nav: { tours: "Tours", fleet: "Fleet", map: "Map", experiences: "Experiences", contact: "Contact" },
+    nav: { tours: "Tours", fleet: "Fleet", map: "Map", attractions: "Attractions", experiences: "Experiences", contact: "Contact" },
     hero: {
       location: "Lago di Como · Italia",
       title: "Lake Como.<br/>By <em>private boat.</em>",
@@ -337,7 +337,7 @@ export const translations: Record<Locale, Translation> = {
   },
 
   it: {
-    nav: { tours: "Tour", fleet: "Flotta", map: "Mappa", experiences: "Esperienze", contact: "Contatti" },
+    nav: { tours: "Tour", fleet: "Flotta", map: "Mappa", attractions: "Attrazioni", experiences: "Esperienze", contact: "Contatti" },
     hero: {
       location: "Lago di Como · Italia",
       title: "Lago di Como.<br/>In <em>barca privata.</em>",
@@ -496,7 +496,7 @@ export const translations: Record<Locale, Translation> = {
   },
 
   ru: {
-    nav: { tours: "Туры", fleet: "Флот", map: "Карта", experiences: "Опыты", contact: "Контакты" },
+    nav: { tours: "Туры", fleet: "Флот", map: "Карта", attractions: "Места", experiences: "Опыты", contact: "Контакты" },
     hero: {
       location: "Озеро Комо · Италия",
       title: "Озеро Комо.<br/>На <em>частной лодке.</em>",
@@ -655,7 +655,7 @@ export const translations: Record<Locale, Translation> = {
   },
 
   ar: {
-    nav: { tours: "الجولات", fleet: "الأسطول", map: "الخريطة", experiences: "التجارب", contact: "اتصل بنا" },
+    nav: { tours: "الجولات", fleet: "الأسطول", map: "الخريطة", attractions: "معالم", experiences: "التجارب", contact: "اتصل بنا" },
     hero: {
       location: "بحيرة كومو · إيطاليا",
       title: "بحيرة كومو.<br/>على متن <em>قارب خاص.</em>",

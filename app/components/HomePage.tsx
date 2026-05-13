@@ -97,6 +97,71 @@ function RichText({ text }: { text: string }) {
   return <>{parts}</>;
 }
 
+// Left/right arrows that scroll a horizontal carousel by ~80% of its visible
+// width. The arrows hide themselves when there's no more content to scroll
+// to in that direction. Reused for both the Tours carousel and the
+// Attractions strip.
+function ScrollArrows({
+  scrollerRef,
+  label,
+}: {
+  scrollerRef: React.RefObject<HTMLDivElement | null>;
+  label: string;
+}) {
+  const [canLeft, setCanLeft] = useState(false);
+  const [canRight, setCanRight] = useState(true);
+
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const update = () => {
+      setCanLeft(el.scrollLeft > 4);
+      setCanRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+    };
+    update();
+    el.addEventListener("scroll", update, { passive: true });
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => {
+      el.removeEventListener("scroll", update);
+      ro.disconnect();
+    };
+  }, [scrollerRef]);
+
+  const scroll = (dir: 1 | -1) => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir * el.clientWidth * 0.8, behavior: "smooth" });
+  };
+
+  return (
+    <>
+      <button
+        type="button"
+        className="scroll-arrow scroll-arrow-left"
+        onClick={() => scroll(-1)}
+        disabled={!canLeft}
+        aria-label={`${label} — scroll left`}
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+      </button>
+      <button
+        type="button"
+        className="scroll-arrow scroll-arrow-right"
+        onClick={() => scroll(1)}
+        disabled={!canRight}
+        aria-label={`${label} — scroll right`}
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+          <polyline points="9 18 15 12 9 6" />
+        </svg>
+      </button>
+    </>
+  );
+}
+
 // === Lake Como map — interactive Leaflet with CartoDB Voyager tiles ===
 type Pin = { id: string; name: string; note: string; type: string; lat: number; lng: number };
 
@@ -345,6 +410,7 @@ export default function HomePage({ locale }: { locale: Locale }) {
   const heroImgRef = useRef<HTMLDivElement>(null);
   const mapSectionRef = useRef<HTMLElement>(null);
   const attractionsScrollRef = useRef<HTMLDivElement>(null);
+  const toursScrollRef = useRef<HTMLDivElement>(null);
 
   // Apply variant copy override on top of the active locale. Variant copy
   // is English-only.
@@ -489,8 +555,9 @@ export default function HomePage({ locale }: { locale: Locale }) {
         </a>
         <div className="links">
           <a href="#tours">{t.nav.tours}</a>
-          <a href="#fleet">{t.nav.fleet}</a>
           <a href="#map">{t.nav.map}</a>
+          <a href="#attractions">{t.nav.attractions}</a>
+          <a href="#fleet">{t.nav.fleet}</a>
           <a href="#experiences">{t.nav.experiences}</a>
           <a href="#contact">{t.nav.contact}</a>
         </div>
@@ -519,8 +586,9 @@ export default function HomePage({ locale }: { locale: Locale }) {
       <div className={`mobile-menu ${menuOpen ? "open" : ""}`} aria-hidden={!menuOpen}>
         <div className="mobile-menu-inner">
           <a href="#tours" onClick={() => setMenuOpen(false)}>{t.nav.tours}</a>
-          <a href="#fleet" onClick={() => setMenuOpen(false)}>{t.nav.fleet}</a>
           <a href="#map" onClick={() => setMenuOpen(false)}>{t.nav.map}</a>
+          <a href="#attractions" onClick={() => setMenuOpen(false)}>{t.nav.attractions}</a>
+          <a href="#fleet" onClick={() => setMenuOpen(false)}>{t.nav.fleet}</a>
           <a href="#experiences" onClick={() => setMenuOpen(false)}>{t.nav.experiences}</a>
           <a href="#contact" onClick={() => setMenuOpen(false)}>{t.nav.contact}</a>
         </div>
@@ -583,7 +651,8 @@ export default function HomePage({ locale }: { locale: Locale }) {
             </div>
           </div>
 
-          <div className="tours-grid">
+          <div className="scroller-frame">
+            <div className="tours-grid" ref={toursScrollRef} aria-label="Lake Como private boat tours">
             {t.tours.items.map((tour, i) => {
               const slugs = ["highlights-1h", "balbianello-nesso", "top-villas-half-day", "bespoke-full-day"];
               return (
@@ -620,6 +689,8 @@ export default function HomePage({ locale }: { locale: Locale }) {
                 </article>
               );
             })}
+            </div>
+            <ScrollArrows scrollerRef={toursScrollRef} label="Tours" />
           </div>
         </div>
       </section>
@@ -708,12 +779,15 @@ export default function HomePage({ locale }: { locale: Locale }) {
           </div>
 
           <div
-            className="attractions-scroller"
-            ref={attractionsScrollRef}
+            className="scroller-frame"
             onMouseEnter={() => setUserInteracting(true)}
             onMouseLeave={() => setUserInteracting(false)}
-            aria-label="Lake Como attractions, scroll horizontally"
           >
+            <div
+              className="attractions-scroller"
+              ref={attractionsScrollRef}
+              aria-label="Lake Como attractions, scroll horizontally"
+            >
             {attractions.map((a) => (
               <article
                 key={a.id}
@@ -734,6 +808,8 @@ export default function HomePage({ locale }: { locale: Locale }) {
                 <p>{a.copy[locale].blurb}</p>
               </article>
             ))}
+            </div>
+            <ScrollArrows scrollerRef={attractionsScrollRef} label="Attractions" />
           </div>
         </div>
       </section>
