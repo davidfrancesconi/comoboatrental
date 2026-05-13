@@ -73,13 +73,14 @@ I font sono caricati via `next/font/google`:
 │   │   ├── layout.tsx            ← metadati per lingua, hreflang
 │   │   ├── page.tsx              ← homepage con JSON-LD @graph completo
 │   │   ├── tours/[slug]/page.tsx ← landing per tour
-│   │   ├── destinations/[slug]/page.tsx  ← guide per destinazione
+│   │   ├── attractions/page.tsx  ← lista delle 13 attrazioni
+│   │   ├── attractions/[slug]/page.tsx ← pagina dettaglio per ogni attrazione
 │   │   ├── faq/page.tsx
 │   │   ├── reviews/page.tsx
 │   │   └── blog/[slug]/page.tsx
 │   ├── content/                  ← copy lungo, in un solo posto
 │   │   ├── tours.ts              ← 4 tour × 4 lingue
-│   │   ├── destinations.ts       ← 6 destinazioni × 4 lingue
+│   │   ├── attractions.ts        ← 13 attrazioni × 4 lingue (rich content)
 │   │   ├── faq.ts                ← 12 Q&A × 4 lingue
 │   │   └── blog.ts               ← articoli seed
 │   └── components/
@@ -99,9 +100,9 @@ I font sono caricati via `next/font/google`:
 └── package.json
 ```
 
-Il build emette **60 pagine statiche** — homepage × 4 lingue, 4 tour
-× 4 lingue, 6 destinazioni × 4 lingue, FAQ × 4, recensioni × 4,
-blog × 2, più sitemap e robots.
+Il build emette **88 pagine statiche** — homepage × 4 lingue, 4 tour
+× 4 lingue, 4 indici attrazioni + 13 attrazioni × 4 lingue, FAQ × 4,
+recensioni × 4, blog × 2, più sitemap e robots.
 
 ---
 
@@ -218,13 +219,14 @@ app/
 │   ├── layout.tsx              ← metadati per lingua, hreflang via metadata.alternates.languages
 │   ├── page.tsx                ← homepage con @graph JSON-LD completo
 │   ├── tours/[slug]/page.tsx   ← landing per tour
-│   ├── destinations/[slug]/page.tsx  ← guide per destinazione
+│   ├── attractions/page.tsx    ← lista delle 13 attrazioni (SEO target "lake como attractions")
+│   ├── attractions/[slug]/page.tsx  ← pagina dettaglio per attrazione
 │   ├── faq/page.tsx
 │   ├── reviews/page.tsx
 │   └── blog/[slug]/page.tsx
 ├── content/                    ← tutto il copy lungo in un solo posto
 │   ├── tours.ts                ← 4 tour × 4 lingue — ogni lingua ottimizzata per il proprio mercato
-│   ├── destinations.ts         ← 6 destinazioni × 4 lingue
+│   ├── attractions.ts          ← 13 attrazioni × 4 lingue — rich content per pagina dettaglio
 │   ├── faq.ts                  ← 12 Q&A × 4 lingue
 │   └── blog.ts                 ← articoli seed
 └── components/

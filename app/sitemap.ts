@@ -4,7 +4,8 @@
 // What's listed:
 //   - Homepage in every locale  (/, /it/, /ru/, /ar/)
 //   - Per-tour pages            (/<locale>/tours/<slug>/, 4 slugs × 4 locales)
-//   - Per-destination pages     (/<locale>/destinations/<slug>/, 6 × 4)
+//   - Attractions index pages   (/<locale>/attractions/, 4)
+//   - Per-attraction pages      (/<locale>/attractions/<slug>/, 13 × 4)
 //   - FAQ + Reviews + Blog seed (/<locale>/faq/, /<locale>/reviews/, /<locale>/blog/<slug>/)
 //
 // Each entry includes hreflang alternates so Google associates the
@@ -13,7 +14,7 @@
 import type { MetadataRoute } from "next";
 import { locales, type Locale } from "./translations";
 import { TOUR_SLUGS } from "./content/tours";
-import { DESTINATION_SLUGS } from "./content/destinations";
+import { ATTRACTION_SLUGS } from "./content/attractions";
 import { BLOG_SLUGS } from "./content/blog";
 import { localeUrl, alternateLanguages, LOCALE_BCP47 } from "./seo";
 
@@ -50,9 +51,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     out.push(...entry(`/tours/${slug}`, "monthly", 0.9));
   }
 
-  // Destinations
-  for (const slug of DESTINATION_SLUGS) {
-    out.push(...entry(`/destinations/${slug}`, "monthly", 0.7));
+  // Attractions index + per-attraction pages
+  out.push(...entry("/attractions", "monthly", 0.85));
+  for (const slug of ATTRACTION_SLUGS) {
+    out.push(...entry(`/attractions/${slug}`, "monthly", 0.7));
   }
 
   // FAQ + Reviews

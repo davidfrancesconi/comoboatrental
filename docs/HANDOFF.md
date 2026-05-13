@@ -40,10 +40,10 @@ si costruiscono l'una sull'altra.
   browser (fallback su `/en/`). Ognuno tra `/en/`, `/it/`, `/ru/`,
   `/ar/` è un URL reale crawlabile, con i propri metadati, JSON-LD,
   hreflang e blocco Open Graph.
-- **60 pagine statiche** generate al build:
+- **88 pagine statiche** generate al build:
   - 4 varianti homepage (una per lingua)
   - 4 tour × 4 lingue = 16 pagine tour
-  - 6 destinazioni × 4 lingue = 24 pagine destinazioni
+  - 4 pagine indice attrazioni (una per lingua) + 13 attrazioni × 4 lingue = 56 pagine attrazioni
   - 4 pagine FAQ
   - 4 pagine recensioni
   - 1 articolo blog in 2 lingue (EN, IT) = 2 pagine blog
@@ -73,7 +73,7 @@ componenti per aggiornare il copy.
 | File | Contenuto |
 |---|---|
 | `app/content/tours.ts` | 4 tour × 4 lingue — copy completo, itinerario, incluso/non incluso, FAQ, prezzi |
-| `app/content/destinations.ts` | 6 destinazioni × 4 lingue — guida, "buono a sapersi", cross-link ai tour |
+| `app/content/attractions.ts` | 13 attrazioni × 4 lingue — slug, pinId, copy completo (metaTitle, paragraphs, goodToKnow, cross-link ai tour) per pagina dettaglio. Stesso file alimenta lo strip homepage, la lista `/attractions/` e i 13 page dedicate |
 | `app/content/faq.ts` | 12 Q&A × 4 lingue — schema FAQ in homepage + `/<locale>/faq/` |
 | `app/content/blog.ts` | Un articolo seed in EN + IT |
 
@@ -118,7 +118,7 @@ resta da fare, G".
 - `TouristTrip` × 4 tour con `ItemList` di itinerario e `Offer`
 - `FAQPage` (homepage abbreviata, `/faq` completa)
 - `BreadcrumbList` (ogni pagina)
-- `TouristAttraction` / `Place` × 6 destinazioni con `geo`
+- `TouristAttraction` / `Place` × 13 attrazioni con `geo`
 - `Article` (blog)
 
 ### Altre superfici già spedite
@@ -314,7 +314,7 @@ Per l'arabo un copywriter Gulf-market dovrebbe:
   Balbianello → بالبيانيلو sono le convenzioni usate)
 
 File: `app/translations.ts` (sezioni RU/AR), `app/content/tours.ts`
-(copy RU/AR in ogni tour), `app/content/destinations.ts`
+(copy RU/AR in ogni tour), `app/content/attractions.ts`
 (copy RU/AR in ogni destinazione), `app/content/faq.ts` (FAQ RU/AR).
 
 ### H. Performance & accessibilità
@@ -346,18 +346,21 @@ Vincite veloci rimaste:
    `tours.items` per tutte le 4 lingue
 4. `bun run build` — sitemap e rotta auto-generano
 
-### Aggiungere una nuova destinazione
+### Aggiungere una nuova attrazione
 
-1. Aggiungi uno slug a `DESTINATION_SLUGS` in
-   `app/content/destinations.ts`
-2. Aggiungi una entry a `destinations` con `pinId` matchante un
+1. Aggiungi uno slug a `ATTRACTION_SLUGS` in
+   `app/content/attractions.ts`
+2. Aggiungi una entry a `attractions` con `pinId` matchante un
    pin in `app/translations.ts` `PIN_BASE` (o aggiungi un pin
-   nuovo a `PIN_BASE` con lat/lng)
-3. Copy EN + IT richiesti; RU/AR opzionali (cadrà su EN se
-   `copy[locale]` manca — al momento il codice non gestisce
-   gracefulmente locali mancanti, quindi includili anche come
-   copia diretta dell'EN)
-4. `bun run build`
+   nuovo a `PIN_BASE` con lat/lng + le note per tutte e 4 le lingue)
+3. Riempi il blocco `copy` per tutte e 4 le lingue: `name`, `blurb`,
+   `metaTitle`, `metaDesc`, `headline`, `kicker`, `paragraphs[]`,
+   `goodToKnow[]`
+4. Imposta `toursThatVisit` con gli slug dei tour che visitano
+   l'attrazione (cross-link sulla pagina dettaglio)
+5. `bun run build` — la pagina dettaglio, l'entry nella lista
+   `/attractions/`, la card nello strip homepage e la voce in
+   sitemap.xml si generano automaticamente
 
 ### Aggiungere una nuova lingua (es. tedesco)
 
@@ -370,7 +373,7 @@ Vincite veloci rimaste:
    - `app/seo.ts` (LOCALE_BCP47, LOCALE_OG)
    - `app/[locale]/layout.tsx` (titles, descs)
    - `app/content/tours.ts` (`copy` di ogni tour)
-   - `app/content/destinations.ts`
+   - `app/content/attractions.ts`
    - `app/content/faq.ts`
    - `app/content/blog.ts` (opzionale — lascia vuoto per
      saltare il blog in quella lingua)

@@ -849,24 +849,21 @@ export default function HomePage({ locale }: { locale: Locale }) {
                 onMouseEnter={() => setUserInteracting(true)}
                 onMouseLeave={() => setUserInteracting(false)}
               >
-                {t.map.pins.map((pin, i) => (
+                {t.map.pins.map((pin, i) => {
+                  // Map pin id (PIN_BASE) → attraction slug. Built from
+                  // the attractions content data so adding a new pin/attraction
+                  // pair automatically wires the link.
+                  const pinSlug = attractions.find((a) => a.pinId === pin.id)?.slug;
+                  return (
                   <a
                     key={pin.id}
-                    href={localePath(locale, `/destinations/${pin.id === "balbianello" ? "villa-del-balbianello" : pin.id === "carlotta" ? "villa-carlotta" : pin.id}`)}
+                    href={pinSlug ? localePath(locale, `/attractions/${pinSlug}`) : "#"}
                     className={`pin-row ${pin.id === activePin ? "active" : ""}`}
                     onMouseEnter={() => setActivePin(pin.id)}
                     onClick={(e) => {
-                      // Allow click-through to the destination page; only hijack
-                      // if it's a destination we have a page for.
-                      const slugMap: Record<string, string> = {
-                        bellagio: "bellagio",
-                        varenna: "varenna",
-                        balbianello: "villa-del-balbianello",
-                        carlotta: "villa-carlotta",
-                        cernobbio: "cernobbio",
-                        nesso: "nesso",
-                      };
-                      if (!slugMap[pin.id]) {
+                      // Pins without an attraction page (e.g. Argegno) just
+                      // activate the hover state, don't navigate.
+                      if (!pinSlug) {
                         e.preventDefault();
                         setActivePin(pin.id);
                       }
@@ -876,7 +873,8 @@ export default function HomePage({ locale }: { locale: Locale }) {
                     <span className="pin-name">{pin.name}</span>
                     <span className="pin-meta">{pin.note}</span>
                   </a>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
@@ -922,22 +920,24 @@ export default function HomePage({ locale }: { locale: Locale }) {
             >
             {attractions.map((a) => (
               <article
-                key={a.id}
+                key={a.slug}
                 className={`attraction-card ${a.pinId === activePin ? "active" : ""}`}
                 data-pin-id={a.pinId}
                 onMouseEnter={() => setActivePin(a.pinId)}
               >
-                <div className="img-wrap">
-                  <img
-                    src={a.image}
-                    alt={a.copy[locale].name}
-                    loading="lazy"
-                    width="640"
-                    height="480"
-                  />
-                </div>
-                <h3>{a.copy[locale].name}</h3>
-                <p>{a.copy[locale].blurb}</p>
+                <a href={localePath(locale, `/attractions/${a.slug}`)} style={{ display: "contents" }}>
+                  <div className="img-wrap">
+                    <img
+                      src={a.image}
+                      alt={a.copy[locale].name}
+                      loading="lazy"
+                      width="640"
+                      height="480"
+                    />
+                  </div>
+                  <h3>{a.copy[locale].name}</h3>
+                  <p>{a.copy[locale].blurb}</p>
+                </a>
               </article>
             ))}
             </div>

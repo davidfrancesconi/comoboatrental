@@ -93,6 +93,12 @@ type Translation = {
     lead: string;
     title: string;
     right: string;
+    /** Dedicated /[locale]/attractions/ page only */
+    pageMetaTitle: string;
+    pageMetaDesc: string;
+    pageHeadline: string;
+    pageIntro: string;
+    readMore: string;
   };
   experiences: {
     indexLabel: string;
@@ -277,6 +283,13 @@ export const translations: Record<Locale, Translation> = {
       lead: "Every corner of the lake.",
       title: "The thirteen places worth <em>arriving by boat.</em>",
       right: "Hover any pin on the map or any card below to centre it on both. The boat will navigate to it.",
+      pageMetaTitle: "Lake Como Attractions · 13 Places to See by Boat",
+      pageMetaDesc:
+        "A guide to the 13 places on Lake Como worth arriving by boat — Bellagio, Varenna, Villa del Balbianello, Cernobbio, Villa Carlotta, Isola Comacina and more.",
+      pageHeadline: "Lake Como attractions, <em>seen from the water.</em>",
+      pageIntro:
+        "Lake Como is a 46-kilometre lake with two arms, more than a hundred villas along its shores, and a handful of postcard-perfect villages clinging to mountain slopes. These are the thirteen places worth arriving at by boat — the ones a private cruise from Como is built around. Tap any to read the full guide.",
+      readMore: "Read more",
     },
     experiences: {
       indexLabel: "(04) — Beyond a Tour",
@@ -436,6 +449,13 @@ export const translations: Record<Locale, Translation> = {
       lead: "Ogni angolo del lago.",
       title: "Le tredici tappe che <em>meritano l'arrivo in barca.</em>",
       right: "Passa il mouse su un pin della mappa o su una card qui sotto: l'altro si allinea e la barca naviga verso quel punto.",
+      pageMetaTitle: "Attrazioni del Lago di Como · 13 Tappe da Vedere in Barca",
+      pageMetaDesc:
+        "Guida alle 13 tappe del Lago di Como che meritano l'arrivo in barca — Bellagio, Varenna, Villa del Balbianello, Cernobbio, Villa Carlotta, Isola Comacina e altre.",
+      pageHeadline: "Le attrazioni del Lago di Como, <em>viste dall'acqua.</em>",
+      pageIntro:
+        "Il Lago di Como è un lago di 46 chilometri con due rami, più di cento ville lungo le sponde e un pugno di borghi da cartolina aggrappati ai pendii delle montagne. Queste sono le tredici tappe che meritano l'arrivo in barca — quelle attorno a cui si costruisce un tour privato da Como. Toccatene una per leggere la guida completa.",
+      readMore: "Scopri di più",
     },
     experiences: {
       indexLabel: "(04) — Oltre il Tour",
@@ -595,6 +615,13 @@ export const translations: Record<Locale, Translation> = {
       lead: "Каждый уголок озера.",
       title: "Тринадцать мест, к которым <em>стоит подойти на лодке.</em>",
       right: "Наведите курсор на пин на карте или на карточку ниже — другой выровняется, и лодка пойдёт к этой точке.",
+      pageMetaTitle: "Достопримечательности Озера Комо · 13 Мест к Подходу на Лодке",
+      pageMetaDesc:
+        "Гид по 13 местам озера Комо, к которым стоит подойти на лодке — Беладжо, Варенна, Вилла Бальбьянелло, Черноббио, Вилла Карлотта, Изола Комачина и другие.",
+      pageHeadline: "Достопримечательности озера Комо <em>с воды.</em>",
+      pageIntro:
+        "Озеро Комо — это 46-километровое озеро с двумя рукавами, более ста вилл вдоль берегов и горстка идеальных деревень на горных склонах. Вот тринадцать мест, к которым стоит подойти на лодке — то, вокруг чего строится частный тур из Комо. Нажмите на любое, чтобы прочитать полный гид.",
+      readMore: "Узнать больше",
     },
     experiences: {
       indexLabel: "(04) — Больше чем тур",
@@ -754,6 +781,13 @@ export const translations: Record<Locale, Translation> = {
       lead: "كل زاوية من البحيرة.",
       title: "ثلاث عشرة وجهة <em>تستحقّ الوصول بالقارب.</em>",
       right: "مرّر فوق أي دبوس على الخريطة أو أي بطاقة بالأسفل: يتمحور الآخر معه ويتجه القارب إليه.",
+      pageMetaTitle: "معالم بحيرة كومو · 13 وجهة تستحقّ الوصول بالقارب",
+      pageMetaDesc:
+        "دليل إلى 13 وجهة على بحيرة كومو تستحقّ الوصول بالقارب — بيلاجيو وفارينا وفيلا بالبيانيلو وتشيرنوبيو وفيلا كارلوتا وإيزولا كوماتشينا وغيرها.",
+      pageHeadline: "معالم بحيرة كومو <em>من الماء.</em>",
+      pageIntro:
+        "بحيرة كومو بطول 46 كيلومتراً ولها ذراعان، وأكثر من مئة فيلا على ضفافها، وحفنة من القرى البطاقة-البريدية المتشبّثة بالمنحدرات الجبلية. هذه هي الوجهات الثلاث عشرة التي تستحقّ الوصول إليها بالقارب — التي تُبنى حولها جولة خاصة من كومو. انقر على أي منها لقراءة الدليل الكامل.",
+      readMore: "اقرأ المزيد",
     },
     experiences: {
       indexLabel: "(04) — أكثر من جولة",

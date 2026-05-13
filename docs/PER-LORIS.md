@@ -35,7 +35,8 @@ foto migliori. Le devi fare tu, ed è qui che farai la differenza.
 |---|---|---|
 | Home | comoboatrental.com/it/ | Prima impressione, panoramica |
 | Tour singolo | /it/tours/balbianello-nesso/ | Pagina dedicata a "Villa del Balbianello + Orrido di Nesso", con itinerario, prezzo, FAQ. Si posiziona su Google per chi cerca quel tour specifico |
-| Destinazione | /it/destinations/bellagio/ | Guida a Bellagio, con i tour che ci passano. Si posiziona su "tour bellagio in barca" |
+| Attrazione | /it/attractions/bellagio/ | Guida a Bellagio, con i tour che ci passano. Si posiziona su "tour bellagio in barca" |
+| Lista attrazioni | /it/attractions/ | Lista completa delle 13 attrazioni del lago. Si posiziona su "attrazioni lago di como" |
 | FAQ | /it/faq/ | 12 domande/risposte (skipper, meteo, bagno, bambini, accessibilità) |
 | Recensioni | /it/reviews/ | Le 3 recensioni Google attualmente in evidenza, con punteggio 4.9/87 |
 | Blog | /it/blog/best-months-lake-como-by-boat/ | Articolo "I mesi migliori per visitare il Lago di Como in barca" — scritto come se l'avessi scritto tu e Claudio |
