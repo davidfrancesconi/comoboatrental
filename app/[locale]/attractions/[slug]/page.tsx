@@ -11,9 +11,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { attractions, ATTRACTION_SLUGS } from "../../../content/attractions";
-import { tours } from "../../../content/tours";
 import { translations, type Locale } from "../../../translations";
 import { InnerPageShell, renderRich } from "../../../components/InnerPage";
+import { TourCard, TOUR_SLUG_TO_INDEX, TOUR_CARD_IMAGES } from "../../../components/TourCard";
 import {
   alternateLanguages,
   localeUrl,
@@ -116,14 +116,23 @@ export default async function AttractionDetailPage({
     breadcrumbsJsonLd(trail),
   ]);
 
-  const visitingTours = attraction.toursThatVisit
-    .map((tslug) => tours.find((tt) => tt.slug === tslug))
-    .filter(Boolean);
+  // Map the attraction's toursThatVisit slugs to indices into the
+  // homepage tour list (translations.ts t.tours.items), so we can render
+  // each tour as a full homepage-style TourCard.
+  const visitingTourIndices = attraction.toursThatVisit
+    .map((tslug) => ({ slug: tslug, idx: TOUR_SLUG_TO_INDEX[tslug] }))
+    .filter((x): x is { slug: string; idx: number } => x.idx !== undefined);
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }} />
-      <InnerPageShell locale={locale}>
+      <InnerPageShell
+        locale={locale}
+        breadcrumbs={[
+          { label: attractionsLabel, href: localePath(locale, "/attractions") },
+          { label: pin?.name ?? attraction.slug },
+        ]}
+      >
         {/* Hero */}
         <section style={{ position: "relative", minHeight: "50vh", display: "flex", alignItems: "flex-end" }}>
           <div style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
@@ -168,10 +177,14 @@ export default async function AttractionDetailPage({
           </ul>
         </section>
 
-        {/* Tours that visit */}
-        {visitingTours.length > 0 && (
-          <section className="container-x" style={{ maxWidth: 1100, margin: "0 auto 80px", padding: "0 32px" }}>
-            <h2 className="display" style={{ fontSize: 32, marginBottom: 24 }}>
+        {/* Tours that visit — rendered with the same TourCard component
+            used on the homepage tours carousel, so the cards stay in
+            visual sync. CSS class .tour-card already gives the right
+            styling; here we wrap in a simple grid (not the homepage
+            carousel) since attractions typically have 1–4 tours visiting. */}
+        {visitingTourIndices.length > 0 && (
+          <section className="container-x attraction-tours-section" style={{ maxWidth: 1280, margin: "0 auto 80px", padding: "0 32px" }}>
+            <h2 className="display" style={{ fontSize: "clamp(28px, 3.5vw, 40px)", marginBottom: 32 }}>
               {locale === "it"
                 ? "Tour che includono questa tappa"
                 : locale === "ru"
@@ -180,33 +193,21 @@ export default async function AttractionDetailPage({
                     ? "جولات تشمل هذه المحطة"
                     : "Tours that include this attraction"}
             </h2>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
-              {visitingTours.map(
-                (tour) =>
-                  tour && (
-                    <a
-                      key={tour.slug}
-                      href={localePath(locale, `/tours/${tour.slug}`)}
-                      style={{
-                        display: "block",
-                        textDecoration: "none",
-                        color: "inherit",
-                        border: "1px solid var(--rule)",
-                        padding: 24,
-                        borderRadius: 4,
-                        transition: "background 0.18s",
-                      }}
-                    >
-                      <div style={{ fontFamily: "var(--mono)", fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: "var(--ink-mute)", marginBottom: 8 }}>
-                        €{tour.priceEUR} · {tour.durationMinutes >= 60 ? `${Math.round(tour.durationMinutes / 60)}h` : `${tour.durationMinutes} min`}
-                      </div>
-                      <h3 className="display" style={{ fontSize: 22, marginBottom: 8 }}>
-                        {renderRich(tour.copy[locale].headline)}
-                      </h3>
-                      <p style={{ color: "var(--ink-soft)", fontSize: 14 }}>{tour.copy[locale].kicker}</p>
-                    </a>
-                  ),
-              )}
+            <div className="attraction-tours-grid">
+              {visitingTourIndices.map(({ slug: tourSlug, idx }) => {
+                const tour = t.tours.items[idx];
+                if (!tour) return null;
+                return (
+                  <TourCard
+                    key={tourSlug}
+                    tour={tour}
+                    slug={tourSlug}
+                    image={TOUR_CARD_IMAGES[tourSlug]}
+                    t={t}
+                    locale={locale}
+                  />
+                );
+              })}
             </div>
           </section>
         )}
@@ -225,24 +226,6 @@ export default async function AttractionDetailPage({
           </div>
         </section>
 
-        {/* Back to attractions index */}
-        <section className="container-x" style={{ maxWidth: 900, margin: "0 auto 60px", padding: "0 32px", textAlign: "center" }}>
-          <a
-            href={localePath(locale, "/attractions")}
-            style={{
-              fontFamily: "var(--mono)",
-              fontSize: 12,
-              letterSpacing: "0.22em",
-              textTransform: "uppercase",
-              color: "var(--ink-soft)",
-              textDecoration: "none",
-              borderBottom: "1px solid var(--rule)",
-              paddingBottom: 4,
-            }}
-          >
-            ← {attractionsLabel}
-          </a>
-        </section>
       </InnerPageShell>
     </>
   );

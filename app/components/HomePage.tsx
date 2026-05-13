@@ -16,6 +16,7 @@ import {
 } from "../copy-variants";
 import { localePath } from "../seo";
 import { attractions, ORBIT_PIN_IDS } from "../content/attractions";
+import { TourCard, TOUR_CARD_IMAGES } from "./TourCard";
 
 // Five interchangeable colour palettes — defined in app/globals.css under
 // html[data-palette="A|B|C|D|E"]. The toggle just sets the attribute;
@@ -787,37 +788,14 @@ export default function HomePage({ locale }: { locale: Locale }) {
             {t.tours.items.map((tour, i) => {
               const slugs = ["highlights-1h", "balbianello-nesso", "top-villas-half-day", "bespoke-full-day"];
               return (
-                <article key={i} className={`tour-card reveal ${i % 2 === 1 ? "reveal-delay-1" : ""}`}>
-                  <a href={localePath(locale, `/tours/${slugs[i]}`)} style={{ display: "contents" }}>
-                    <div className="img-wrap">
-                      <img src={TOUR_IMGS[i]} alt={`${tour.title.replace(/<[^>]+>/g, "")} — ${tour.duration} private boat tour from Como`} loading="lazy" width="900" height="600" />
-                      <div className="duration-tag">{tour.duration}</div>
-                      <div className="price-tag">
-                        <span className="from-label">{t.tours.factFrom}</span>
-                        <b>{tour.price.replace(/^[^\d]*/, "").replace(/[^\d.,]/g, "").replace(/^/, "€")}</b>
-                      </div>
-                    </div>
-                    <h3><RichText text={tour.title} /></h3>
-                    <p className="descr">{tour.desc}</p>
-                    <div className="itinerary">
-                      {tour.stops.map((s, k) => (<span className="stop" key={k}>{s}</span>))}
-                    </div>
-                    <div className="meta-row">
-                      <div className="meta-cell">
-                        <span className="k">{t.tours.factDuration}</span>
-                        <span className="v">{tour.duration}</span>
-                      </div>
-                      <div className="meta-cell">
-                        <span className="k">{t.tours.factIdeal}</span>
-                        <span className="v">{tour.meta}</span>
-                      </div>
-                      <div className="meta-cell">
-                        <span className="k">{t.tours.factFrom ?? "From"}</span>
-                        <span className="v">{tour.price}</span>
-                      </div>
-                    </div>
-                  </a>
-                </article>
+                <TourCard
+                  key={i}
+                  tour={tour}
+                  slug={slugs[i]}
+                  image={TOUR_IMGS[i]}
+                  t={t}
+                  locale={locale}
+                />
               );
             })}
             </div>

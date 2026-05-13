@@ -79,7 +79,14 @@ export default async function FaqPage({ params }: { params: Promise<{ locale: st
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }} />
-      <InnerPageShell locale={locale}>
+      <InnerPageShell
+        locale={locale}
+        breadcrumbs={[
+          {
+            label: locale === "it" ? "Domande frequenti" : locale === "ru" ? "Вопросы" : locale === "ar" ? "أسئلة" : "FAQ",
+          },
+        ]}
+      >
         <section className="container-x" style={{ maxWidth: 800, margin: "60px auto", padding: "0 32px" }}>
           <div style={{ fontFamily: "var(--mono)", fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: "var(--ink-mute)", marginBottom: 16 }}>
             {locale === "it" ? "Domande frequenti" : locale === "ru" ? "Часто задаваемые вопросы" : locale === "ar" ? "أسئلة متكررة" : "Frequently asked questions"}

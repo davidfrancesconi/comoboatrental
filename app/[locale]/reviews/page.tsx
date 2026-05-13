@@ -78,7 +78,12 @@ export default async function ReviewsPage({ params }: { params: Promise<{ locale
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }} />
-      <InnerPageShell locale={locale}>
+      <InnerPageShell
+        locale={locale}
+        breadcrumbs={[
+          { label: locale === "it" ? "Recensioni" : locale === "ru" ? "Отзывы" : locale === "ar" ? "التقييمات" : "Reviews" },
+        ]}
+      >
         <section className="container-x" style={{ maxWidth: 900, margin: "60px auto", padding: "0 32px" }}>
           <div style={{ fontFamily: "var(--mono)", fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: "var(--ink-mute)", marginBottom: 16 }}>
             {t.testimonials.indexLabel}

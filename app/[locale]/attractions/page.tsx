@@ -107,7 +107,15 @@ export default async function AttractionsIndexPage({
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }} />
-      <InnerPageShell locale={locale}>
+      <InnerPageShell
+        locale={locale}
+        breadcrumbs={[
+          {
+            label:
+              locale === "it" ? "Attrazioni" : locale === "ru" ? "Достопримечательности" : locale === "ar" ? "معالم" : "Attractions",
+          },
+        ]}
+      >
         <section className="container-x" style={{ maxWidth: 1100, margin: "60px auto 40px", padding: "0 32px" }}>
           <div style={{ fontFamily: "var(--mono)", fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: "var(--ink-mute)", marginBottom: 16 }}>
             {t.attractions.indexLabel}

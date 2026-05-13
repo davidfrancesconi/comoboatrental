@@ -1843,3 +1843,110 @@ html[dir="rtl"] .scroll-arrow-right { right: auto; left: 8px; }
 .attraction-list-card:hover .cta { color: var(--gold-deep); }
 .attraction-list-card .cta .arrow { transition: transform 0.25s ease; }
 .attraction-list-card:hover .cta .arrow { transform: translateX(4px); }
+
+/* ===== Breadcrumbs =====
+   Visual navigation aid above the hero on inner pages. Mirrors the
+   BreadcrumbList JSON-LD emitted by every detail page so the trail is
+   visible to both humans and search engines. */
+.breadcrumbs {
+  padding: 24px var(--gutter) 0;
+  max-width: var(--container);
+  margin: 0 auto;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.breadcrumbs ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.breadcrumbs li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.breadcrumbs a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 1px;
+  transition: color 0.18s, border-color 0.18s;
+}
+.breadcrumbs a:hover {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+.breadcrumbs [aria-current="page"] {
+  color: var(--ink);
+  font-weight: 500;
+}
+.breadcrumbs .sep {
+  color: var(--ink-mute);
+  opacity: 0.5;
+}
+
+/* ===== Back to home button =====
+   Prominent CTA at the bottom of inner pages (before the footer)
+   replacing the previous tiny text link. The visitor always has a
+   clear path back to the homepage regardless of how deep they are. */
+.back-to-home-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 40px var(--gutter) 60px;
+  border-top: 1px solid var(--rule);
+  margin-top: 40px;
+}
+.back-to-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 28px;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.back-to-home:hover {
+  background: var(--ink);
+  color: var(--bg);
+  transform: translateY(-1px);
+}
+.back-to-home .arrow {
+  font-size: 16px;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+.back-to-home:hover .arrow {
+  transform: translateX(-4px);
+}
+html[dir="rtl"] .back-to-home .arrow { transform: scaleX(-1); }
+html[dir="rtl"] .back-to-home:hover .arrow { transform: scaleX(-1) translateX(-4px); }
+
+/* ===== Attraction detail · tours-that-visit grid =====
+   The tour cards on the attraction detail page reuse the same .tour-card
+   styling as the homepage carousel, but laid out in a grid (2 columns on
+   desktop, 1 on mobile) rather than a horizontal scroller — attractions
+   typically have 1–4 visiting tours, not enough to need a carousel. */
+.attraction-tours-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: clamp(24px, 3vw, 36px);
+}
+.attraction-tours-grid .tour-card {
+  flex: none;
+  max-width: 100%;
+  scroll-snap-align: unset;
+}

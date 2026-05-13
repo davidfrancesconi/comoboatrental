@@ -116,20 +116,93 @@ export function InnerPageFooter({ locale }: { locale: Locale }) {
   );
 }
 
+// Breadcrumb trail — visual companion to the BreadcrumbList JSON-LD
+// already emitted on each inner page. Provides a clear visual path
+// back through the hierarchy: Home › Attractions › Bellagio.
+//
+// Sits just under the nav at the top of each inner page so the visitor
+// always knows where they are and can step back one or two levels
+// without searching for a "back" button.
+export function Breadcrumbs({
+  locale,
+  trail,
+}: {
+  locale: Locale;
+  /** Ordered path. The first crumb is typically the locale homepage; the
+   * last crumb is the current page (rendered as text, not a link). */
+  trail: { label: string; href?: string }[];
+}) {
+  const homeLabel =
+    locale === "it" ? "Home" : locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : "Home";
+  // Always start with Home as the first crumb if the caller didn't add it.
+  const full =
+    trail[0]?.href === localePath(locale, "/")
+      ? trail
+      : [{ label: homeLabel, href: localePath(locale, "/") }, ...trail];
+  return (
+    <nav className="breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        {full.map((c, i) => {
+          const isLast = i === full.length - 1;
+          return (
+            <li key={i}>
+              {c.href && !isLast ? (
+                <a href={c.href}>{c.label}</a>
+              ) : (
+                <span aria-current="page">{c.label}</span>
+              )}
+              {!isLast && <span className="sep" aria-hidden>›</span>}
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+  );
+}
+
+// Prominent "Back to home" affordance for the bottom of inner pages —
+// a clearly-clickable button-style link with an arrow, sized so visitors
+// can't mistake it for decoration. Replaces the previous tiny dot/text
+// at the end of detail pages.
+export function BackToHome({ locale }: { locale: Locale }) {
+  const label =
+    locale === "it" ? "Torna alla home" :
+    locale === "ru" ? "Вернуться на главную" :
+    locale === "ar" ? "العودة إلى الرئيسية" :
+    "Back to home";
+  return (
+    <div className="back-to-home-wrap">
+      <a href={localePath(locale, "/")} className="back-to-home" aria-label={label}>
+        <span className="arrow" aria-hidden>←</span>
+        <span className="label">{label}</span>
+      </a>
+    </div>
+  );
+}
+
 // Standard wrapper used by all inner pages.
 export function InnerPageShell({
   locale,
   children,
+  breadcrumbs,
 }: {
   locale: Locale;
   children: React.ReactNode;
+  /** Optional breadcrumb trail rendered right under the nav. If omitted,
+   * no breadcrumbs are shown (use it on pages where the hero IS the
+   * primary location indicator, e.g. /attractions index). */
+  breadcrumbs?: { label: string; href?: string }[];
 }) {
   return (
     <>
       <InnerPageNav locale={locale} />
+      {breadcrumbs && breadcrumbs.length > 0 && (
+        <Breadcrumbs locale={locale} trail={breadcrumbs} />
+      )}
       <main className="inner-main" style={{ minHeight: "60vh" }}>
         {children}
       </main>
+      <BackToHome locale={locale} />
       <InnerPageFooter locale={locale} />
     </>
   );

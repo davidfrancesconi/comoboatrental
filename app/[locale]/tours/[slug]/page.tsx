@@ -131,7 +131,16 @@ export default async function TourPage({
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }} />
-      <InnerPageShell locale={locale}>
+      <InnerPageShell
+        locale={locale}
+        breadcrumbs={[
+          {
+            label: locale === "it" ? "Tour" : locale === "ru" ? "Туры" : locale === "ar" ? "الجولات" : "Tours",
+            href: localePath(locale, "/") + "#tours",
+          },
+          { label: c.headline.replace(/<[^>]+>/g, "") },
+        ]}
+      >
         {/* Hero */}
         <section style={{ position: "relative", minHeight: "60vh", display: "flex", alignItems: "flex-end" }}>
           <div style={{ position: "absolute", inset: 0, overflow: "hidden" }}>

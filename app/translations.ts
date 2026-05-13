@@ -47,7 +47,7 @@ type MapPin = {
   lng: number;
 };
 
-type Translation = {
+export type Translation = {
   nav: { tours: string; fleet: string; map: string; attractions: string; experiences: string; contact: string };
   hero: {
     location: string;

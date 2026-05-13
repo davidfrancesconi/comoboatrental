@@ -90,7 +90,13 @@ export default async function BlogPostPage({
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }} />
-      <InnerPageShell locale={locale}>
+      <InnerPageShell
+        locale={locale}
+        breadcrumbs={[
+          { label: "Blog" },
+          { label: post.metaTitle.split(" — ")[0] ?? post.metaTitle },
+        ]}
+      >
         <article className="container-x" style={{ maxWidth: 800, margin: "60px auto", padding: "0 32px" }}>
           <div style={{ fontFamily: "var(--mono)", fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: "var(--ink-mute)", marginBottom: 16 }}>
             {post.author} · {new Date(post.datePublished).toLocaleDateString(locale, { year: "numeric", month: "long", day: "numeric" })}
