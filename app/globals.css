@@ -1950,3 +1950,70 @@ html[dir="rtl"] .back-to-home:hover .arrow { transform: scaleX(-1) translateX(-4
   max-width: 100%;
   scroll-snap-align: unset;
 }
+
+/* ===== Inner-page nav (sticky, light bg) =====
+   On inner pages the nav background is parchment (var(--bg)) rather than
+   the dark hero of the homepage. Override the homepage nav's cream
+   text colour so links remain readable against the light surface, and
+   swap the decorative mark dot for an explicit ← arrow that makes the
+   "click the logo to go home" affordance obvious. */
+nav.top.inner {
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+nav.top.inner .logo,
+nav.top.inner .links a,
+nav.top.inner .lang a {
+  color: var(--ink);
+}
+nav.top.inner .links a {
+  opacity: 0.75;
+}
+nav.top.inner .links a:hover {
+  opacity: 1;
+}
+nav.top.inner .lang a {
+  opacity: 0.55;
+}
+nav.top.inner .lang a.active,
+nav.top.inner .lang a:hover {
+  opacity: 1;
+}
+
+/* The wordmark on inner pages becomes an explicit back-to-home link */
+nav.top.inner .logo.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+nav.top.inner .logo.back-link:hover {
+  color: var(--gold-deep);
+}
+nav.top.inner .logo .back-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--ink);
+  border-radius: 50%;
+  font-size: 14px;
+  line-height: 1;
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+  flex: none;
+}
+nav.top.inner .logo.back-link:hover .back-arrow {
+  background: var(--ink);
+  color: var(--bg);
+  transform: translateX(-3px);
+}
+html[dir="rtl"] nav.top.inner .logo .back-arrow { transform: scaleX(-1); }
+html[dir="rtl"] nav.top.inner .logo.back-link:hover .back-arrow { transform: scaleX(-1) translateX(-3px); }
+
+@media (max-width: 720px) {
+  nav.top.inner { padding-left: 16px; padding-right: 16px; }
+  nav.top.inner .wordmark { display: none; }
+  nav.top.inner .logo .back-arrow { width: 32px; height: 32px; font-size: 16px; }
+}

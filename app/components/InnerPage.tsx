@@ -39,15 +39,35 @@ export function renderRich(text: string): React.ReactNode[] {
 
 export function InnerPageNav({ locale }: { locale: Locale }) {
   const t = translations[locale];
+  // The "logo" on inner pages doubles as the back-to-home affordance.
+  // We swap the decorative mark dot used on the homepage for an explicit
+  // ← arrow so visitors immediately understand clicking the wordmark
+  // takes them back to the homepage.
+  const homeLabel =
+    locale === "it" ? "Home" : locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : "Home";
   return (
-    <nav className="top inner" id="topnav" style={{ position: "sticky", top: 0, background: "var(--bg)", borderBottom: "1px solid var(--rule)" }}>
-      <a href={localePath(locale, "/")} className="logo">
-        <span className="mark"></span>Como Boat Rental
+    <nav
+      className="top inner"
+      id="topnav"
+      style={{
+        position: "sticky",
+        top: 0,
+        background: "var(--bg)",
+        borderBottom: "1px solid var(--rule)",
+      }}
+    >
+      <a
+        href={localePath(locale, "/")}
+        className="logo back-link"
+        aria-label={`${homeLabel} — Como Boat Rental`}
+      >
+        <span className="back-arrow" aria-hidden>←</span>
+        <span className="wordmark">Como Boat Rental</span>
       </a>
       <div className="links">
-        <a href={localePath(locale, "/")}>{t.nav.tours.toLowerCase() === "tours" ? "Home" : t.nav.tours === "Tour" ? "Home" : "Home"}</a>
+        <a href={localePath(locale, "/")}>{homeLabel}</a>
         <a href={`${localePath(locale, "/")}#tours`}>{t.nav.tours}</a>
-        <a href={`${localePath(locale, "/")}#fleet`}>{t.nav.fleet}</a>
+        <a href={`${localePath(locale, "/")}#attractions`}>{t.nav.attractions}</a>
         <a href={`${localePath(locale, "/")}#contact`}>{t.nav.contact}</a>
       </div>
       <div className="lang">
