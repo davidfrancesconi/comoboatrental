@@ -256,6 +256,45 @@ export default async function AttractionDetailPage({
               statsSub={`~${timeMinutes} ${fromComoLabel}`}
             />
 
+            {/* Quick-facts card — 4 generic facts derived from PIN_BASE
+                + haversine. The deeper 5-6 row version (Entry / Open /
+                Best photographs) requires per-attraction copy; flagged
+                for a follow-up pass in docs/HANDOFF.md. */}
+            <div className="facts-card">
+              <div className="row">
+                <span className="k">
+                  {locale === "it" ? "Dove" : locale === "ru" ? "Где" : locale === "ar" ? "أين" : "Where"}
+                </span>
+                <span className="v">{pin?.name?.split(" · ")[0] ?? c.name}</span>
+              </div>
+              <div className="row">
+                <span className="k">
+                  {locale === "it" ? "Distanza da Como" : locale === "ru" ? "Расстояние от Комо" : locale === "ar" ? "المسافة من كومو" : "Distance from Como"}
+                </span>
+                <span className="v">{distanceKm} km<small>~{timeMinutes} min</small></span>
+              </div>
+              <div className="row">
+                <span className="k">
+                  {locale === "it" ? "Tipo" : locale === "ru" ? "Тип" : locale === "ar" ? "النوع" : "Type"}
+                </span>
+                <span className="v">
+                  {pin?.type === "villa" ? (locale === "it" ? "Villa storica" : locale === "ru" ? "Историческая вилла" : locale === "ar" ? "فيلا تاريخية" : "Historic villa")
+                    : pin?.type === "nature" ? (locale === "it" ? "Natura" : locale === "ru" ? "Природа" : locale === "ar" ? "طبيعة" : "Nature site")
+                    : pin?.type === "port" ? (locale === "it" ? "Città / porto" : locale === "ru" ? "Город / порт" : locale === "ar" ? "مدينة / مرفأ" : "Town / port")
+                    : (locale === "it" ? "Borgo" : locale === "ru" ? "Деревня" : locale === "ar" ? "قرية" : "Village")}
+                </span>
+              </div>
+              <div className="row">
+                <span className="k">
+                  {locale === "it" ? "Migliore stagione" : locale === "ru" ? "Лучший сезон" : locale === "ar" ? "أفضل موسم" : "Best season"}
+                </span>
+                <span className="v">
+                  {locale === "it" ? "Mag – Set" : locale === "ru" ? "Май – сен" : locale === "ar" ? "مايو – سبتمبر" : "May – Sep"}
+                  <small>{locale === "it" ? "Acqua calda, luce piena" : locale === "ru" ? "Тёплая вода, полный свет" : locale === "ar" ? "مياه دافئة وضوء كامل" : "Warm water, full light"}</small>
+                </span>
+              </div>
+            </div>
+
             <a href="#contact" className="side-cta">
               <div className="k">{addToTourLabel}</div>
               <div className="v">
@@ -277,6 +316,33 @@ export default async function AttractionDetailPage({
             </div>
           </aside>
         </article>
+
+        {/* Gallery — 4-image strip. Placeholder until Loris supplies
+            specific photography per attraction. Today we use the
+            attraction hero + 3 stock lake images so the layout slots
+            are obvious. */}
+        <section className="container-x tour-gallery" style={{ maxWidth: 1100, margin: "0 auto 60px", padding: "0 32px" }}>
+          <div className="gallery-grid">
+            <div className="full">
+              <img src={attraction.image} alt={`${pin?.name ?? attraction.slug} — view from the lake`} loading="lazy" width="1600" height="900" />
+            </div>
+            <div>
+              <img src="/images/hero-sunset.jpg" alt="Lake Como at golden hour" loading="lazy" width="600" height="450" />
+            </div>
+            <div>
+              <img src="/images/luxury-cruise.jpg" alt="A private boat tour of Lake Como" loading="lazy" width="600" height="450" />
+            </div>
+            <div>
+              <img src="/images/hero-1.jpg" alt="The first basin of Lake Como" loading="lazy" width="600" height="450" />
+            </div>
+          </div>
+          <p className="gallery-caption">
+            {locale === "it" ? "Quattro istantanee · foto specifiche dell'attrazione in arrivo da Loris" :
+             locale === "ru" ? "Четыре кадра · фото для этой достопримечательности от Лориса скоро будут" :
+             locale === "ar" ? "أربع لقطات · صور خاصة بهذه الوجهة قيد التحديث من لوريس" :
+             "Four views · attraction-specific photography from Loris coming soon"}
+          </p>
+        </section>
 
         {/* Tours that visit — full-bleed band with bg-alt. Same TourCard
             component as the homepage carousel so they stay in sync. */}

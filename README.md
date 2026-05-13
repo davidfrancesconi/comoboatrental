@@ -72,9 +72,10 @@ I font sono caricati via `next/font/google`:
 │   ├── [locale]/                 ← rotte per lingua
 │   │   ├── layout.tsx            ← metadati per lingua, hreflang
 │   │   ├── page.tsx              ← homepage con JSON-LD @graph completo
-│   │   ├── tours/[slug]/page.tsx ← landing per tour
+│   │   ├── about/page.tsx        ← pagina founder (Loris + Claudio, placeholder copy)
+│   │   ├── tours/[slug]/page.tsx ← landing per tour (con photo gallery)
 │   │   ├── attractions/page.tsx  ← lista delle 13 attrazioni
-│   │   ├── attractions/[slug]/page.tsx ← pagina dettaglio per ogni attrazione
+│   │   ├── attractions/[slug]/page.tsx ← pagina dettaglio con sidebar sticky (mini-map + quick-facts + adjacent nav)
 │   │   ├── faq/page.tsx
 │   │   ├── reviews/page.tsx
 │   │   └── blog/[slug]/page.tsx
@@ -85,6 +86,10 @@ I font sono caricati via `next/font/google`:
 │   │   └── blog.ts               ← articoli seed
 │   └── components/
 │       ├── HomePage.tsx          ← UI single-page come client component
+│       ├── BookingForm.tsx       ← form prenotazione inline (client component, mailto: handler)
+│       ├── Newsletter.tsx        ← lead-capture "sample itinerary" (client component, mailto:)
+│       ├── MiniLakeMap.tsx       ← SVG mini-mappa sticky per pagine attrazione
+│       ├── TourCard.tsx          ← card tour riutilizzata da homepage e attrazioni
 │       └── InnerPage.tsx         ← nav + footer condivisi per le pagine interne
 ├── public/
 │   ├── images/                   ← tutte le foto + asset
@@ -100,9 +105,9 @@ I font sono caricati via `next/font/google`:
 └── package.json
 ```
 
-Il build emette **88 pagine statiche** — homepage × 4 lingue, 4 tour
+Il build emette **96 pagine statiche** — homepage × 4 lingue, 4 tour
 × 4 lingue, 4 indici attrazioni + 13 attrazioni × 4 lingue, FAQ × 4,
-recensioni × 4, blog × 2, più sitemap e robots.
+recensioni × 4, pagina /about × 4, blog × 2, più sitemap e robots.
 
 ---
 
@@ -231,6 +236,10 @@ app/
 │   └── blog.ts                 ← articoli seed
 └── components/
     ├── HomePage.tsx            ← l'UI single-page esistente come client component
+    ├── BookingForm.tsx         ← form di prenotazione inline (mailto: handler)
+    ├── Newsletter.tsx          ← band lead-capture "sample itinerary" (mailto: handler)
+    ├── MiniLakeMap.tsx         ← SVG mini-mappa per la sidebar attrazione
+    ├── TourCard.tsx            ← card tour condivisa home + attrazioni
     └── InnerPage.tsx           ← nav + footer condivisi per le pagine interne
 ```
 
@@ -251,22 +260,27 @@ post-handoff.
 
 ---
 
-## Toggle editoriale di anteprima (variante + palette)
+## Toggle editoriale di anteprima (variante + palette) — RIMOSSO
 
-Il sito spedisce un piccolo controllo flottante in alto a destra
-che permette al cliente di alternare tra tre **varianti di copy**
-e cinque **palette di colore** senza ricompilare. Le scelte
-vengono salvate in `localStorage`, così un revisore può atterrare
-su `comoboatrental.com`, scegliere una combinazione, e ritornare
-sempre alla stessa.
+Durante l'iterazione del design il sito spediva un piccolo controllo
+flottante in alto a destra che permetteva al cliente di alternare tra
+tre **varianti di copy** e cinque **palette di colore** senza
+ricompilare. Loris ha scelto **Editorial + Parchment** (A · A) e il
+toggle è stato rimosso dalla produzione (maggio 2026). Variante e
+palette sono ora hardcoded a `"A"` / `"A"` in cima a
+`app/components/HomePage.tsx`.
 
-È uno **strumento di review**. Quello che il visitatore sceglie
-non cambia ciò che vedono i crawler — i metadati SEO (title,
-description, Open Graph, Twitter card e JSON-LD `LocalBusiness`)
-sono bakerati al build in `app/layout.tsx` e in `app/[locale]/layout.tsx`,
-indipendenti dalla variante. Le varianti di copy agiscono solo
-sull'inglese; passando a IT / RU / AR si vede sempre la
-traduzione standard in `app/translations.ts`.
+Il codice delle altre 2 varianti e delle altre 4 palette **resta nei
+file per riferimento futuro** — `app/copy-variants.ts` definisce gli
+override Founder-led e Concierge, e `app/globals.css` conserva le
+regole `html[data-palette="B|C|D|E"]` per Fog/Terracotta/Mono/Dusk. Se
+Loris vuole rivisitare la scelta, basta ripristinare il blocco
+`<div className="vp-toggle">…</div>` dalla git history del file.
+
+La sezione qui sotto descrive il sistema **come era progettato** per
+contesto di chi subentra. I metadati SEO non sono mai stati impattati
+dal toggle: erano sempre bakerati al build sulla Variant A per
+coerenza.
 
 ### Varianti di copy
 

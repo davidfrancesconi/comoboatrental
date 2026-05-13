@@ -67,7 +67,8 @@ export function InnerPageNav({ locale }: { locale: Locale }) {
       <div className="links">
         <a href={localePath(locale, "/")}>{homeLabel}</a>
         <a href={`${localePath(locale, "/")}#tours`}>{t.nav.tours}</a>
-        <a href={`${localePath(locale, "/")}#attractions`}>{t.nav.attractions}</a>
+        <a href={`${localePath(locale, "/")}#map`}>{t.nav.attractions}</a>
+        <a href={localePath(locale, "/about")}>{t.nav.about}</a>
         <a href={`${localePath(locale, "/")}#contact`}>{t.nav.contact}</a>
       </div>
       <div className="lang">

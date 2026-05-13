@@ -11,10 +11,11 @@ il sito.
 ## In due righe
 
 Il sito ora è pronto per Google. Prima esisteva una sola pagina;
-ora ne esistono **60** — una per ogni tour, una per ogni
+ora ne esistono **96** — una per ogni tour, una per ogni
 destinazione (Bellagio, Varenna, Balbianello, Carlotta, Cernobbio,
-Nesso), e tutto in **quattro lingue**: inglese, italiano, russo,
-arabo. **Tutte e quattro le lingue sono ottimizzate** per le
+Nesso), una pagina /about per te e Claudio, una pagina di
+prenotazioni con form completo, e tutto in **quattro lingue**:
+inglese, italiano, russo, arabo. **Tutte e quattro le lingue sono ottimizzate** per le
 ricerche dei rispettivi mercati — italiano per "noleggio barche
 como" (3.600 ricerche/mese), inglese per "lake como boat tour",
 russo per "Аренда лодки Комо" (mercato del lusso russo via Dubai
@@ -374,57 +375,243 @@ Tutto è documentato in `docs/HANDOFF.md` (per lui, in inglese).
 
 ---
 
-## Domande / decisioni che vorrei sentire da te
+## La tua TO-DO LIST completa
 
-1. **Da quando lavorate sul lago?** Su una sezione di prossima
-   pubblicazione vorrei mettere "Family-run since [ANNO] · three
-   generations on this water" — è una formula che funziona molto
-   bene per la fiducia del visitatore. Mandami l'anno corretto
-   (o se preferisci una formula diversa).
+Ecco tutto quello che mi serve da te, organizzato per priorità.
+Per ogni voce sopra dice **cosa**, **perché**, **come consegnarmela**.
+Spunta man mano e mandami quello che hai pronto — anche un pezzo
+alla volta va bene.
 
-2. **Quale dei due numeri di telefono è il primario?**
-   +39 340 6487574 o +39 348 0689769? In tutti i contatti uno
-   diventa quello in evidenza, l'altro un secondario. Decidi
-   tu (se uno è il personale di Loris e l'altro un fisso/ufficio,
-   tipicamente il personale è il primario).
+### A. Decisioni veloci (10 minuti di pensiero, niente foto, niente testi)
 
-3. **Foto per la gallery delle pagine attrazioni**: ogni pagina
-   attrazione potrebbe avere 4 foto (1 grande + 3 piccole). Oggi
-   abbiamo solo 1 foto eroe per attrazione. Se mandi 3 foto extra
-   per le attrazioni che vuoi più rilevanti (Bellagio, Villa
-   Balbianello, Varenna), le inseriamo.
+- [ ] **A1. Da quando esiste Como Boat Rental sul lago?**
+  L'anno di fondazione mi serve per la pagina /about (frase
+  "Family-run since [ANNO] · three generations on this water" —
+  formula che funziona molto bene per la fiducia del visitatore).
+  Se Como Boat Rental come marchio è recente ma la famiglia
+  conduce barche sul lago da prima, dimmi entrambi gli anni
+  ("famiglia sul lago dagli anni '60, attività registrata nel
+  2010").
+  → Mandami solo "Anno X" via WhatsApp o email.
 
-4. **About / pagina founder**: una mini-pagina /about con foto di
-   te e Claudio + 200 parole di storia (chi siete, come avete
-   iniziato, cosa rende le vostre giornate diverse) aiuta molto
-   il posizionamento Google per query "owner-operator". Se mi
-   mandi foto e testo lo costruisco.
+- [ ] **A2. Quale dei due numeri di telefono è il primario?**
+  +39 340 6487574 o +39 348 0689769? Uno diventa il numero in
+  evidenza in tutta la home (CTA WhatsApp, header, footer);
+  l'altro resta come "linea ufficio" più piccolo.
+  → Mandami "primario: +39 X" via WhatsApp.
 
-5. **Le 25 foto per Google Business Profile**: le hai già o
-   serve uno shooting?
+- [ ] **A3. Il tono del blog va bene?**
+  Articolo seed: `/it/blog/best-months-lake-como-by-boat/` (anche
+  in inglese). È scritto come se l'aveste scritto voi — voce
+  proprietaria, prima persona plurale, dettagli concreti. Leggilo
+  e dimmi se rispecchia il vostro modo di parlare oppure no.
+  Se sì, ne aggiungo altri 3-4 (lista suggerita in `HANDOFF.md`).
+  → "OK così" oppure "cambierei X" via WhatsApp.
 
-6. **Avete un PDF "preferred-supplier" pronto** per gli hotel?
-   Se no possiamo metterlo insieme.
+- [ ] **A4. Variante grafica definitiva: confermata.**
+  Avevamo un toggle per provare 3 voci editoriali × 5 palette di
+  colore. La scelta è caduta su **Editorial + Parchment (A · A)**.
+  Il toggle è stato rimosso. Se rivedendo il sito non ti piace
+  qualcosa della voce o del colore, dimmelo entro fine maggio,
+  prima di consegnare al dev.
 
-7. **Il blog** — c'è un articolo seed scritto come se l'aveste
-   scritto voi due. Va bene il tono o vuoi cambiare? E vuoi
-   che ne aggiunga altri prima di consegnare al dev?
+### B. Contenuti che servono SOLO a te (non posso scriverli io)
+
+- [ ] **B1. Pagina /about — testo founder.**
+  Oggi la pagina /about esiste ma il paragrafo centrale è marcato
+  `[Placeholder]`. Mi servono **200 parole circa** che rispondano a:
+  - chi siete tu e Claudio (un paio di frasi ciascuno — chi ha
+    iniziato, chi è arrivato, perché)
+  - come è iniziata Como Boat Rental
+  - cosa fa la differenza nei vostri tour rispetto a chiunque
+    altro sul lago (un dettaglio concreto, non slogan)
+  - una frase su come amate il lago da sempre
+
+  Non serve un testo perfetto. Scrivilo come parli, mandamelo,
+  lo ripulisco e lo traduco in 4 lingue.
+
+  → WhatsApp o email vocale OK — lo trascrivo io.
+
+- [ ] **B2. Foto di te e Claudio per /about.**
+  1 foto verticale 4:5, voi due insieme, con barca o lago dietro
+  (non posata da studio — preferibilmente sulla barca o sul
+  pontile). Risoluzione minima 1200×1500 px.
+  → Mandami via WhatsApp in alta qualità.
+
+- [ ] **B3. 5 foto in alta risoluzione per la stampa.**
+  Quando ti contatta una rivista (TravMedia, Vanity Fair, ecc.)
+  servono foto 4000+ px sul lato lungo. Le tieni in una cartella
+  Drive o Dropbox e quando arriva la richiesta mandi il link.
+
+### C. Foto per il sito (priorità per impatto)
+
+#### C1. **Le 4 foto eroe dei tour** — alta priorità
+
+Oggi le 4 card tour sulla home riusano foto generiche. Una foto
+eroe dedicata per ognuna fa una differenza enorme. Per ogni tour
+**una foto verticale 4:5 + una orizzontale 16:9 a 1200×675**:
+
+- [ ] **Highlights 1h** — barca davanti al lungolago di Como con
+  Villa Olmo o il Faro Voltiano sullo sfondo
+- [ ] **Balbianello & Nesso** — la cascata di Nesso o la baia di
+  Balbianello dall'acqua
+- [ ] **Mezza giornata Top Villas** — Bellagio dall'acqua, o
+  Villa Carlotta in fiore
+- [ ] **Charter giornaliero** — pranzo a bordo o tramonto con
+  prosecco/aperitivo
+
+#### C2. **Gallery delle 13 attrazioni** — media priorità
+
+Ogni pagina attrazione (es. `/it/attractions/bellagio/`) ha una
+struttura per **4 foto: 1 grande + 3 piccole**. Oggi usiamo foto
+generiche. Se mi mandi 3 foto extra per le attrazioni più
+importanti, le inserisco.
+
+Priorità di consegna:
+- [ ] **Bellagio** — 3 foto (lungolago, villa Melzi, panorama dal lago)
+- [ ] **Villa del Balbianello** — 3 foto (la villa dall'acqua, il
+  pontile, dettagli giardini)
+- [ ] **Varenna** — 3 foto (porto, Villa Monastero, Castello di Vezio)
+- [ ] **Como città** — 3 foto (cattedrale dal lago, Tempio Voltiano)
+- [ ] **Cernobbio / Villa d'Este** — 3 foto (facciata lato lago)
+- [ ] **Villa Carlotta** — 3 foto (giardini in fiore, facciata)
+- [ ] Le altre 7 attrazioni (Tremezzo, Lenno, Lezzeno, Nesso,
+  Isola Comacina, Villa La Cassinella, Punta Spartivento) — quando
+  hai tempo, anche solo 1 foto extra ciascuna è utile.
+
+#### C3. **25 foto per Google Business Profile** — alta priorità
+
+Google Business Profile premia chi carica almeno 20-25 foto
+quando crea il profilo (e poi 1-2 al mese in continuativa).
+Possono essere le stesse della gallery — anche foto col cellulare
+purché siano luminose e in alta risoluzione. La lista che ti
+suggerisco:
+- 5 foto di **barche** (interno + esterno, in navigazione)
+- 5 foto di **esperienze di ospiti** (col loro consenso —
+  brindisi, foto di gruppo, scatti rubati di sorrisi)
+- 5 foto di **mete** (Bellagio, Balbianello, Carlotta, Varenna,
+  Como)
+- 5 foto di **tu e Claudio al lavoro** (allo skipper, durante il
+  bagno, mentre indicate qualcosa)
+- 5 foto di **dettaglio del prodotto** (legno, cuscini, ombrelloni,
+  cesto del prosecco, mappa stampata)
+
+Se non le hai, una mezza giornata con un fotografo (200-400 €)
+copre 80% del fabbisogno.
+
+### D. Documenti e PDF da preparare
+
+- [ ] **D1. PDF "Preferred-supplier" per hotel concierge.**
+  Una pagina con:
+  - Nomi (tu e Claudio), foto, contatti diretti
+  - Tipologia: tour privati 1h / mezza giornata / giornata intera
+  - Prezzi indicativi (puoi metterli "from €220" o lasciarli "su richiesta")
+  - 3 frasi sul perché un concierge dovrebbe raccomandarvi
+    (proprietà famiglia, italiano-inglese fluenti, sempre
+    raggiungibili, copertura assicurativa, ecc.)
+  - **% commissione per il concierge** (standard sul lago: 10-15%)
+  - Linea diretta WhatsApp/cellulare per prenotazioni d'urgenza
+    (entro l'ora)
+
+  Se non ce l'avete, mandami 4-5 bullet di contenuto e lo
+  impagino io. Lo distribuisci poi agli hotel 5★ del lago in
+  mano (lista in `HANDOFF.md`).
+
+- [ ] **D2. Foglio prezzo aggiornato** (uso interno).
+  I prezzi attualmente sul sito sono:
+  - Highlights 1h: da €220
+  - Balbianello & Nesso: €450
+  - Top Villas mezza giornata: €700
+  - Charter giornaliero: €1.400
+  Confermami che sono corretti — se sono cambiati ne aggiorno
+  tutte le 4 lingue + i meta-data per Google.
+
+### E. Iscrizioni piattaforme (sblocco crescita)
+
+Queste sono le iscrizioni descritte nei Priorità 1-3 sopra. Le
+spunto come checklist così tieni traccia.
+
+#### Priorità 1 (questa settimana)
+- [ ] **E1. Google Business Profile** — rivendicare/creare il profilo
+  comoboatrental, caricare 25 foto, completare ogni campo, attivare
+  messaggi WhatsApp.
+- [ ] **E2. Sistema di richiesta recensioni** — link Google Review
+  da mandare via WhatsApp a fine tour. Target 2-3 nuove
+  recensioni/settimana.
+
+#### Priorità 2 (prossimo mese)
+- [ ] **E3. Tripadvisor** — rivendicare l'attività, caricare foto,
+  rispondere alle recensioni esistenti.
+- [ ] **E4. GetYourGuide + Viator** — iscrizione come operatore,
+  caricare i 4 tour, accettare commissione 20-30% (è il prezzo
+  di accesso al traffico).
+- [ ] **E5. Bokun (Tripadvisor)** — sistema di prenotazione che
+  si integra con GetYourGuide, Viator, e che permette al dev di
+  embeddare il calendario nelle pagine tour.
+
+#### Priorità 3 (quando hai tempo)
+- [ ] **E6. Partnership 5 hotel di lusso** sul lago — dropbox
+  PDF preferred-supplier al concierge, follow-up via email.
+- [ ] **E7. Press kit + 2-3 contatti TravMedia/HARO** — quando
+  ti contattano per un articolo, mandi il PDF + 5 foto.
+
+### F. Cose già fatte sul sito — da rivedere con un occhio fresco
+
+Apri il sito da telefono e da computer e dimmi se qualcosa non ti
+convince:
+
+- [ ] **F1. Pagina home** (`comoboatrental.com/it/`) — leggi il
+  titolo, l'introduzione di te e Claudio, lo strip Instagram,
+  l'accordion FAQ, il form di prenotazione. Tutto suona giusto?
+- [ ] **F2. Una pagina attrazione** (es. `/it/attractions/bellagio/`)
+  — guarda la mini-mappa a destra, i "fatti veloci", il link
+  Previous/Next in fondo. Il copy ti convince?
+- [ ] **F3. Una pagina tour** (es. `/it/tours/balbianello-nesso/`) —
+  il prezzo è corretto? L'itinerario ti rappresenta?
+- [ ] **F4. Pagina /about** (`/it/about/`) — è dove mi mancano le
+  tue 200 parole (B1) e la foto (B2).
+- [ ] **F5. Form di prenotazione** (`/it/#booking`) — prova a
+  riempirlo: apre il client email con tutti i campi precompilati,
+  destinatario info@comoboatrental.it. Se vuoi che ti arrivi su
+  un indirizzo diverso, dimmi.
+- [ ] **F6. Versione araba** (`/ar/`) — anche solo per controllare
+  che si veda bene su un cellulare (scrittura da destra a
+  sinistra). Se hai un cliente Gulf, fagliela vedere e
+  chiedigli un'occhiata.
+
+### G. Cosa NON ti chiedo (perché lo fa il dev)
+
+Il dev che subentra si occupa di:
+- ottimizzare le foto (AVIF/WebP per accelerare il sito)
+- disegnare l'immagine "Open Graph" (quella che compare su
+  WhatsApp/Facebook quando uno condivide il link)
+- set di icone completo (favicon, icona home-screen)
+- integrare il calendario Bokun nelle pagine tour
+- (eventuale) backend per il form di prenotazione, se vuoi
+  ricevere richieste senza che si apra il client email
+  dell'utente — oggi funziona via mailto:
+
+Tutto questo è documentato per lui in `docs/HANDOFF.md`.
 
 ---
 
 ## Riassunto in tre punti
 
-1. Il sito è pronto. 60 pagine, 4 lingue, italiano scritto a mano
-   per le ricerche giuste, tutta la struttura SEO baked in.
+1. Il sito è pronto. 96 pagine, 4 lingue, italiano scritto a mano
+   per le ricerche giuste, tutta la struttura SEO baked in, form
+   di prenotazione inline + lead-capture "sample itinerary",
+   pagina /about, mini-mappa nelle attrazioni.
 2. La crescita ora dipende **da te off-site**: Google Business
    Profile (30 min, alta resa), Tripadvisor (recensioni
    continue), GetYourGuide + Bokun (per arrivare ai turisti
    stranieri), hotel concierge (margine più alto).
 3. La cosa che più di tutte sposterà l'ago in 6 mesi è una
    sessione foto professionale per le 4 schede tour + 25 foto
-   per Google Business Profile.
+   per Google Business Profile + il testo di /about (B1) + foto
+   di te e Claudio (B2).
 
-In bocca al lupo. Quando avrai impostato Google Business Profile e
-fatto le prime 5 partnership con gli hotel, sentite la differenza.
+In bocca al lupo. Quando avrai impostato Google Business Profile,
+mandato il testo /about, e fatto le prime 5 partnership con gli
+hotel, vedrete la differenza.
 
 — David

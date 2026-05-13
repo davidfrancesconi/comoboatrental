@@ -2756,3 +2756,433 @@ html[dir="rtl"] nav.top.inner .logo.back-link:hover .back-arrow { transform: sca
 .attr-adj a:hover.prev .arr { transform: translateX(-4px); }
 html[dir="rtl"] .attr-adj a:hover.next .arr { transform: translateX(-4px); }
 html[dir="rtl"] .attr-adj a:hover.prev .arr { transform: translateX(4px); }
+
+/* Embedded Google Maps inside the booking-form sidebar — replaces the
+   former standalone "Our Base" section. */
+.bside-block .bside-map {
+  margin-top: 14px;
+}
+.bside-block .bside-map iframe {
+  width: 100%;
+  height: 180px;
+  border: 0;
+  display: block;
+  filter: grayscale(0.15) contrast(0.95);
+}
+.bside-block .bside-directions {
+  display: inline-block;
+  margin-top: 8px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(245, 239, 228, 0.65);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(245, 239, 228, 0.18);
+  padding-bottom: 2px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.bside-block .bside-directions:hover {
+  color: var(--gold-light);
+  border-color: var(--gold-light);
+}
+
+/* ===== Condensed Experiences section =====
+   Replaces the full section-head + body with a tight 3-col strip.
+   Pulls the eyebrow + headline onto one line and reduces vertical
+   padding by ~40%. */
+.experiences.experiences-condensed {
+  padding-top: clamp(40px, 6vw, 70px);
+  padding-bottom: clamp(40px, 6vw, 70px);
+}
+.exp-condensed-head {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  margin-bottom: clamp(28px, 4vw, 48px);
+  flex-wrap: wrap;
+}
+.exp-condensed-head .eyebrow {
+  flex: none;
+}
+.exp-condensed-head h2 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(28px, 3.5vw, 40px);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+/* ===== Instagram strip (condensed) =====
+   Tight 6-image strip with eyebrow + inline "Follow" link in a single
+   header line, no large title/body. Sits as a transitional band
+   before the booking form. */
+.instagram.instagram-strip {
+  padding-top: clamp(32px, 5vw, 56px);
+  padding-bottom: clamp(32px, 5vw, 56px);
+}
+.ig-strip-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.ig-strip-cta {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 2px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.ig-strip-cta:hover { color: var(--gold-deep); border-color: var(--gold-deep); }
+.ig-grid.ig-grid-condensed {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+}
+@media (max-width: 720px) {
+  .ig-grid.ig-grid-condensed { grid-template-columns: repeat(3, 1fr); }
+}
+.ig-grid.ig-grid-condensed .ig-tile {
+  aspect-ratio: 1 / 1;
+}
+.ig-grid.ig-grid-condensed .ig-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Unified "Explore the Lake" — when Map and Attractions live under one
+   umbrella heading, drop the top padding of the attractions block so
+   they read as one section visually. */
+.attractions-section.attractions-condensed {
+  padding-top: clamp(20px, 3vw, 36px);
+  /* keep bottom padding from the parent .attractions-section rule */
+}
+
+/* ===== Home FAQ accordion =====
+   Compact 6-item Q&A block above the booking section. Uses the same
+   FAQ data feeding the dedicated /faq/ page; first item open by
+   default. Renders as <details>/<summary> for accessibility + AI
+   Overview eligibility (Google reads <details> as FAQ-style markup). */
+.home-faq {
+  background: var(--bg-alt);
+  padding: clamp(50px, 7vw, 90px) 0;
+  border-top: 1px solid var(--rule);
+}
+.home-faq-head {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  margin-bottom: clamp(28px, 4vw, 48px);
+  flex-wrap: wrap;
+}
+.home-faq-head h2 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(28px, 3.5vw, 40px);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+.home-faq-head h2 em { font-style: italic; color: var(--gold); }
+.home-faq-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 clamp(28px, 4vw, 56px);
+  max-width: 980px;
+}
+@media (max-width: 760px) {
+  .home-faq-list { grid-template-columns: 1fr; }
+}
+.home-faq-item {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.home-faq-item summary {
+  cursor: pointer;
+  font-family: var(--display);
+  font-size: clamp(18px, 1.8vw, 22px);
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+  list-style: none;
+  position: relative;
+  padding-right: 28px;
+  transition: color 0.2s ease;
+}
+.home-faq-item summary::-webkit-details-marker { display: none; }
+.home-faq-item summary::after {
+  content: "+";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--display);
+  font-size: 22px;
+  color: var(--gold);
+  transition: transform 0.2s ease;
+}
+.home-faq-item[open] summary::after { content: "−"; }
+.home-faq-item summary:hover { color: var(--gold-deep); }
+.home-faq-item p {
+  margin: 12px 0 0;
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  max-width: 56ch;
+}
+.home-faq-link {
+  display: inline-block;
+  margin-top: 24px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 2px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.home-faq-link:hover { color: var(--gold-deep); border-color: var(--gold-deep); }
+.home-faq-link .arrow { transition: transform 0.2s ease; display: inline-block; margin-left: 4px; }
+.home-faq-link:hover .arrow { transform: translateX(3px); }
+
+/* ===== About page =====
+   60/40 grid: founder photo on the left, bio + CTA on the right.
+   Mobile collapses to single column with photo first. */
+.about-page {
+  padding: clamp(40px, 6vw, 80px) var(--gutter);
+  max-width: var(--container);
+  margin: 0 auto;
+}
+.about-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: clamp(40px, 5vw, 80px);
+  align-items: start;
+}
+@media (max-width: 880px) { .about-grid { grid-template-columns: 1fr; gap: 40px; } }
+.about-photo {
+  position: relative;
+}
+.about-photo img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  display: block;
+}
+.about-photo-caption {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: rgba(26, 31, 36, 0.85);
+  padding: 6px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.about-photo-caption .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--gold-light);
+}
+.about-body h1 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(36px, 4.5vw, 56px);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin: 12px 0 24px;
+}
+.about-body h1 em { font-style: italic; color: var(--gold); }
+.about-body p {
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--ink);
+  margin: 0 0 20px;
+  max-width: 60ch;
+}
+.about-cta {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  align-items: center;
+  justify-content: space-between;
+}
+.about-cta p {
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 20px;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* ===== Photo gallery on tour + attraction pages =====
+   1 large image + 3 thumbs grid. Placeholder until Loris provides
+   real per-tour / per-attraction photography. */
+.tour-gallery .gallery-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 6px;
+}
+.tour-gallery .gallery-grid .full {
+  grid-column: 1 / -1;
+}
+.tour-gallery .gallery-grid > div {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+}
+.tour-gallery .gallery-grid .full {
+  aspect-ratio: 21 / 9;
+}
+.tour-gallery .gallery-grid img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+.tour-gallery .gallery-grid > div:hover img {
+  transform: scale(1.03);
+}
+.tour-gallery .gallery-caption {
+  margin-top: 14px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+@media (max-width: 600px) {
+  .tour-gallery .gallery-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .tour-gallery .gallery-grid .full {
+    grid-column: 1 / -1;
+    aspect-ratio: 16 / 9;
+  }
+}
+
+/* =============================================================
+ * Newsletter / Sample-itinerary capture band
+ * Slim section right before the booking form. Single email input,
+ * mailto: handler — dev can swap for Formspree later.
+ * ============================================================= */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.newsletter {
+  padding: 56px 0;
+  background: var(--bg-soft, #f4eee2);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.newsletter-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+.newsletter-copy h2 {
+  font-size: clamp(28px, 4vw, 40px);
+  line-height: 1.1;
+  margin: 0 0 12px;
+}
+.newsletter-copy p {
+  margin: 0;
+  color: var(--ink-mute);
+  max-width: 48ch;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.newsletter-form {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+.newsletter-form input[type="email"] {
+  flex: 1 1 220px;
+  min-width: 0;
+  padding: 14px 16px;
+  font: inherit;
+  font-size: 15px;
+  border: 1px solid var(--rule);
+  background: var(--bg);
+  color: var(--ink);
+  border-radius: 2px;
+  outline: none;
+  transition: border-color .15s ease;
+}
+.newsletter-form input[type="email"]:focus {
+  border-color: var(--ink);
+}
+.newsletter-form input[type="email"]:disabled {
+  opacity: .55;
+}
+.newsletter-form button {
+  padding: 14px 22px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: var(--ink);
+  color: var(--bg);
+  border: 1px solid var(--ink);
+  border-radius: 2px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.newsletter-form button:hover:not(:disabled) {
+  background: var(--gold, #c8a96a);
+  border-color: var(--gold, #c8a96a);
+}
+.newsletter-form button:disabled {
+  background: var(--ink-mute);
+  border-color: var(--ink-mute);
+  cursor: default;
+}
+@media (max-width: 880px) {
+  .newsletter-inner {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}

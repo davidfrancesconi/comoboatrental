@@ -170,6 +170,33 @@ export default async function TourPage({
           })}
         </article>
 
+        {/* Gallery — 4-image strip (1 large + 3 thumbs). Placeholder
+            until Loris supplies real photography per tour. Today we
+            reuse hero + 3 lake images from /public/images so the
+            layout is in place and the slots are obvious. */}
+        <section className="container-x tour-gallery" style={{ maxWidth: 1100, margin: "0 auto 60px", padding: "0 32px" }}>
+          <div className="gallery-grid">
+            <div className="full">
+              <img src={tour.hero} alt={`${c.headline.replace(/<[^>]+>/g, "")} — hero`} loading="lazy" width="1600" height="900" />
+            </div>
+            <div>
+              <img src="/images/luxury-cruise.jpg" alt="On board · cruising the lake" loading="lazy" width="600" height="450" />
+            </div>
+            <div>
+              <img src="/images/balbianello.jpg" alt="Lake Como villas seen from the water" loading="lazy" width="600" height="450" />
+            </div>
+            <div>
+              <img src="/images/hero-sunset.jpg" alt="Golden hour on Lake Como" loading="lazy" width="600" height="450" />
+            </div>
+          </div>
+          <p className="gallery-caption">
+            {locale === "it" ? "Quattro istantanee · ulteriori foto inviateci da Loris in arrivo" :
+             locale === "ru" ? "Четыре кадра · ещё фотографии от Лориса в работе" :
+             locale === "ar" ? "أربع لقطات · المزيد من الصور قيد التحديث من لوريس" :
+             "Four views · more photography from Loris coming soon"}
+          </p>
+        </section>
+
         {/* Itinerary */}
         <section className="container-x" style={{ maxWidth: 900, margin: "0 auto 60px", padding: "0 32px" }}>
           <h2 className="display" style={{ fontSize: 32, marginBottom: 24 }}>

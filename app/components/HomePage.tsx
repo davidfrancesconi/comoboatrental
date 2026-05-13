@@ -15,8 +15,10 @@ import {
 } from "../copy-variants";
 import { localePath } from "../seo";
 import { attractions, ORBIT_PIN_IDS } from "../content/attractions";
+import { FAQS } from "../content/faq";
 import { TourCard, TOUR_CARD_IMAGES } from "./TourCard";
 import BookingForm from "./BookingForm";
+import Newsletter from "./Newsletter";
 
 // Five interchangeable colour palettes — defined in app/globals.css under
 // html[data-palette="A|B|C|D|E"]. Locked to "A" (Parchment) in production
@@ -626,10 +628,9 @@ export default function HomePage({ locale }: { locale: Locale }) {
         </a>
         <div className="links">
           <a href="#tours">{t.nav.tours}</a>
-          <a href="#map">{t.nav.map}</a>
-          <a href="#attractions">{t.nav.attractions}</a>
+          <a href="#map">{t.nav.attractions}</a>
           <a href="#fleet">{t.nav.fleet}</a>
-          <a href="#experiences">{t.nav.experiences}</a>
+          <a href={localePath(locale, "/about")}>{t.nav.about}</a>
           <a href="#contact">{t.nav.contact}</a>
         </div>
         <div className="lang">
@@ -657,10 +658,9 @@ export default function HomePage({ locale }: { locale: Locale }) {
       <div className={`mobile-menu ${menuOpen ? "open" : ""}`} aria-hidden={!menuOpen}>
         <div className="mobile-menu-inner">
           <a href="#tours" onClick={() => setMenuOpen(false)}>{t.nav.tours}</a>
-          <a href="#map" onClick={() => setMenuOpen(false)}>{t.nav.map}</a>
-          <a href="#attractions" onClick={() => setMenuOpen(false)}>{t.nav.attractions}</a>
+          <a href="#map" onClick={() => setMenuOpen(false)}>{t.nav.attractions}</a>
           <a href="#fleet" onClick={() => setMenuOpen(false)}>{t.nav.fleet}</a>
-          <a href="#experiences" onClick={() => setMenuOpen(false)}>{t.nav.experiences}</a>
+          <a href={localePath(locale, "/about")} onClick={() => setMenuOpen(false)}>{t.nav.about}</a>
           <a href="#contact" onClick={() => setMenuOpen(false)}>{t.nav.contact}</a>
         </div>
       </div>
@@ -749,17 +749,21 @@ export default function HomePage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      {/* MAP */}
-      <section className="map-section" id="map" ref={mapSectionRef}>
+      {/* MAP + ATTRACTIONS — unified "Explore the Lake" section. One
+          umbrella heading covers both the interactive Leaflet map and
+          the attraction cards below, replacing the previous two-headed
+          structure (Map + Attractions). The bidirectional hover wiring
+          between the side pin list and the attraction cards is kept. */}
+      <section className="map-section explore-section" id="map" ref={mapSectionRef}>
         <div className="container-x">
           <div className="section-head reveal" style={{ marginBottom: 60 }}>
             <div className="label">
-              <span className="eyebrow">{t.map.indexLabel}</span>
-              <p className="lead">{t.map.lead}</p>
+              <span className="eyebrow">{t.explore.indexLabel}</span>
+              <p className="lead">{t.explore.lead}</p>
             </div>
             <div className="title">
-              <h2 className="display"><RichText text={t.map.title} /></h2>
-              <p>{t.map.right}</p>
+              <h2 className="display"><RichText text={t.explore.title} /></h2>
+              <p>{t.explore.right}</p>
             </div>
           </div>
 
@@ -813,23 +817,11 @@ export default function HomePage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      {/* ATTRACTIONS — horizontally-scrollable strip of the 13 places worth
-          arriving by boat. Hovering a card moves the boat marker on the map
-          above and highlights the matching pin in the side-list (and vice
-          versa — see the .map-pin-list mouseenter wiring). */}
-      <section className="attractions-section" id="attractions">
+      {/* Attraction carousel — directly under the map, NO separate
+          section-head. The unified "Explore the Lake" heading above
+          covers both. */}
+      <section className="attractions-section attractions-condensed" id="attractions">
         <div className="container-x">
-          <div className="section-head reveal">
-            <div className="label">
-              <span className="eyebrow">{t.attractions.indexLabel}</span>
-              <p className="lead">{t.attractions.lead}</p>
-            </div>
-            <div className="title">
-              <h2 className="display"><RichText text={t.attractions.title} /></h2>
-              <p>{t.attractions.right}</p>
-            </div>
-          </div>
-
           <div
             className="scroller-frame"
             onMouseEnter={() => setUserInteracting(true)}
@@ -915,20 +907,14 @@ export default function HomePage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      {/* EXPERIENCES */}
-      <section className="experiences" id="experiences">
+      {/* EXPERIENCES — condensed band. Was a full section-head + body;
+          now a compact 3-col strip with a short header line. */}
+      <section className="experiences experiences-condensed" id="experiences">
         <div className="container-x">
-          <div className="section-head reveal">
-            <div className="label">
-              <span className="eyebrow">{t.experiences.indexLabel}</span>
-              <p className="lead">{t.experiences.lead}</p>
-            </div>
-            <div className="title">
-              <h2 className="display"><RichText text={t.experiences.title} /></h2>
-              <p>{t.experiences.right}</p>
-            </div>
+          <div className="exp-condensed-head reveal">
+            <span className="eyebrow">{t.experiences.indexLabel}</span>
+            <h2 className="display"><RichText text={t.experiences.title} /></h2>
           </div>
-
           <div className="exp-row">
             {t.experiences.items.map((exp, i) => (
               <article key={i} className={`exp-card reveal ${i > 0 ? `reveal-delay-${i}` : ""}`}>
@@ -981,21 +967,18 @@ export default function HomePage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      {/* INSTAGRAM */}
-      <section className="instagram" id="instagram">
+      {/* INSTAGRAM — condensed footer-style strip. Was a full section
+          with section-head + 6-tile grid + CTA button; now a tight
+          horizontal strip with 6 thumbnails + one inline link. */}
+      <section className="instagram instagram-strip" id="instagram">
         <div className="container-x">
-          <div className="section-head reveal">
-            <div className="label">
-              <span className="eyebrow">{t.instagram.indexLabel}</span>
-              <p className="lead">{t.instagram.lead}</p>
-            </div>
-            <div className="title">
-              <h2 className="display"><RichText text={t.instagram.title} /></h2>
-              <p>{t.instagram.right}</p>
-            </div>
+          <div className="ig-strip-head reveal">
+            <span className="eyebrow">{t.instagram.indexLabel}</span>
+            <a className="ig-strip-cta" href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">
+              {t.instagram.cta} <span className="arrow">→</span>
+            </a>
           </div>
-
-          <div className="ig-grid reveal">
+          <div className="ig-grid ig-grid-condensed reveal">
             {INSTAGRAM_POSTS.map((post) => (
               <a
                 key={post.shortcode}
@@ -1006,65 +989,50 @@ export default function HomePage({ locale }: { locale: Locale }) {
                 aria-label={post.alt || `Open Instagram post ${post.shortcode}`}
                 title={post.alt || undefined}
               >
-                <img src={post.src} alt={post.alt || `Como Boat Rental Instagram ${post.shortcode}`} loading="lazy" width="600" height="600" />
-                <span className="ig-overlay" aria-hidden>
-                  <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.5">
-                    <rect x="3" y="3" width="18" height="18" rx="5" />
-                    <circle cx="12" cy="12" r="4" />
-                    <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
-                  </svg>
-                </span>
+                <img src={post.src} alt={post.alt || `Como Boat Rental Instagram ${post.shortcode}`} loading="lazy" width="400" height="400" />
               </a>
             ))}
           </div>
-
-          <div className="ig-cta reveal reveal-delay-1">
-            <a className="btn light" href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">
-              {t.instagram.cta} <span className="arrow">→</span>
-            </a>
-          </div>
         </div>
       </section>
 
-      {/* OUR BASE */}
-      <section className="our-base" id="our-base">
+      {/* FAQ — compact accordion of the 6 most-asked questions, placed
+          just above the booking form so visitors get their objection
+          handled before they reach the form. Same data as the dedicated
+          /faq/ page (FAQS in app/content/faq.ts); links to /faq for the
+          full list. Picks up the FAQPage JSON-LD already emitted at
+          the homepage level. */}
+      <section className="home-faq" id="faq">
         <div className="container-x">
-          <div className="section-head reveal" style={{ marginBottom: 60 }}>
-            <div className="label">
-              <span className="eyebrow">{t.ourBase.indexLabel}</span>
-              <p className="lead">{t.ourBase.countLabel}</p>
-            </div>
-            <div className="title">
-              <h2 className="display"><RichText text={t.ourBase.title} /></h2>
-              <p>{t.ourBase.body}</p>
-            </div>
+          <div className="home-faq-head reveal">
+            <span className="eyebrow">{t.homeFaq.indexLabel}</span>
+            <h2 className="display"><RichText text={t.homeFaq.title} /></h2>
           </div>
-
-          <div className="map-embed-wrap reveal">
-            <iframe
-              title="Como Boat Rental — Lungolago Viale Geno"
-              src="https://www.google.com/maps?q=Como+Boat+Rental,+Lungolago+Viale+Geno,+22100+Como+CO&z=15&output=embed"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              allowFullScreen
-            />
-            <div className="map-embed-footer">
-              <p className="map-embed-address">{t.ourBase.address}</p>
-              <a
-                className="btn light"
-                href="https://www.google.com/maps/dir/?api=1&destination=Como+Boat+Rental,+Lungolago+Viale+Geno,+22100+Como+CO"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {t.ourBase.directionsCta} <span className="arrow">→</span>
-              </a>
-            </div>
+          <div className="home-faq-list reveal">
+            {FAQS[locale].slice(0, 6).map((q, i) => (
+              <details key={i} className="home-faq-item" open={i === 0}>
+                <summary>{q.question}</summary>
+                <p>{q.answer}</p>
+              </details>
+            ))}
           </div>
+          <a className="home-faq-link" href={localePath(locale, "/faq")}>
+            {t.homeFaq.allCta} <span className="arrow">→</span>
+          </a>
         </div>
       </section>
 
-      {/* BOOKING — inline form replacing the previous static contact section.
-          Pre-fills a mailto: on submit; falls back to WhatsApp as secondary. */}
+      {/* NEWSLETTER — slim "send me a sample itinerary" lead capture.
+          Single email field, mailto: handler. Lower-commitment ask than
+          the booking form below for visitors not yet ready to pick a
+          date. Dev can swap the mailto: for Formspree / Mailchimp /
+          Vercel serverless when Loris wants real list-building. */}
+      <Newsletter t={t} locale={locale} />
+
+      {/* BOOKING — inline form. Includes the Google Maps embed of the
+          Como pontoon (formerly its own "Our Base" section, now merged
+          into the booking sidebar so visitors see where to board
+          directly inside the booking flow). */}
       <BookingForm t={t} locale={locale} />
 
       {/* Minimal footer bar — legal + FAQ/Reviews + safety. Sits below the

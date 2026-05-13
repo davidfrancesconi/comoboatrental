@@ -54,8 +54,16 @@ export async function generateMetadata({
     title: TITLES[locale],
     description: DESCS[locale],
     alternates: { canonical: localeUrl(locale, "/faq"), languages: alternateLanguages("/faq") },
-    openGraph: { type: "article", title: TITLES[locale], description: DESCS[locale], url: localeUrl(locale, "/faq"), siteName: SITE_NAME, locale: LOCALE_OG[locale] },
-    twitter: { card: "summary", title: TITLES[locale], description: DESCS[locale] },
+    openGraph: {
+      type: "article",
+      title: TITLES[locale],
+      description: DESCS[locale],
+      url: localeUrl(locale, "/faq"),
+      siteName: SITE_NAME,
+      locale: LOCALE_OG[locale],
+      images: [{ url: "/images/hero-sunset.jpg", width: 1200, height: 630, alt: "Lake Como private boat tour FAQ" }],
+    },
+    twitter: { card: "summary_large_image", title: TITLES[locale], description: DESCS[locale], images: ["/images/hero-sunset.jpg"] },
   };
 }
 

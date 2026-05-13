@@ -223,6 +223,26 @@ export default function BookingForm({ t, locale }: { t: Translation; locale: Loc
                 {ADDRESS_STREET} · {ADDRESS_LOCALITY}
               </div>
               <small>{b.sideAddressNote}</small>
+              {/* Embedded Google Maps showing the pontoon — merged from the
+                  former "Our Base" section so visitors see the location
+                  inline with the booking flow. */}
+              <div className="bside-map">
+                <iframe
+                  title="Como Boat Rental — Lungolago Viale Geno"
+                  src="https://www.google.com/maps?q=Como+Boat+Rental,+Lungolago+Viale+Geno,+22100+Como+CO&z=15&output=embed"
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  allowFullScreen
+                />
+                <a
+                  className="bside-directions"
+                  href="https://www.google.com/maps/dir/?api=1&destination=Como+Boat+Rental,+Lungolago+Viale+Geno,+22100+Como+CO"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {b.directionsCta} →
+                </a>
+              </div>
             </div>
 
             <div className="trust">

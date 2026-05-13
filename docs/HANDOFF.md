@@ -290,6 +290,105 @@ ordinate da semplice a complessa:
 Per ora il mailto: funziona, è universale, gratis, e mantiene
 zero dipendenze.
 
+Lo stesso pattern vale per **`app/components/Newsletter.tsx`**
+(slim band "Send me a sample itinerary" appena prima della
+Booking Form): submit `mailto:` precompilato verso `info@`. Quando
+il dev wire up Formspree o Mailchimp/Brevo per costruire una mailing
+list vera, basta sostituire l'`onSubmit` con un POST.
+
+### E-ter. Iterazione Claude Design (maggio 2026) — features già live
+
+Tutta la **iterazione di redesign Claude Design** (bundle
+`api.anthropic.com/v1/design/h/ClVcnISGVbOjHsRFrF0qwQ`, maggio 2026)
+è stata implementata, **eccetto** il footer sitemap-style (item #17,
+deliberatamente saltato: il sitemap.xml copre già il crawl depth,
+i link humans-facing rimangono nel pannello footer compatto). Cose
+da sapere per il dev che subentra:
+
+- **`<BookingForm>`** (`app/components/BookingForm.tsx`): client
+  component con state per stepper party-size (2–10), radio tour
+  con prezzo, dropdown pick-up, mailto handler. **Sidebar include
+  ora l'embed Google Maps della base** (era una sezione "Our Base"
+  separata, mergiata qui per ridurre lo scroll).
+- **`<Newsletter>`** (`app/components/Newsletter.tsx`): band slim
+  con email field + mailto. Sostituibile con Formspree/Mailchimp
+  come sopra.
+- **Pagina dettaglio attrazione** (`app/[locale]/attractions/[slug]/page.tsx`):
+  layout 60/40 con sidebar sticky. La sidebar contiene:
+  - **`<MiniLakeMap>`** (`app/components/MiniLakeMap.tsx`) — SVG
+    statico del profilo Y del Lago di Como, pin in oro per
+    l'attrazione attiva, label + distance box. Pin position
+    derivata da `PIN_BASE` (stesso array usato dalla mappa
+    Leaflet della home).
+  - **Quick-facts card** — 4 righe: Where (regione lago), Distance
+    from Como (km + min, via haversine inline), Type (port/villa/
+    town/nature da `PIN_BASE`), Best season (Maggio–Settembre,
+    generico). Se Loris fornisce in futuro fact più precisi
+    (Entry fee, Open hours, Photographs spots), si possono
+    estendere a 7 righe — vedi commento in cima al file.
+  - **CTA "Add to a tour"** — anchor a `#booking` con label
+    contestualizzato all'attrazione.
+- **Adjacent destinations nav** in fondo alla pagina attrazione:
+  `← Previous · 07 of 14 · Isola Comacina | Next · 09 of 14 · Villa La Cassinella →`.
+  L'ordine deriva da `ATTRACTION_SLUGS` in
+  `app/content/attractions.ts` (geo-ordered south to north).
+- **Photo gallery placeholder** (1 hero + 3 thumbs) sulle pagine
+  tour e attrazione. Oggi riusa stock images da `/public/images/`;
+  quando Loris fornisce le foto per attrazione/tour, basta
+  sostituire le costanti in cima alla pagina.
+- **Pagina /about**: founder narrative (Loris + Claudio) con
+  copy placeholder marcato `[Placeholder]` dove serve la storia
+  vera. Vedi `PER-LORIS.md` per cosa scrivere.
+- **FAQ accordion homepage**: prime 6 Q&A da `FAQS[locale]`
+  (`app/content/faq.ts`) sopra il form di booking. Cattura
+  oggetti FAQPage JSON-LD a livello pagina.
+- **Section "Explore the Lake"**: heading umbrella che copre
+  sia il blocco mappa (Leaflet animato) sia lo strip attrazioni.
+  Riduce due section-head ridondanti a uno.
+- **Sezione Experiences + Instagram condensate**: niente più
+  big section-head, solo eyebrow + h2 + cards. Riduce lo scroll
+  prima del CTA principale.
+- **Renumber sezioni home** in ordine corretto: 01 Tours, 02
+  Explore the Lake, 03 Fleet, 04 Beyond a Tour, 05 Guests, 06
+  Follow, 07 FAQ, 08 Sample itinerary, 09 Reservations (era
+  duplicato 03 → fixato).
+- **Hero**: rimosso il double-CTA "Browse tours" + "Reserve a
+  boat". Tenuto solo "Reserve a boat →" gold come CTA primario.
+  Aggiunta riga `from €220 · 1-hour tour up to €1,400 · full-day
+  charter` sotto subhead (`t.hero.priceTier`).
+- **Tour card price**: cambiato da `**€220** from` a `<small>from</small>
+  **€220**` per coerenza visiva.
+- **Toggle VP rimosso**: vedi sezione D sopra (✓ FATTO).
+
+### E-quater. Foto reali (placeholder oggi)
+
+Le gallerie photo (1 hero + 3 thumbs) sulle pagine tour e
+attrazione usano oggi **stock images** dalla cartella esistente
+`/public/images/`. La struttura della galleria è pronta — basta
+sostituire le costanti in cima alle rispettive `page.tsx` con i
+path delle foto reali quando Loris le fornisce. Vedi
+`PER-LORIS.md` per la lista esatta delle foto richieste.
+
+### E-quinquies. Item esplicitamente differiti dalla Claude Design v2
+
+Implementato tutto dal bundle Claude Design **eccetto**:
+
+- **Footer sitemap-style con link a 14 attrazioni + 4 tour**
+  (item #17 della lista Claude Design). Saltato a ragion veduta:
+  il `sitemap.xml` copre già il crawl depth per Google; per gli
+  umani la nav esistente + i cross-link dalla home bastano. Se
+  Loris vuole un footer-mega in futuro è un'aggiunta di 30
+  minuti — può vivere come componente `<FooterSitemap />` in
+  `app/components/InnerPage.tsx` e essere mostrato sotto
+  `<InnerPageFooter />`.
+- **Unified Map+Attractions con mappa sticky a sinistra + cards
+  scrollabili a destra** (item #13 della lista Claude Design).
+  Tenuto le due sezioni separate (umbrella "Explore the Lake"
+  + Leaflet map + attractions strip). Motivazione: la mappa
+  Leaflet animata con barca-orbiting è la firma visiva della
+  home; la versione unified Claude Design usava una SVG statica
+  che è meno cinematografica.
+
 ### F. Cadenza blog
 
 Il blog ha un solo articolo seed. Aggiungere articoli è meccanico:

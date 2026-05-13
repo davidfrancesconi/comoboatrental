@@ -257,7 +257,7 @@ export const tours: TourEntry[] = [
         metaTitle: "Villa Balbianello & Orrido di Nesso · 2.5h Boat Tour from Como",
         metaDesc:
           "Casino Royale's Villa del Balbianello and the hidden Orrido di Nesso waterfall, on a 2.5-hour private boat tour from Como aboard a hand-built mahogany boat.",
-        headline: "Balbianello and Nesso. <em>The two views the lake is best known for.</em>",
+        headline: "Balbianello & Nesso. <em>The two views the lake is best known for.</em>",
         kicker: "2.5 hours · from €480 · 2–10 guests · departing Como",
         body: [
           { type: "p", text: "Two-and-a-half hours, two of the lake's defining sights, no detour. We push north from Como, hold east at Torno for the Orrido di Nesso — a hairline gorge where two streams collapse into the lake at the foot of a stone bridge — and then cross to the western shore for Villa del Balbianello, the peninsula that ends at Lenno." },

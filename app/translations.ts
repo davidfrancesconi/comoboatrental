@@ -48,7 +48,7 @@ type MapPin = {
 };
 
 export type Translation = {
-  nav: { tours: string; fleet: string; map: string; attractions: string; experiences: string; contact: string };
+  nav: { tours: string; fleet: string; map: string; attractions: string; experiences: string; about: string; contact: string };
   hero: {
     location: string;
     title: string; // <em> markup allowed
@@ -89,6 +89,15 @@ export type Translation = {
     sideTitle: string;
     sideBody: string;
     pins: MapPin[];
+  };
+  /** Unified umbrella heading that covers both the interactive map and
+   * the attraction cards (replaces the two separate section-heads for
+   * map + attractions on the homepage). */
+  explore: {
+    indexLabel: string;
+    lead: string;
+    title: string;
+    right: string;
   };
   attractions: {
     indexLabel: string;
@@ -153,6 +162,26 @@ export type Translation = {
     rights: string;
     safety: string;
   };
+  /** Compact FAQ accordion shown on the homepage above the booking form. */
+  homeFaq: {
+    indexLabel: string;
+    title: string;
+    allCta: string;
+  };
+  /** Slim lead-capture band — "send me a sample itinerary" email field
+   * sitting just before the booking form. Opens a pre-filled mailto: so
+   * the dev can wire Formspree / serverless later. */
+  newsletter: {
+    indexLabel: string;
+    title: string;
+    subtitle: string;
+    fieldEmail: string;
+    placeholder: string;
+    cta: string;
+    sent: string;
+    subject: string;
+    bodyPrefix: string;
+  };
   /** Inline booking-request form (replaces the old static contact block). */
   bookingForm: {
     indexLabel: string;        // e.g. "06 — Reservations"
@@ -199,6 +228,7 @@ export type Translation = {
     trustReviewsGuests: string;
     trustInsuredLabel: string;
     trustInsuredNote: string;
+    directionsCta: string;
   };
   floatPill: string;
 };
@@ -233,7 +263,7 @@ const buildPins = (notes: string[]): MapPin[] =>
 
 export const translations: Record<Locale, Translation> = {
   en: {
-    nav: { tours: "Tours", fleet: "Fleet", map: "Map", attractions: "Attractions", experiences: "Experiences", contact: "Contact" },
+    nav: { tours: "Tours", fleet: "Fleet", map: "Map", attractions: "Attractions", experiences: "Experiences", about: "About", contact: "Contact" },
     hero: {
       location: "Lago di Como · Italia",
       title: "Lake Como.<br/>By <em>private boat.</em>",
@@ -319,6 +349,12 @@ export const translations: Record<Locale, Translation> = {
         },
       ],
     },
+    explore: {
+      indexLabel: "(02) — Explore the Lake",
+      lead: "Where we cruise.",
+      title: "Iconic <em>destinations,</em> woven into a single day.",
+      right: "From the southern tip at Como up the west shore to Bellagio, Varenna and the lake's quietest corners. Hover or tap any pin to centre it on the map and the cards below.",
+    },
     map: {
       indexLabel: "(02) — The Lake",
       lead: "Where we cruise.",
@@ -397,7 +433,7 @@ export const translations: Record<Locale, Translation> = {
       safety: "All boats fully insured · Safety gear on board",
     },
     bookingForm: {
-      indexLabel: "(09) — Reservations",
+      indexLabel: "(10) — Reservations",
       lead: "Plan a tour.",
       title: "Tell us when you're <em>here.</em>",
       subtitle: "Pick a day, a tour and your party size — we confirm availability the same day, every day, year-round.",
@@ -440,12 +476,29 @@ export const translations: Record<Locale, Translation> = {
       trustReviewsGuests: "verified guests",
       trustInsuredLabel: "Insured",
       trustInsuredNote: "Full Italian commercial passenger licence",
+      directionsCta: "Open in Google Maps",
+    },
+    homeFaq: {
+      indexLabel: "(08) — Frequently asked",
+      title: "Before you <em>get in touch.</em>",
+      allCta: "Read all questions",
+    },
+    newsletter: {
+      indexLabel: "(09) — Sample itinerary",
+      title: "Want a <em>sample itinerary?</em>",
+      subtitle: "Drop your email and we'll send you a one-page PDF: the four most-loved routes, with timings, stops and price tiers. No list, no spam — one email from Loris or Claudio.",
+      fieldEmail: "Your email",
+      placeholder: "you@example.com",
+      cta: "Send me the itinerary",
+      sent: "On its way",
+      subject: "Sample itinerary request — Como Boat Rental",
+      bodyPrefix: "Hi Loris / Claudio,\n\nI'd love a copy of your sample Lake Como itinerary.",
     },
     floatPill: "Chat on WhatsApp",
   },
 
   it: {
-    nav: { tours: "Tour", fleet: "Flotta", map: "Mappa", attractions: "Attrazioni", experiences: "Esperienze", contact: "Contatti" },
+    nav: { tours: "Tour", fleet: "Flotta", map: "Mappa", attractions: "Attrazioni", experiences: "Esperienze", about: "Chi siamo", contact: "Contatti" },
     hero: {
       location: "Lago di Como · Italia",
       title: "Lago di Como.<br/>In <em>barca privata.</em>",
@@ -531,6 +584,12 @@ export const translations: Record<Locale, Translation> = {
         },
       ],
     },
+    explore: {
+      indexLabel: "(02) — Esplora il Lago",
+      lead: "Dove navighiamo.",
+      title: "Destinazioni <em>iconiche,</em> intrecciate in una sola giornata.",
+      right: "Dalla punta sud di Como su per la sponda ovest fino a Bellagio, Varenna e gli angoli più silenziosi. Passa il mouse su un pin per centrarlo su mappa e card qui sotto.",
+    },
     map: {
       indexLabel: "(02) — Il Lago",
       lead: "Dove navighiamo.",
@@ -609,7 +668,7 @@ export const translations: Record<Locale, Translation> = {
       safety: "Tutte le barche assicurate · Equipaggiamento di sicurezza a bordo",
     },
     bookingForm: {
-      indexLabel: "(09) — Prenotazioni",
+      indexLabel: "(10) — Prenotazioni",
       lead: "Pianifica un tour.",
       title: "Dicci quando <em>arrivi.</em>",
       subtitle: "Scegli giorno, tour e numero di ospiti — confermiamo la disponibilità in giornata, tutto l'anno.",
@@ -652,12 +711,29 @@ export const translations: Record<Locale, Translation> = {
       trustReviewsGuests: "ospiti verificati",
       trustInsuredLabel: "Assicurati",
       trustInsuredNote: "Licenza italiana per trasporto passeggeri commerciale",
+      directionsCta: "Apri in Google Maps",
+    },
+    homeFaq: {
+      indexLabel: "(08) — Domande frequenti",
+      title: "Prima di <em>scriverci.</em>",
+      allCta: "Leggi tutte le domande",
+    },
+    newsletter: {
+      indexLabel: "(09) — Itinerario campione",
+      title: "Vuoi un <em>itinerario campione?</em>",
+      subtitle: "Lasciaci la tua email e ti mandiamo un PDF di una pagina: i quattro tour più amati, con orari, tappe e fasce di prezzo. Niente liste, niente spam — solo un messaggio da Loris o Claudio.",
+      fieldEmail: "La tua email",
+      placeholder: "tu@esempio.com",
+      cta: "Inviami l'itinerario",
+      sent: "In arrivo",
+      subject: "Richiesta itinerario campione — Como Boat Rental",
+      bodyPrefix: "Ciao Loris / Claudio,\n\nVorrei una copia del vostro itinerario campione sul Lago di Como.",
     },
     floatPill: "Scrivici su WhatsApp",
   },
 
   ru: {
-    nav: { tours: "Туры", fleet: "Флот", map: "Карта", attractions: "Места", experiences: "Опыты", contact: "Контакты" },
+    nav: { tours: "Туры", fleet: "Флот", map: "Карта", attractions: "Места", experiences: "Опыты", about: "О нас", contact: "Контакты" },
     hero: {
       location: "Озеро Комо · Италия",
       title: "Озеро Комо.<br/>На <em>частной лодке.</em>",
@@ -743,6 +819,12 @@ export const translations: Record<Locale, Translation> = {
         },
       ],
     },
+    explore: {
+      indexLabel: "(02) — Исследуйте озеро",
+      lead: "Где мы плаваем.",
+      title: "Знаковые <em>места,</em> сплетённые в один день.",
+      right: "От южной оконечности у Комо вверх по западному берегу до Белладжо, Варенны и самых тихих уголков. Наведите на пин — он центрируется на карте и на карточке ниже.",
+    },
     map: {
       indexLabel: "(02) — Озеро",
       lead: "Где мы плаваем.",
@@ -821,7 +903,7 @@ export const translations: Record<Locale, Translation> = {
       safety: "Все лодки застрахованы · Спасательное оборудование на борту",
     },
     bookingForm: {
-      indexLabel: "(09) — Бронирование",
+      indexLabel: "(10) — Бронирование",
       lead: "Спланируйте тур.",
       title: "Скажите, когда <em>будете здесь.</em>",
       subtitle: "Выберите день, тур и число гостей — подтверждаем доступность в день обращения, круглый год.",
@@ -864,12 +946,29 @@ export const translations: Record<Locale, Translation> = {
       trustReviewsGuests: "проверенных гостей",
       trustInsuredLabel: "Застрахованы",
       trustInsuredNote: "Полная итальянская коммерческая пассажирская лицензия",
+      directionsCta: "Открыть в Google Maps",
+    },
+    homeFaq: {
+      indexLabel: "(08) — Частые вопросы",
+      title: "Перед тем как <em>написать нам.</em>",
+      allCta: "Все вопросы",
+    },
+    newsletter: {
+      indexLabel: "(09) — Пример маршрута",
+      title: "Хотите <em>пример маршрута?</em>",
+      subtitle: "Оставьте email и мы пришлём PDF на одну страницу: четыре самых любимых маршрута, с расписанием, остановками и ценами. Без рассылок и спама — одно письмо от Лориса или Клаудио.",
+      fieldEmail: "Ваш email",
+      placeholder: "vy@primer.com",
+      cta: "Прислать маршрут",
+      sent: "Отправлено",
+      subject: "Запрос примера маршрута — Como Boat Rental",
+      bodyPrefix: "Привет, Лорис / Клаудио,\n\nХочу получить копию вашего примерного маршрута по озеру Комо.",
     },
     floatPill: "Написать в WhatsApp",
   },
 
   ar: {
-    nav: { tours: "الجولات", fleet: "الأسطول", map: "الخريطة", attractions: "معالم", experiences: "التجارب", contact: "اتصل بنا" },
+    nav: { tours: "الجولات", fleet: "الأسطول", map: "الخريطة", attractions: "معالم", experiences: "التجارب", about: "من نحن", contact: "اتصل بنا" },
     hero: {
       location: "بحيرة كومو · إيطاليا",
       title: "بحيرة كومو.<br/>على متن <em>قارب خاص.</em>",
@@ -955,6 +1054,12 @@ export const translations: Record<Locale, Translation> = {
         },
       ],
     },
+    explore: {
+      indexLabel: "(02) — استكشف البحيرة",
+      lead: "أين نُبحر.",
+      title: "وجهات <em>أيقونية،</em> منسوجة في يوم واحد.",
+      right: "من الطرف الجنوبي عند كومو صعوداً على طول الضفة الغربية إلى بيلاجيو وفارينا وأهدأ الزوايا. مرّر فوق دبوس ليتمحور على الخريطة والبطاقة بالأسفل.",
+    },
     map: {
       indexLabel: "(02) — البحيرة",
       lead: "أين نُبحر.",
@@ -1033,7 +1138,7 @@ export const translations: Record<Locale, Translation> = {
       safety: "جميع القوارب مؤمَّنة · معدات السلامة على المتن",
     },
     bookingForm: {
-      indexLabel: "(09) — الحجوزات",
+      indexLabel: "(10) — الحجوزات",
       lead: "خطّط لجولة.",
       title: "أخبِرنا متى <em>تأتي.</em>",
       subtitle: "اختر اليوم والجولة وعدد الضيوف — نؤكّد التوفر في اليوم نفسه، طوال العام.",
@@ -1076,6 +1181,23 @@ export const translations: Record<Locale, Translation> = {
       trustReviewsGuests: "ضيوف موثّقون",
       trustInsuredLabel: "مؤمَّنون",
       trustInsuredNote: "ترخيص إيطالي تجاري كامل لنقل الركاب",
+      directionsCta: "افتح في Google Maps",
+    },
+    homeFaq: {
+      indexLabel: "(08) — أسئلة متكررة",
+      title: "قبل أن <em>تتواصلوا معنا.</em>",
+      allCta: "كل الأسئلة",
+    },
+    newsletter: {
+      indexLabel: "(09) — برنامج مقترح",
+      title: "تريد <em>برنامجاً مقترحاً؟</em>",
+      subtitle: "اترك بريدك الإلكتروني ونرسل لك ملف PDF بصفحة واحدة: أكثر أربع جولات محبوبة، مع المواعيد والمحطات وفئات الأسعار. لا قوائم بريدية ولا إزعاج — رسالة واحدة من لوريس أو كلاوديو.",
+      fieldEmail: "بريدك الإلكتروني",
+      placeholder: "you@example.com",
+      cta: "أرسل لي البرنامج",
+      sent: "في الطريق",
+      subject: "طلب برنامج مقترح — Como Boat Rental",
+      bodyPrefix: "مرحباً لوريس / كلاوديو،\n\nأودّ الحصول على نسخة من برنامجكم المقترح لجولة بحيرة كومو.",
     },
     floatPill: "تواصل عبر واتساب",
   },

@@ -57,9 +57,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     out.push(...entry(`/attractions/${slug}`, "monthly", 0.7));
   }
 
-  // FAQ + Reviews
+  // FAQ + Reviews + About
   out.push(...entry("/faq", "monthly", 0.6));
   out.push(...entry("/reviews", "monthly", 0.6));
+  out.push(...entry("/about", "monthly", 0.6));
 
   // Blog
   for (const slug of BLOG_SLUGS) {
