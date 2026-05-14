@@ -40,8 +40,8 @@ export type TourCopy = {
 
 export type TourEntry = {
   slug: string;
-  /** Index in the existing translations.ts tours.items array (0-3) */
-  baseIndex: 0 | 1 | 2 | 3;
+  /** Index in the existing translations.ts tours.items array */
+  baseIndex: number;
   /** Image path under /public */
   hero: string;
   /** Approximate duration in minutes for schema */
@@ -56,8 +56,15 @@ export type TourEntry = {
 
 export const TOUR_SLUGS = [
   "highlights-1h",
+  "cernobbio-2h",
   "balbianello-nesso",
+  "boat-palace-4h",
   "top-villas-half-day",
+  "first-basin-5h",
+  "centre-lake-6h",
+  "sunset-cruise",
+  "dinner-tour",
+  "photoshoot-tour",
   "bespoke-full-day",
 ] as const;
 
@@ -247,7 +254,7 @@ export const tours: TourEntry[] = [
   // ─────────────────────────────────────────────────────────────
   {
     slug: "balbianello-nesso",
-    baseIndex: 1,
+    baseIndex: 2,
     hero: "/images/balbianello.jpg",
     durationMinutes: 150,
     priceEUR: 480,
@@ -427,7 +434,7 @@ export const tours: TourEntry[] = [
   // ─────────────────────────────────────────────────────────────
   {
     slug: "top-villas-half-day",
-    baseIndex: 2,
+    baseIndex: 4,
     hero: "/images/bellagio.jpg",
     durationMinutes: 240,
     priceEUR: 780,
@@ -625,7 +632,7 @@ export const tours: TourEntry[] = [
   // ─────────────────────────────────────────────────────────────
   {
     slug: "bespoke-full-day",
-    baseIndex: 3,
+    baseIndex: 10,
     hero: "/images/luxury-cruise.jpg",
     durationMinutes: 480,
     priceEUR: 1400,
@@ -809,6 +816,810 @@ export const tours: TourEntry[] = [
           { question: "هل يمكن تنظيم طلب زواج على القارب؟", answer: "نعم، إنها إحدى أكثر المناسبات التي ننظمها. ننسق الفلوريست والمصور والتوقيت — أخبرونا بالفندق واللحظة، ونتولى البقية. دون رسوم تنسيق إضافية." },
           { question: "من أي فنادق تستلمون الضيوف؟", answer: "من جميع الفنادق. الأرصفة التي نتعامل معها أكثر هي Villa d'Este (تشيرنوبيو)، Passalacqua (مولتراسيو)، Mandarin Oriental (بليفيو)، Il Sereno (تورنو)، Grand Hotel Tremezzo، Grand Hotel Villa Serbelloni (بيلاجيو). إذا كان لفيلتكم المؤجَّرة رصيف خاص، نأتي إليه — أرسلوا لنا الإحداثيات." },
           { question: "هل يمكن تناول الغداء على متن القارب؟", answer: "نعم. ننظم طبق أجبان وأنواع لحوم باردة ومنتجات من البحيرة مع بروسيكو بسعر €40 للضيف، وتقضون الغداء على الماء بدلاً من الأرض. أخبرونا قبل يوم. يمكننا أيضاً ترتيب خيارات حلال عند الطلب." },
+        ],
+      },
+    },
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  // Tour 05 — Cernobbio & Villa d'Este, 2 hours
+  // ─────────────────────────────────────────────────────────────
+  {
+    slug: "cernobbio-2h",
+    baseIndex: 1,
+    hero: "/images/attractions/cernobbio.jpg",
+    durationMinutes: 120,
+    priceEUR: 400,
+    pins: ["como", "cernobbio", "oleandra", "blevio_torno"],
+    copy: {
+      en: {
+        metaTitle: "Lake Como 2-hour private boat tour · Cernobbio & Villa d'Este",
+        metaDesc: "2-hour private boat tour from Como — Cernobbio, Villa d'Este, Villa Olmo and Moltrasio's celebrity coastline, with a local captain. From €400.",
+        headline: "Cernobbio &amp; <em>Villa d'Este,</em> 2 hours.",
+        kicker: "From Como · 2-hour private cruise",
+        body: [
+          { type: "p", text: "Two hours is the sweet spot for guests who want more than a teaser without committing to a half-day. From the Como pontoon we head along the celebrity coastline — Villa Olmo, Cernobbio with Villa d'Este's century-old plane trees on the water, then up to Villa Oleandra (George Clooney's place in Laglio) and Villa Passalacqua (Moltrasio)." },
+          { type: "p", text: "We slow down for photos and answer questions about who lives where, what was filmed where, and why this stretch of shoreline has been the Italian aristocracy's holiday escape for 500 years. Free time to swim or just sit with a glass of prosecco." },
+          { type: "p", text: "The classic 2-hour route, with optional extension by 30 minutes if everyone's having fun and we have the slot." },
+        ],
+        included: ["Private boat with skipper", "Fuel and harbour fees", "Bottled water, ice, towels", "Prosecco on board (1 bottle / 4 guests)", "Discreet narration in IT/EN"],
+        notIncluded: ["Stops onshore at villas (entry fees, dock fees)", "Sit-down lunch ashore", "Pick-up from villas outside the first basin"],
+        itinerary: [
+          { time: "0:00", place: "Como · Lungolago Viale Geno", note: "Boarding, safety briefing, prosecco poured." },
+          { time: "0:20", place: "Cernobbio · Villa d'Este", note: "We pass close — the century-old plane trees and the 1568 hotel facade from the water." },
+          { time: "0:45", place: "Villa Oleandra · Laglio", note: "Clooney's house, the swim platform, the boathouse." },
+          { time: "1:10", place: "Moltrasio · Villa Passalacqua", note: "The yellow Belle Époque hotel and the smaller villas of the Como Riviera." },
+          { time: "1:40", place: "Return to Como", note: "A loop past Villa Olmo and back to the pontoon." },
+        ],
+        faqs: [
+          { question: "Can we swim during a 2-hour tour?", answer: "Yes — we pause at a quiet cove between Cernobbio and Moltrasio. 15 minutes in the water doesn't slow us down." },
+          { question: "What if the weather turns?", answer: "We decide morning-of based on the actual lake. If we cancel, full refund. If we shorten, pro-rata refund." },
+          { question: "Is this enough to see Villa del Balbianello?", answer: "No — Balbianello is 60 minutes one-way from Como. You need the 3-hour or 4-hour tour for that. This one stays in the first basin." },
+        ],
+      },
+      it: {
+        metaTitle: "Tour barca 2 ore Lago di Como · Cernobbio e Villa d'Este",
+        metaDesc: "Tour privato in barca 2 ore da Como — Cernobbio, Villa d'Este, Villa Olmo e la costa delle celebrità di Moltrasio. Skipper locale. Da €400.",
+        headline: "Cernobbio e <em>Villa d'Este,</em> 2 ore.",
+        kicker: "Da Como · Crociera privata di 2 ore",
+        body: [
+          { type: "p", text: "Due ore è il giusto compromesso per chi vuole più di un assaggio senza impegnare mezza giornata. Dal pontile di Como costeggiamo la riviera delle ville — Villa Olmo, Cernobbio con i platani secolari di Villa d'Este sull'acqua, poi su fino a Villa Oleandra (la casa di George Clooney a Laglio) e Villa Passalacqua (Moltrasio)." },
+          { type: "p", text: "Rallentiamo per le foto e raccontiamo chi vive dove, cosa è stato girato dove e perché questo tratto di costa è il rifugio dell'aristocrazia italiana da 500 anni. Tempo libero per fare il bagno o stare con un calice di prosecco." },
+          { type: "p", text: "Il percorso classico di 2 ore, estendibile di 30 minuti se tutto fila e abbiamo lo slot disponibile." },
+        ],
+        included: ["Barca privata con skipper", "Carburante e ormeggi", "Acqua, ghiaccio, asciugamani", "Prosecco a bordo (1 bottiglia / 4 ospiti)", "Racconto discreto in IT/EN"],
+        notIncluded: ["Soste a terra alle ville (ingressi, ormeggio)", "Pranzo a terra", "Pick-up da ville fuori dal primo bacino"],
+        itinerary: [
+          { time: "0:00", place: "Como · Lungolago Viale Geno", note: "Imbarco, briefing di sicurezza, prosecco versato." },
+          { time: "0:20", place: "Cernobbio · Villa d'Este", note: "Passiamo accanto — platani secolari e facciata del 1568 visti dall'acqua." },
+          { time: "0:45", place: "Villa Oleandra · Laglio", note: "La casa di Clooney, la piattaforma, il bottesino." },
+          { time: "1:10", place: "Moltrasio · Villa Passalacqua", note: "L'hotel giallo Belle Époque e le ville minori della riviera di Como." },
+          { time: "1:40", place: "Rientro a Como", note: "Anello davanti a Villa Olmo e ritorno al pontile." },
+        ],
+        faqs: [
+          { question: "Si può fare il bagno in 2 ore?", answer: "Sì — fermata in una caletta tranquilla tra Cernobbio e Moltrasio. 15 minuti in acqua non rallentano il giro." },
+          { question: "Cosa succede se il tempo cambia?", answer: "Decidiamo la mattina stessa in base al lago reale. Se annulliamo, rimborso completo. Se accorciamo, rimborso pro-rata." },
+          { question: "Basta per vedere Villa del Balbianello?", answer: "No — Balbianello è a 60 minuti di sola andata da Como. Serve il tour di 3 o 4 ore. Questo resta nel primo bacino." },
+        ],
+      },
+      ru: {
+        metaTitle: "Тур на лодке 2 часа · Озеро Комо · Cernobbio и Villa d'Este",
+        metaDesc: "Частный тур на лодке 2 часа из Комо — Cernobbio, Villa d'Este, Villa Olmo и побережье знаменитостей Moltrasio. Местный капитан. От €400.",
+        headline: "Cernobbio и <em>Villa d'Este,</em> 2 часа.",
+        kicker: "Из Комо · Частная прогулка 2 часа",
+        body: [
+          { type: "p", text: "Два часа — оптимально для тех, кто хочет больше, чем тизер, без обязательств полудня. От пристани Комо мы идём вдоль побережья знаменитостей — Villa Olmo, Cernobbio с вековыми платанами Villa d'Este, далее Villa Oleandra (дом Клуни в Laglio) и Villa Passalacqua (Moltrasio)." },
+          { type: "p", text: "Замедляемся для фото и рассказываем, кто где живёт и что где снимали. Свободное время для купания или просто бокала просекко." },
+        ],
+        included: ["Частная лодка с капитаном", "Топливо и стоянка", "Вода, лёд, полотенца", "Просекко на борту", "Рассказ на IT/EN"],
+        notIncluded: ["Высадки на берегу", "Обед на берегу", "Подача с вилл вне первого бассейна"],
+        itinerary: [
+          { time: "0:00", place: "Como · Lungolago Viale Geno", note: "Посадка, инструктаж, просекко." },
+          { time: "0:20", place: "Cernobbio · Villa d'Este", note: "Проходим рядом — платаны и фасад 1568 года с воды." },
+          { time: "0:45", place: "Villa Oleandra · Laglio", note: "Дом Клуни." },
+          { time: "1:10", place: "Moltrasio · Villa Passalacqua", note: "Жёлтый отель Belle Époque." },
+          { time: "1:40", place: "Возвращение в Комо", note: "Петля у Villa Olmo и обратно." },
+        ],
+        faqs: [
+          { question: "Можно купаться?", answer: "Да — остановка в спокойной бухте, 15 минут." },
+          { question: "А если погода?", answer: "Решаем утром. Отмена — возврат, сокращение — пропорционально." },
+          { question: "Хватает на Villa del Balbianello?", answer: "Нет — туда нужен 3-4-часовой тур." },
+        ],
+      },
+      ar: {
+        metaTitle: "جولة قارب ساعتان · بحيرة كومو · تشيرنوبيو وفيلا ديستي",
+        metaDesc: "جولة قارب خاصة ساعتان من كومو — تشيرنوبيو، فيلا ديستي، فيلا أولمو وساحل مشاهير مولتراسيو. قبطان محلي. من €400.",
+        headline: "تشيرنوبيو و<em>فيلا ديستي،</em> ساعتان.",
+        kicker: "من كومو · جولة ساعتان خاصة",
+        body: [
+          { type: "p", text: "ساعتان هو الخيار الأمثل لمن يريد أكثر من تذوّق دون الالتزام بنصف يوم. من رصيف كومو نصعد بمحاذاة ساحل المشاهير — فيلا أولمو، تشيرنوبيو مع أشجار فيلا ديستي على الماء، ثم فيلا أوليندرا (منزل كلوني في لاليو) وفيلا باسالاكوا (مولتراسيو)." },
+          { type: "p", text: "نُبطئ للصور ونحكي من يسكن أين. وقت حر للسباحة أو الجلوس مع كأس بروسيكو." },
+        ],
+        included: ["قارب خاص مع قبطان", "وقود ورسوم رصيف", "مياه وثلج ومناشف", "بروسيكو على المتن", "سرد بالإيطالية/الإنجليزية"],
+        notIncluded: ["نزولات على الشاطئ عند الفلل", "غداء على البر", "الإقلال من فلل خارج الحوض الأول"],
+        itinerary: [
+          { time: "0:00", place: "كومو · Lungolago Viale Geno", note: "الصعود، إيضاح السلامة، بروسيكو." },
+          { time: "0:20", place: "تشيرنوبيو · فيلا ديستي", note: "نمرّ قريباً — الأشجار والواجهة من الماء." },
+          { time: "0:45", place: "فيلا أوليندرا · لاليو", note: "منزل كلوني." },
+          { time: "1:10", place: "مولتراسيو · فيلا باسالاكوا", note: "الفندق الأصفر." },
+          { time: "1:40", place: "العودة إلى كومو", note: "دورة عند فيلا أولمو والعودة." },
+        ],
+        faqs: [
+          { question: "هل يمكن السباحة؟", answer: "نعم — توقف 15 دقيقة في خليج هادئ." },
+          { question: "والطقس؟", answer: "نقرّر صباحاً. إلغاء = استرداد كامل، تقصير = جزئي." },
+          { question: "هل تكفي لفيلا بالبيانيلو؟", answer: "لا — تحتاج جولة 3 أو 4 ساعات." },
+        ],
+      },
+    },
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  // Tour 06 — Boat & Villa Tour, 4h with one villa visit
+  // ─────────────────────────────────────────────────────────────
+  {
+    slug: "boat-palace-4h",
+    baseIndex: 3,
+    hero: "/images/attractions/villa-del-balbianello.jpg",
+    durationMinutes: 240,
+    priceEUR: 450,
+    pins: ["como", "cernobbio", "balbianello", "isola_comacina"],
+    copy: {
+      en: {
+        metaTitle: "Lake Como boat & villa tour · 4 hours with FAI Balbianello visit",
+        metaDesc: "Combine a private boat tour on Lake Como with a guided visit to Villa del Balbianello (FAI) or Villa Carlotta. 4 hours, from Como, from €450.",
+        headline: "Boat &amp; <em>Villa,</em> 4 hours.",
+        kicker: "From Como · Cruise + one villa visit",
+        body: [
+          { type: "p", text: "Lake Como's villas were built to be approached from the water — but a few of them are also open to step inside. This tour pairs a private cruise of the lake's most photographed coastline with a guided visit to one villa: Villa del Balbianello (administered by the FAI, Italy's National Trust equivalent) or Villa Carlotta, depending on the day and the season." },
+          { type: "p", text: "We handle the timed ticketing, the dock, and the timing — you walk straight off the boat and into the villa, no FAI shuttle, no queue. Around 90 minutes inside, the rest of the time on the water with stops for photos and a swim." },
+          { type: "p", text: "Best paired with a sunny weekday and a flexible start time — FAI slots for Balbianello are limited and the villa closes in winter." },
+        ],
+        included: ["Private boat with skipper", "Villa entry ticket (Balbianello or Carlotta — 1 per guest)", "Pre-booking the FAI / Carlotta slot", "Bottled water, towels, prosecco", "Discreet narration"],
+        notIncluded: ["FAI guided tour upgrade (~€15/guest, optional)", "Lunch", "Pick-up from outside the first basin"],
+        itinerary: [
+          { time: "0:00", place: "Como · departure", note: "Boarding and safety briefing." },
+          { time: "0:30", place: "Cernobbio · Villa d'Este from water", note: "We pass and photograph but don't dock." },
+          { time: "1:00", place: "Villa del Balbianello · arrival", note: "We dock at the FAI pontoon — the visit starts on time." },
+          { time: "2:30", place: "Villa del Balbianello · departure", note: "Back on the boat, prosecco poured." },
+          { time: "3:00", place: "Swim stop · Isola Comacina cove", note: "20 minutes in the water if everyone wants it." },
+          { time: "4:00", place: "Return to Como", note: "" },
+        ],
+        faqs: [
+          { question: "Can we choose which villa to visit?", answer: "Yes — at booking. Balbianello has the bigger 'wow' factor (Casino Royale, Star Wars Episode II) but is closed Monday-Wednesday. Villa Carlotta is open daily and is the better botanical visit." },
+          { question: "What if the FAI slot isn't available?", answer: "We rebook to Villa Carlotta or shift the day. We never sell this tour without a confirmed slot." },
+          { question: "Is the FAI ticket included?", answer: "Yes — one ticket per guest. The optional FAI guided-tour upgrade (€15-20) is at your discretion." },
+        ],
+      },
+      it: {
+        metaTitle: "Tour barca + Villa · Lago di Como · 4 ore con visita FAI Balbianello",
+        metaDesc: "Tour privato in barca sul Lago di Como abbinato a visita guidata a Villa del Balbianello (FAI) o Villa Carlotta. 4 ore da Como, da €450.",
+        headline: "Barca e <em>Villa,</em> 4 ore.",
+        kicker: "Da Como · Crociera + visita a una villa",
+        body: [
+          { type: "p", text: "Le ville del Lago di Como sono state costruite per essere viste dall'acqua — ma alcune sono anche aperte dentro. Questo tour abbina una crociera privata della costa più fotografata del lago a una visita guidata di una villa: Villa del Balbianello (gestita dal FAI, l'equivalente italiano del National Trust) o Villa Carlotta, in base al giorno e alla stagione." },
+          { type: "p", text: "Gestiamo prenotazione, attracco e orari — scendi direttamente dalla barca alla villa, senza navetta FAI e senza coda. Circa 90 minuti dentro, il resto sull'acqua con soste per foto e bagno." },
+          { type: "p", text: "Meglio in giorno feriale soleggiato con partenza flessibile — gli slot FAI per Balbianello sono limitati e la villa chiude in inverno." },
+        ],
+        included: ["Barca privata con skipper", "Biglietto villa (Balbianello o Carlotta — 1 a ospite)", "Pre-prenotazione dello slot FAI / Carlotta", "Acqua, asciugamani, prosecco", "Racconto discreto"],
+        notIncluded: ["Upgrade visita guidata FAI (~€15/ospite, opzionale)", "Pranzo", "Pick-up fuori dal primo bacino"],
+        itinerary: [
+          { time: "0:00", place: "Como · partenza", note: "Imbarco e briefing." },
+          { time: "0:30", place: "Cernobbio · Villa d'Este dall'acqua", note: "Passiamo e fotografiamo, niente attracco." },
+          { time: "1:00", place: "Villa del Balbianello · arrivo", note: "Attracco al pontile FAI — visita all'orario prenotato." },
+          { time: "2:30", place: "Villa del Balbianello · partenza", note: "Di nuovo in barca, prosecco versato." },
+          { time: "3:00", place: "Bagno · caletta Isola Comacina", note: "20 minuti in acqua se tutti d'accordo." },
+          { time: "4:00", place: "Rientro a Como", note: "" },
+        ],
+        faqs: [
+          { question: "Si può scegliere quale villa visitare?", answer: "Sì — in fase di prenotazione. Balbianello ha più 'wow' (Casino Royale, Star Wars II) ma chiude lun-mer. Villa Carlotta è aperta tutti i giorni ed è la visita botanica più completa." },
+          { question: "E se lo slot FAI non è disponibile?", answer: "Riprenotiamo a Villa Carlotta o spostiamo giorno. Non vendiamo questo tour senza slot confermato." },
+          { question: "Il biglietto FAI è incluso?", answer: "Sì — uno a ospite. L'upgrade visita guidata FAI (€15-20) resta a tua discrezione." },
+        ],
+      },
+      ru: {
+        metaTitle: "Тур лодка + Вилла · Озеро Комо · 4 часа с FAI Balbianello",
+        metaDesc: "Частный тур на лодке по озеру Комо + экскурсия по Villa del Balbianello (FAI) или Villa Carlotta. 4 часа из Комо, от €450.",
+        headline: "Лодка и <em>Вилла,</em> 4 часа.",
+        kicker: "Из Комо · Прогулка + одна вилла",
+        body: [
+          { type: "p", text: "Виллы озера Комо построены, чтобы видеть их с воды — но некоторые открыты внутри. Этот тур сочетает частную прогулку по самой фотографируемой части лазера с экскурсией: Villa del Balbianello (FAI) или Villa Carlotta, в зависимости от дня." },
+          { type: "p", text: "Бронируем слот, причал, тайминг. Вы сходите с лодки прямо к вилле — без шаттла FAI и без очереди. Около 90 минут внутри, остальное на воде." },
+        ],
+        included: ["Частная лодка с капитаном", "Билет на виллу", "Бронь слота FAI/Carlotta", "Вода, полотенца, просекко", "Рассказ"],
+        notIncluded: ["Гид FAI (доплата)", "Обед", "Подача вне первого бассейна"],
+        itinerary: [
+          { time: "0:00", place: "Como · отправление", note: "Посадка." },
+          { time: "0:30", place: "Cernobbio · Villa d'Este", note: "Проходим мимо." },
+          { time: "1:00", place: "Villa del Balbianello · прибытие", note: "Причал FAI." },
+          { time: "2:30", place: "Villa del Balbianello · отбытие", note: "Обратно на лодку." },
+          { time: "3:00", place: "Купание · Isola Comacina", note: "20 минут." },
+          { time: "4:00", place: "Возврат в Comо", note: "" },
+        ],
+        faqs: [
+          { question: "Какая вилла?", answer: "Выбор при бронировании. Balbianello — больше 'вау', закрыт пн-ср. Carlotta — открыт ежедневно." },
+          { question: "А если FAI занято?", answer: "Меняем на Carlotta или другой день." },
+          { question: "Билет включён?", answer: "Да — по 1 на гостя." },
+        ],
+      },
+      ar: {
+        metaTitle: "جولة قارب + فيلا · بحيرة كومو · 4 ساعات مع FAI Balbianello",
+        metaDesc: "جولة قارب خاصة على بحيرة كومو مع زيارة Villa del Balbianello (FAI) أو Villa Carlotta. 4 ساعات من كومو، من €450.",
+        headline: "قارب و<em>فيلا،</em> 4 ساعات.",
+        kicker: "من كومو · جولة + زيارة فيلا",
+        body: [
+          { type: "p", text: "بُنيت فلل بحيرة كومو لتُرى من الماء — لكن بعضها مفتوح من الداخل. هذه الجولة تجمع رحلة قاربية خاصة بساحل البحيرة الأكثر تصويراً مع زيارة موجهة لفيلا: Villa del Balbianello (إدارة FAI) أو Villa Carlotta حسب اليوم والموسم." },
+          { type: "p", text: "نتولى الحجز والرسو والتوقيت. تنزلون من القارب مباشرة إلى الفيلا — بلا حافلة FAI ولا انتظار. حوالى 90 دقيقة داخلاً، والباقي على الماء." },
+        ],
+        included: ["قارب خاص مع قبطان", "تذكرة فيلا (لكل ضيف)", "حجز FAI/Carlotta مسبقاً", "مياه ومناشف وبروسيكو", "سرد محتشم"],
+        notIncluded: ["جولة FAI الموجّهة (إضافية)", "غداء", "إقلال من خارج الحوض الأول"],
+        itinerary: [
+          { time: "0:00", place: "كومو · انطلاق", note: "صعود." },
+          { time: "0:30", place: "تشيرنوبيو · فيلا ديستي", note: "نمر بدون رسو." },
+          { time: "1:00", place: "فيلا بالبيانيلو · وصول", note: "رسو رصيف FAI." },
+          { time: "2:30", place: "فيلا بالبيانيلو · مغادرة", note: "العودة للقارب." },
+          { time: "3:00", place: "سباحة · Isola Comacina", note: "20 دقيقة." },
+          { time: "4:00", place: "العودة إلى كومو", note: "" },
+        ],
+        faqs: [
+          { question: "أي فيلا؟", answer: "اختيار عند الحجز. بالبيانيلو أكثر تأثيراً لكنه مغلق إثنين-أربعاء. كارلوتا مفتوح يومياً." },
+          { question: "وإذا حجز FAI غير متاح؟", answer: "ننقل إلى كارلوتا أو يوم آخر." },
+          { question: "هل التذكرة مشمولة؟", answer: "نعم — واحدة لكل ضيف." },
+        ],
+      },
+    },
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  // Tour 07 — First Basin & Balbianello, 5 hours
+  // ─────────────────────────────────────────────────────────────
+  {
+    slug: "first-basin-5h",
+    baseIndex: 5,
+    hero: "/images/balbianello.jpg",
+    durationMinutes: 300,
+    priceEUR: 820,
+    pins: ["como", "cernobbio", "nesso", "argegno", "isola_comacina", "balbianello"],
+    copy: {
+      en: {
+        metaTitle: "Lake Como 5-hour private boat tour · First basin + Balbianello",
+        metaDesc: "Five hours on Lake Como — Como, Cernobbio, Moltrasio, Nesso, Villa del Balbianello and Isola Comacina with swim stop and lakeside lunch. From €820.",
+        headline: "First basin &amp; <em>Balbianello,</em> 5 hours.",
+        kicker: "From Como · 5-hour private cruise with lunch slot",
+        body: [
+          { type: "p", text: "Five hours is the route we recommend most often — long enough to cross out of the first basin and reach Villa del Balbianello, short enough that you're back in Como with time to dress for dinner. The classic Lake Como day on the water." },
+          { type: "p", text: "We leave Como mid-morning, hug the western shore past Cernobbio, Moltrasio and Laglio, then cut across to the Orrido di Nesso waterfall (visible only from the lake), continue up past Argegno to Isola Comacina for a swim, and finish at Villa del Balbianello — photos from the water at the most cinematic stretch of shoreline on the lake." },
+          { type: "p", text: "Lunch is at one of our preferred lake-side restaurants — Crotto dei Platani in Brienno, La Cucina della Marianna in Cadenabbia, or onboard if you prefer a picnic with prosecco. We handle the dock booking." },
+        ],
+        included: ["Private boat with skipper for 5 hours", "Fuel, harbour fees, parking", "Bottled water, prosecco, towels", "Lake-side restaurant docking + reservation", "Multilingual discreet narration"],
+        notIncluded: ["Lunch (typically €40-70/guest at our preferred restaurants)", "Villa entry tickets if you want to step inside (€10-20 per villa)", "Pick-up from villas outside the first basin (add €100)"],
+        itinerary: [
+          { time: "0:00", place: "Como · Lungolago Viale Geno", note: "Boarding, briefing, prosecco." },
+          { time: "0:45", place: "Cernobbio + Villa d'Este", note: "Slow pass for photos." },
+          { time: "1:15", place: "Orrido di Nesso", note: "The waterfall under the bridge — only visible from a boat." },
+          { time: "2:00", place: "Lunch · Crotto dei Platani or onboard", note: "Lake-side, ~75 minutes." },
+          { time: "3:30", place: "Isola Comacina · swim", note: "30-minute swim stop in the cove." },
+          { time: "4:00", place: "Villa del Balbianello", note: "Slow pass from the water, the iconic angle." },
+          { time: "5:00", place: "Return to Como", note: "" },
+        ],
+        faqs: [
+          { question: "Can we step inside Villa del Balbianello?", answer: "The dock is FAI-managed and the slot must be booked separately — if you want to step inside, book our Boat & Villa Tour (4 hours, with a guided villa visit included)." },
+          { question: "Is lunch flexible?", answer: "Yes — we can book Crotto dei Platani (Brienno), Il Gatto Nero (Cernobbio), La Punta (Bellagio) or arrange an onboard picnic. Tell us at booking." },
+          { question: "What's the difference vs the 6-hour tour?", answer: "The 6-hour adds Bellagio + Varenna (centre lake). The 5-hour stays in the first basin + Balbianello and is the better-value pick for first-time visitors." },
+        ],
+      },
+      it: {
+        metaTitle: "Tour barca 5 ore · Lago di Como · Primo bacino + Balbianello",
+        metaDesc: "Cinque ore sul Lago di Como — Como, Cernobbio, Moltrasio, Nesso, Villa del Balbianello e Isola Comacina con sosta bagno e pranzo. Da €820.",
+        headline: "Primo bacino e <em>Balbianello,</em> 5 ore.",
+        kicker: "Da Como · Crociera privata 5 ore con pranzo",
+        body: [
+          { type: "p", text: "Cinque ore è il percorso che consigliamo più spesso — abbastanza lungo per uscire dal primo bacino e raggiungere Villa del Balbianello, abbastanza breve per essere di nuovo a Como in tempo per cambiarsi per cena. La giornata classica sul lago." },
+          { type: "p", text: "Partiamo a metà mattina, costeggiamo la riva ovest oltre Cernobbio, Moltrasio e Laglio, poi tagliamo verso l'Orrido di Nesso (visibile solo dal lago), continuiamo oltre Argegno fino all'Isola Comacina per il bagno, e finiamo a Villa del Balbianello — foto dall'acqua nel tratto più cinematografico del lago." },
+          { type: "p", text: "Pranzo in uno dei nostri ristoranti preferiti — Crotto dei Platani a Brienno, La Cucina della Marianna a Cadenabbia, o picnic a bordo se preferisci. Gestiamo noi la prenotazione." },
+        ],
+        included: ["Barca privata con skipper per 5 ore", "Carburante, ormeggi, parcheggio", "Acqua, prosecco, asciugamani", "Attracco al ristorante + prenotazione", "Racconto multilingue discreto"],
+        notIncluded: ["Pranzo (€40-70/ospite ai ristoranti consigliati)", "Biglietti d'ingresso ville (€10-20)", "Pick-up fuori dal primo bacino (+€100)"],
+        itinerary: [
+          { time: "0:00", place: "Como · Lungolago Viale Geno", note: "Imbarco, briefing, prosecco." },
+          { time: "0:45", place: "Cernobbio + Villa d'Este", note: "Passaggio lento per le foto." },
+          { time: "1:15", place: "Orrido di Nesso", note: "La cascata sotto il ponte — visibile solo dalla barca." },
+          { time: "2:00", place: "Pranzo · Crotto dei Platani o a bordo", note: "Sul lago, ~75 minuti." },
+          { time: "3:30", place: "Isola Comacina · bagno", note: "30 minuti di sosta bagno nella caletta." },
+          { time: "4:00", place: "Villa del Balbianello", note: "Passaggio lento dall'acqua, l'angolo iconico." },
+          { time: "5:00", place: "Rientro a Como", note: "" },
+        ],
+        faqs: [
+          { question: "Si entra a Villa del Balbianello?", answer: "Il pontile è FAI e lo slot va prenotato a parte — se vuoi entrare, prenota il Boat & Villa Tour (4 ore con visita guidata inclusa)." },
+          { question: "Il pranzo è flessibile?", answer: "Sì — Crotto dei Platani (Brienno), Il Gatto Nero (Cernobbio), La Punta (Bellagio), o picnic a bordo. Dicci tu in fase di prenotazione." },
+          { question: "Differenza con 6 ore?", answer: "Il 6 ore aggiunge Bellagio + Varenna (centro lago). Il 5 ore resta nel primo bacino + Balbianello — miglior rapporto qualità-prezzo per la prima volta." },
+        ],
+      },
+      ru: {
+        metaTitle: "Тур 5 часов · Озеро Комо · Первый бассейн + Balbianello",
+        metaDesc: "5 часов на озере Комо — Cernobbio, Nesso, Villa del Balbianello, Isola Comacina с купанием и обедом. От €820.",
+        headline: "Первый бассейн и <em>Balbianello,</em> 5 часов.",
+        kicker: "Из Комо · 5 часов с обедом",
+        body: [
+          { type: "p", text: "Пять часов — наш самый рекомендуемый маршрут. Хватает выйти за первый бассейн и дойти до Villa del Balbianello, но не так долго, чтобы пропустить ужин. Классический день на озере." },
+          { type: "p", text: "Mid-morning из Комо вдоль западного берега до Cernobbio, Moltrasio, Laglio, потом через Orrido di Nesso (видно только с воды) к Isola Comacina на купание, и финал у Villa del Balbianello." },
+        ],
+        included: ["Частная лодка с капитаном 5ч", "Топливо и стоянки", "Вода, просекко, полотенца", "Бронь ресторана", "Многоязычный рассказ"],
+        notIncluded: ["Обед (€40-70/гостя)", "Билеты на виллы", "Подача вне первого бассейна (+€100)"],
+        itinerary: [
+          { time: "0:00", place: "Como", note: "Посадка, инструктаж, просекко." },
+          { time: "0:45", place: "Cernobbio", note: "Фото." },
+          { time: "1:15", place: "Orrido di Nesso", note: "Водопад под мостом." },
+          { time: "2:00", place: "Обед", note: "У воды, 75 минут." },
+          { time: "3:30", place: "Isola Comacina", note: "Купание 30 минут." },
+          { time: "4:00", place: "Villa del Balbianello", note: "С воды." },
+          { time: "5:00", place: "Возврат в Комо", note: "" },
+        ],
+        faqs: [
+          { question: "Заходим в Balbianello?", answer: "Нет — для этого нужен Boat & Villa Tour 4 часа." },
+          { question: "Где обед?", answer: "Crotto dei Platani, Il Gatto Nero или пикник на борту." },
+          { question: "Разница с 6ч?", answer: "6ч добавляет Bellagio и Varenna." },
+        ],
+      },
+      ar: {
+        metaTitle: "جولة 5 ساعات · بحيرة كومو · الحوض الأول + بالبيانيلو",
+        metaDesc: "خمس ساعات على بحيرة كومو — تشيرنوبيو، أوريدو دي نيسو، فيلا بالبيانيلو، إيزولا كوماتشينا مع سباحة وغداء. من €820.",
+        headline: "الحوض الأول و<em>بالبيانيلو،</em> 5 ساعات.",
+        kicker: "من كومو · 5 ساعات مع غداء",
+        body: [
+          { type: "p", text: "خمس ساعات — مسارنا الأكثر توصية. كافٍ للخروج من الحوض الأول والوصول إلى فيلا بالبيانيلو، وقصير بما يكفي للعودة إلى كومو قبل العشاء." },
+          { type: "p", text: "نغادر منتصف الصباح، نلامس الضفة الغربية حتى تشيرنوبيو ومولتراسيو ولاليو، ثم نعبر إلى أوريدو دي نيسو ومن ثم إيزولا كوماتشينا للسباحة، وننهي عند فيلا بالبيانيلو." },
+        ],
+        included: ["قارب خاص مع قبطان 5س", "وقود ومرافئ", "مياه وبروسيكو ومناشف", "حجز المطعم", "سرد متعدد اللغات"],
+        notIncluded: ["الغداء (€40-70/ضيف)", "تذاكر الفلل", "إقلال خارج الحوض الأول (+€100)"],
+        itinerary: [
+          { time: "0:00", place: "كومو", note: "صعود، بروسيكو." },
+          { time: "0:45", place: "تشيرنوبيو", note: "صور." },
+          { time: "1:15", place: "أوريدو دي نيسو", note: "الشلال." },
+          { time: "2:00", place: "غداء", note: "75 دقيقة." },
+          { time: "3:30", place: "إيزولا كوماتشينا", note: "سباحة 30د." },
+          { time: "4:00", place: "فيلا بالبيانيلو", note: "من الماء." },
+          { time: "5:00", place: "العودة", note: "" },
+        ],
+        faqs: [
+          { question: "هل ندخل بالبيانيلو؟", answer: "لا — يحتاج جولة Boat & Villa 4 ساعات." },
+          { question: "الغداء؟", answer: "مطاعم على الماء أو بكنيك." },
+          { question: "الفرق مع 6 ساعات؟", answer: "6 ساعات تضيف بيلاجيو وفارينا." },
+        ],
+      },
+    },
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  // Tour 08 — Centre Lake (Bellagio + Varenna), 6 hours
+  // ─────────────────────────────────────────────────────────────
+  {
+    slug: "centre-lake-6h",
+    baseIndex: 6,
+    hero: "/images/attractions/bellagio.jpg",
+    durationMinutes: 360,
+    priceEUR: 950,
+    pins: ["como", "cernobbio", "balbianello", "carlotta", "bellagio", "varenna", "menaggio"],
+    copy: {
+      en: {
+        metaTitle: "Lake Como 6-hour boat tour · Bellagio, Varenna and centre lake",
+        metaDesc: "Six hours on Lake Como — first basin, Villa del Balbianello, Bellagio, Varenna with lunch stop. The classic full-lake itinerary. From €950.",
+        headline: "Bellagio, Varenna &amp; <em>centre lake,</em> 6 hours.",
+        kicker: "From Como · 6-hour cruise to the three-armed centre",
+        body: [
+          { type: "p", text: "The centre of Lake Como — where the three arms meet at the Punta Spartivento — is 45 minutes from Como by boat. Add the time to do the first basin properly on the way up and you're looking at a 6-hour day. The most complete lake itinerary we offer at a fixed price." },
+          { type: "p", text: "Morning departure from Como, slow pass of Villa d'Este and the celebrity coastline, then up past Villa del Balbianello and Villa Carlotta to Bellagio for a 90-minute lunch stop in the village. Afternoon cuts across to Varenna for the lighthouse view and Villa Monastero, then back south past Menaggio and home." },
+          { type: "p", text: "If you only have one day on Lake Como and you want to actually see the whole thing, this is the tour." },
+        ],
+        included: ["Private boat with skipper for 6 hours", "Fuel, ormeggi, parking", "Bottled water, prosecco, towels", "Restaurant booking in Bellagio", "Time onshore in Bellagio + Varenna"],
+        notIncluded: ["Lunch (€50-90/guest in Bellagio)", "Villa entry tickets if you want to step inside", "Pick-up outside the first basin (+€100)"],
+        itinerary: [
+          { time: "0:00", place: "Como · departure", note: "Boarding, briefing, prosecco." },
+          { time: "0:45", place: "Cernobbio + Villa d'Este", note: "Slow pass." },
+          { time: "1:30", place: "Villa del Balbianello", note: "Photos from the water." },
+          { time: "2:15", place: "Bellagio · lunch", note: "90-minute stop. La Punta or Bilacus by default." },
+          { time: "4:00", place: "Varenna", note: "Castello di Vezio from the lake, the painted houses." },
+          { time: "4:45", place: "Menaggio cross-over", note: "Back south along the west shore." },
+          { time: "6:00", place: "Return to Como", note: "" },
+        ],
+        faqs: [
+          { question: "Can we step off in Varenna?", answer: "Yes — we dock for 20-30 minutes at the public pontile. Enough to walk the lakefront and look up at Castello di Vezio. For a longer visit, add the 8-hour tour." },
+          { question: "What about Villa Carlotta?", answer: "We pass it slowly — but at 6 hours the schedule doesn't include a stop inside. For Villa Carlotta visit + lake tour, see the Boat & Villa Tour (4 hours)." },
+          { question: "Is 6 hours enough for swimming?", answer: "Yes — we typically build in a 20-30 minute swim stop near Isola Comacina on the way down or near Lezzeno on the way back, water and weather permitting." },
+        ],
+      },
+      it: {
+        metaTitle: "Tour barca 6 ore · Lago di Como · Bellagio, Varenna e centro lago",
+        metaDesc: "Sei ore sul Lago di Como — primo bacino, Balbianello, Bellagio, Varenna con pranzo. Itinerario classico completo. Da €950.",
+        headline: "Bellagio, Varenna e <em>centro lago,</em> 6 ore.",
+        kicker: "Da Como · 6 ore fino al centro lago tre rami",
+        body: [
+          { type: "p", text: "Il centro del Lago di Como — dove i tre rami si incontrano a Punta Spartivento — è a 45 minuti da Como in barca. Aggiungi il tempo per fare bene il primo bacino e siamo a 6 ore. L'itinerario lago completo più ricco che offriamo a prezzo fisso." },
+          { type: "p", text: "Partenza al mattino da Como, passaggio lento davanti a Villa d'Este e alla riviera delle celebrità, poi su per Villa del Balbianello e Villa Carlotta fino a Bellagio per una sosta pranzo di 90 minuti. Pomeriggio attraverso a Varenna per il faro e Villa Monastero, poi rientro a sud passando da Menaggio." },
+          { type: "p", text: "Se hai un solo giorno sul Lago di Como e vuoi davvero vederlo tutto, questo è il tour." },
+        ],
+        included: ["Barca privata con skipper per 6 ore", "Carburante, ormeggi, parcheggio", "Acqua, prosecco, asciugamani", "Prenotazione ristorante a Bellagio", "Tempo a terra a Bellagio e Varenna"],
+        notIncluded: ["Pranzo (€50-90/ospite a Bellagio)", "Ingressi ville", "Pick-up fuori primo bacino (+€100)"],
+        itinerary: [
+          { time: "0:00", place: "Como · partenza", note: "Imbarco, briefing, prosecco." },
+          { time: "0:45", place: "Cernobbio + Villa d'Este", note: "Passaggio lento." },
+          { time: "1:30", place: "Villa del Balbianello", note: "Foto dall'acqua." },
+          { time: "2:15", place: "Bellagio · pranzo", note: "Sosta di 90 minuti. La Punta o Bilacus di default." },
+          { time: "4:00", place: "Varenna", note: "Castello di Vezio dal lago, case colorate." },
+          { time: "4:45", place: "Traversata Menaggio", note: "Rientro sud lungo la riva ovest." },
+          { time: "6:00", place: "Rientro a Como", note: "" },
+        ],
+        faqs: [
+          { question: "Si scende a Varenna?", answer: "Sì — sosta di 20-30 minuti al pontile pubblico. Abbastanza per camminare sul lungolago. Per visita più lunga, vedi il tour 8 ore." },
+          { question: "E Villa Carlotta?", answer: "Passaggio lento — ma 6 ore non includono visita interna. Per Carlotta + lago, vedi Boat & Villa Tour (4 ore)." },
+          { question: "Si fa il bagno?", answer: "Sì — sosta di 20-30 minuti vicino a Isola Comacina o Lezzeno, meteo permettendo." },
+        ],
+      },
+      ru: {
+        metaTitle: "Тур 6 часов · Озеро Комо · Bellagio, Varenna, центр озера",
+        metaDesc: "6 часов на озере Комо — первый бассейн, Balbianello, Bellagio, Varenna с обедом. Классический полный маршрут. От €950.",
+        headline: "Bellagio, Varenna и <em>центр озера,</em> 6 часов.",
+        kicker: "Из Комо · 6 часов до Punta Spartivento",
+        body: [
+          { type: "p", text: "Центр озера Комо — где три рукава сходятся у Punta Spartivento — в 45 минутах от Комо. Плюс время на первый бассейн = 6 часов. Самый полный маршрут озера за фикс-цену." },
+          { type: "p", text: "Утром из Комо, медленно мимо Villa d'Este, затем Villa del Balbianello и Carlotta, в Bellagio на 90 минут обеда. После — через Varenna и обратно через Menaggio." },
+        ],
+        included: ["Частная лодка с капитаном 6ч", "Топливо и стоянка", "Вода, просекко, полотенца", "Бронь ресторана Bellagio", "Время на берегу"],
+        notIncluded: ["Обед (€50-90/гостя)", "Билеты на виллы", "Подача вне первого бассейна (+€100)"],
+        itinerary: [
+          { time: "0:00", place: "Como", note: "Посадка." },
+          { time: "0:45", place: "Cernobbio + Villa d'Este", note: "" },
+          { time: "1:30", place: "Villa del Balbianello", note: "Фото." },
+          { time: "2:15", place: "Bellagio · обед", note: "90 минут." },
+          { time: "4:00", place: "Varenna", note: "Castello di Vezio." },
+          { time: "4:45", place: "Menaggio", note: "Возврат на запад." },
+          { time: "6:00", place: "Возврат в Comо", note: "" },
+        ],
+        faqs: [
+          { question: "Высадка в Varenna?", answer: "Да — 20-30 минут." },
+          { question: "А Carlotta?", answer: "Только проход — для входа Boat & Villa Tour." },
+          { question: "Купание?", answer: "20-30 минут у Isola Comacina или Lezzeno." },
+        ],
+      },
+      ar: {
+        metaTitle: "جولة 6 ساعات · بحيرة كومو · بيلاجيو وفارينا ومركز البحيرة",
+        metaDesc: "6 ساعات على بحيرة كومو — الحوض الأول، بالبيانيلو، بيلاجيو، فارينا مع غداء. مسار كلاسيكي شامل. من €950.",
+        headline: "بيلاجيو وفارينا و<em>مركز البحيرة،</em> 6 ساعات.",
+        kicker: "من كومو · 6 ساعات إلى Punta Spartivento",
+        body: [
+          { type: "p", text: "مركز بحيرة كومو — حيث تلتقي الأذرع الثلاثة عند Punta Spartivento — 45 دقيقة من كومو بالقارب. زد وقت الحوض الأول وتُصبح 6 ساعات. أكمل مسار للبحيرة بسعر ثابت." },
+          { type: "p", text: "نغادر صباحاً من كومو، نمر بفيلا ديستي وبالبيانيلو وكارلوتا، نتوقف 90 دقيقة في بيلاجيو للغداء، ثم نعبر إلى فارينا والعودة جنوباً مروراً بمناجيو." },
+        ],
+        included: ["قارب خاص مع قبطان 6س", "وقود ومرافئ", "مياه وبروسيكو ومناشف", "حجز مطعم بيلاجيو", "وقت على البر"],
+        notIncluded: ["الغداء (€50-90)", "تذاكر الفلل", "إقلال خارج الحوض الأول (+€100)"],
+        itinerary: [
+          { time: "0:00", place: "كومو", note: "صعود." },
+          { time: "0:45", place: "تشيرنوبيو + فيلا ديستي", note: "" },
+          { time: "1:30", place: "فيلا بالبيانيلو", note: "صور." },
+          { time: "2:15", place: "بيلاجيو · غداء", note: "90 دقيقة." },
+          { time: "4:00", place: "فارينا", note: "Castello di Vezio." },
+          { time: "4:45", place: "مناجيو", note: "العودة غرباً." },
+          { time: "6:00", place: "العودة", note: "" },
+        ],
+        faqs: [
+          { question: "هل ننزل في فارينا؟", answer: "نعم — 20-30 دقيقة." },
+          { question: "وفيلا كارلوتا؟", answer: "نمر فقط — للزيارة الداخلية انظر Boat & Villa Tour." },
+          { question: "هل يمكن السباحة؟", answer: "نعم، 20-30 دقيقة عند Isola Comacina أو Lezzeno." },
+        ],
+      },
+    },
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  // Tour 09 — Sunset Cruise, 1.5 hours
+  // ─────────────────────────────────────────────────────────────
+  {
+    slug: "sunset-cruise",
+    baseIndex: 7,
+    hero: "/images/hero-sunset.jpg",
+    durationMinutes: 90,
+    priceEUR: 350,
+    pins: ["como", "cernobbio", "oleandra"],
+    copy: {
+      en: {
+        metaTitle: "Lake Como sunset cruise · 1.5 hours private boat with prosecco",
+        metaDesc: "Lake Como sunset cruise — 90 minutes on a classic wooden boat with prosecco, golden-hour photos and the lake's most romantic light. From €350.",
+        headline: "Sunset <em>cruise.</em>",
+        kicker: "From Como · 90 minutes at golden hour",
+        body: [
+          { type: "p", text: "Lake Como's light changes more dramatically in the last ninety minutes of the day than in any other moment. The lake turns from blue to molten gold, the villas catch their best light, and the wind drops to nothing — the conditions every Lake Como photographer chases." },
+          { type: "p", text: "Departure 90 minutes before sunset from Como, slow cruise along the first-basin coastline — Villa Olmo, Cernobbio with Villa d'Este, Moltrasio — past Laglio and back. Prosecco poured, the captain stops where the light is best, you take your photos." },
+          { type: "p", text: "The most-booked tour for proposals, anniversaries and 'last evening on Lake Como' goodbye dinners on board." },
+        ],
+        included: ["Private boat with skipper", "Prosecco (1 bottle / 4 guests) and ice", "Bottled water and a light snack platter", "Towels and a cashmere blanket if it gets cool", "Sunset-spot positioning advice from the captain"],
+        notIncluded: ["Sit-down dinner ashore (see our Dinner Tour for that)", "Pick-up from hotels outside the first basin (+€80)"],
+        itinerary: [
+          { time: "T-90 min", place: "Como · Lungolago Viale Geno", note: "Boarding, briefing, prosecco poured." },
+          { time: "T-60 min", place: "Cernobbio · Villa d'Este", note: "The 16th-century facade in golden light." },
+          { time: "T-30 min", place: "Moltrasio · Villa Passalacqua", note: "Belle Époque yellow against the cliff." },
+          { time: "T-0", place: "Sunset · open water off Laglio", note: "The captain stops where the light is best." },
+          { time: "T+30 min", place: "Return to Como", note: "Past Villa Oleandra in the blue hour." },
+        ],
+        faqs: [
+          { question: "What time does the cruise start?", answer: "Sunset varies by month — June around 21:00, October around 18:45. We book the slot 90 minutes before sunset so we're on open water at the moment the sun drops behind the western ridge." },
+          { question: "Is this OK for a proposal?", answer: "Yes — most of our proposals happen on this slot. Tell us at booking and we arrange flowers, a champagne upgrade, a discreet timing cue with the captain. No coordination fee." },
+          { question: "What if it's cloudy?", answer: "Cloudy sunsets often photograph better than clear ones — the sky lights up rather than going monochrome. We don't cancel for clouds, only for rain/wind. Full refund if we have to cancel for weather." },
+        ],
+      },
+      it: {
+        metaTitle: "Crociera al tramonto Lago di Como · 90 minuti in barca con prosecco",
+        metaDesc: "Crociera al tramonto sul Lago di Como — 90 minuti su barca classica in legno con prosecco, ora dorata e la luce più romantica del lago. Da €350.",
+        headline: "Crociera al <em>tramonto.</em>",
+        kicker: "Da Como · 90 minuti nell'ora dorata",
+        body: [
+          { type: "p", text: "La luce del Lago di Como cambia più drammaticamente negli ultimi novanta minuti della giornata che in qualsiasi altro momento. Il lago passa dal blu all'oro fuso, le ville catturano la loro luce migliore, e il vento cala — le condizioni che ogni fotografo del lago insegue." },
+          { type: "p", text: "Partenza 90 minuti prima del tramonto da Como, crociera lenta lungo la costa del primo bacino — Villa Olmo, Cernobbio con Villa d'Este, Moltrasio — fino a Laglio e ritorno. Prosecco versato, lo skipper si ferma dove la luce è migliore, tu scatti." },
+          { type: "p", text: "Il tour più prenotato per proposte, anniversari e cene di addio 'ultima sera sul Lago di Como' a bordo." },
+        ],
+        included: ["Barca privata con skipper", "Prosecco (1 bottiglia / 4 ospiti) e ghiaccio", "Acqua e tagliere leggero", "Asciugamani e plaid in cashmere se rinfresca", "Posizionamento per il tramonto dal capitano"],
+        notIncluded: ["Cena a terra (vedi il Dinner Tour)", "Pick-up da hotel fuori primo bacino (+€80)"],
+        itinerary: [
+          { time: "T-90 min", place: "Como · Lungolago Viale Geno", note: "Imbarco, briefing, prosecco versato." },
+          { time: "T-60 min", place: "Cernobbio · Villa d'Este", note: "La facciata del XVI secolo in luce dorata." },
+          { time: "T-30 min", place: "Moltrasio · Villa Passalacqua", note: "Il giallo Belle Époque contro la roccia." },
+          { time: "T-0", place: "Tramonto · acqua aperta verso Laglio", note: "Lo skipper si ferma dove la luce è migliore." },
+          { time: "T+30 min", place: "Rientro a Como", note: "Davanti a Villa Oleandra nell'ora blu." },
+        ],
+        faqs: [
+          { question: "A che ora parte?", answer: "Il tramonto varia per mese — giugno verso le 21:00, ottobre verso le 18:45. Prenotiamo lo slot 90 minuti prima del tramonto." },
+          { question: "Va bene per una proposta?", answer: "Sì — la maggior parte delle nostre proposte avvengono in questo slot. Dicci tu in fase di prenotazione e organizziamo fiori, upgrade champagne, timing discreto col capitano. Senza costi di coordinazione." },
+          { question: "E se è nuvoloso?", answer: "I tramonti nuvolosi spesso vengono meglio in foto dei sereni. Annulliamo solo per pioggia/vento. Rimborso completo se annulliamo noi per meteo." },
+        ],
+      },
+      ru: {
+        metaTitle: "Закатная прогулка · Озеро Комо · 90 минут с просекко",
+        metaDesc: "Закатная прогулка по озеру Комо — 90 минут на классической деревянной лодке с просекко, золотой час и самый романтичный свет озера. От €350.",
+        headline: "Закатная <em>прогулка.</em>",
+        kicker: "Из Комо · 90 минут в золотой час",
+        body: [
+          { type: "p", text: "Свет озера Комо в последние 90 минут дня меняется драматичнее, чем в любое другое время. Озеро переходит от синего к расплавленному золоту, виллы ловят свой лучший свет, ветер стихает." },
+          { type: "p", text: "Отправление за 90 минут до заката из Комо, медленный круг по первому бассейну — Villa d'Este, Moltrasio, Laglio. Просекко налит, капитан останавливается где свет лучший." },
+        ],
+        included: ["Частная лодка с капитаном", "Просекко и лёд", "Вода и лёгкая закуска", "Полотенца и кашемировый плед", "Совет капитана по точкам заката"],
+        notIncluded: ["Ужин на берегу (см. Dinner Tour)", "Подача вне первого бассейна (+€80)"],
+        itinerary: [
+          { time: "T-90 мин", place: "Comо", note: "Посадка, просекко." },
+          { time: "T-60 мин", place: "Cernobbio · Villa d'Este", note: "Фасад в золотом свете." },
+          { time: "T-30 мин", place: "Moltrasio", note: "" },
+          { time: "T-0", place: "Закат · открытая вода у Laglio", note: "Капитан выбирает точку." },
+          { time: "T+30 мин", place: "Возврат в Comо", note: "Голубой час у Villa Oleandra." },
+        ],
+        faqs: [
+          { question: "Во сколько?", answer: "Зависит от месяца — июнь ~21:00, октябрь ~18:45." },
+          { question: "Подходит для предложения?", answer: "Да — большинство наших предложений в этом слоте. Цветы и шампанское по запросу." },
+          { question: "А если облачно?", answer: "Облачные закаты часто красивее. Отмена только при дожде/ветре." },
+        ],
+      },
+      ar: {
+        metaTitle: "جولة الغروب · بحيرة كومو · 90 دقيقة مع بروسيكو",
+        metaDesc: "جولة الغروب على بحيرة كومو — 90 دقيقة على قارب خشبي كلاسيكي مع بروسيكو، ساعة ذهبية وأرومانسية إضاءة في البحيرة. من €350.",
+        headline: "جولة <em>الغروب.</em>",
+        kicker: "من كومو · 90 دقيقة في الساعة الذهبية",
+        body: [
+          { type: "p", text: "ضوء بحيرة كومو يتغير في آخر 90 دقيقة من النهار أكثر من أي وقت آخر. تتحول البحيرة من الأزرق إلى الذهب المنصهر، تلتقط الفلل أفضل ضوءها، وتهدأ الريح." },
+          { type: "p", text: "الانطلاق قبل الغروب بـ 90 دقيقة من كومو، رحلة بطيئة في الحوض الأول — فيلا ديستي، مولتراسيو، لاليو. بروسيكو على المتن، القبطان يتوقف حيث الضوء الأفضل." },
+        ],
+        included: ["قارب خاص مع قبطان", "بروسيكو وثلج", "مياه ووجبة خفيفة", "مناشف وغطاء كشمير", "نصائح القبطان لأفضل نقاط الغروب"],
+        notIncluded: ["عشاء على البر (انظر Dinner Tour)", "إقلال من خارج الحوض الأول (+€80)"],
+        itinerary: [
+          { time: "T-90د", place: "كومو", note: "صعود، بروسيكو." },
+          { time: "T-60د", place: "تشيرنوبيو · فيلا ديستي", note: "الواجهة في الضوء الذهبي." },
+          { time: "T-30د", place: "مولتراسيو", note: "" },
+          { time: "T-0", place: "الغروب · مياه مفتوحة قرب لاليو", note: "القبطان يختار النقطة." },
+          { time: "T+30د", place: "العودة إلى كومو", note: "الساعة الزرقاء قرب فيلا أوليندرا." },
+        ],
+        faqs: [
+          { question: "في أي وقت؟", answer: "يعتمد على الشهر — يونيو ~21:00، أكتوبر ~18:45." },
+          { question: "هل تناسب طلب يد؟", answer: "نعم — أغلب طلباتنا في هذا التوقيت. ورود وشمبانيا حسب الطلب." },
+          { question: "وإذا كانت غائمة؟", answer: "غروب الغيوم غالباً أجمل تصويراً. الإلغاء فقط لمطر/ريح." },
+        ],
+      },
+    },
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  // Tour 10 — Dinner Tour, 4 hours with sit-down restaurant
+  // ─────────────────────────────────────────────────────────────
+  {
+    slug: "dinner-tour",
+    baseIndex: 8,
+    hero: "/images/luxury-cruise.jpg",
+    durationMinutes: 240,
+    priceEUR: 750,
+    pins: ["como", "cernobbio", "oleandra", "bellagio"],
+    copy: {
+      en: {
+        metaTitle: "Lake Como dinner boat tour · 4 hours private with lakeside restaurant",
+        metaDesc: "Lake Como dinner tour — 4 hours private boat with sunset cruise, then dock at a lakeside restaurant (Crotto dei Platani, La Punta Bellagio). From €750.",
+        headline: "Dinner by <em>boat.</em>",
+        kicker: "From Como · Sunset cruise + lakeside dinner",
+        body: [
+          { type: "p", text: "The best dinner reservations on Lake Como are at restaurants you can only reach properly by boat — Crotto dei Platani in Brienno, Il Gatto Nero looking down on Cernobbio, La Punta at the tip of Bellagio. Our Dinner Tour combines a sunset cruise with a sit-down meal at one of these, with the boat waiting at the pontoon to take you home." },
+          { type: "p", text: "Departure 90 minutes before sunset from Como, slow cruise of the first basin, sunset moment on open water, dock at your chosen restaurant for a 2-hour dinner. The captain waits — when you're done, we head back to Como under the stars." },
+          { type: "p", text: "Better than a hotel dinner in Como. Reservation handled by us. Dress code: smart but comfortable — it's still a boat at the start and a lakeside table at the end." },
+        ],
+        included: ["Private boat with skipper for 4 hours", "Restaurant reservation at your choice (Crotto dei Platani / Il Gatto Nero / La Punta / others)", "Sunset prosecco on board", "Cashmere blankets if it cools after sunset", "Water, towels, USB charging"],
+        notIncluded: ["Dinner cost (typically €70-150/guest at our preferred restaurants)", "Pick-up outside first basin (+€100)"],
+        itinerary: [
+          { time: "T-90 min", place: "Como · departure", note: "Boarding, prosecco poured." },
+          { time: "T-60 min", place: "Cernobbio + Villa d'Este", note: "Golden-hour pass." },
+          { time: "T-0", place: "Sunset · open water", note: "Captain stops for photos." },
+          { time: "T+30 min", place: "Dock at restaurant", note: "Crotto dei Platani by default — captain waits." },
+          { time: "T+2h30", place: "Boarding for return", note: "" },
+          { time: "T+3h30", place: "Return to Como", note: "Under the stars." },
+        ],
+        faqs: [
+          { question: "Which restaurant?", answer: "We have four go-tos: Crotto dei Platani (Brienno, traditional lake), Il Gatto Nero (Cernobbio, view down on Villa d'Este, jacket required), La Punta (Bellagio, at the tip, sunset view), and La Cucina della Marianna (Cadenabbia, casual)." },
+          { question: "Can we choose somewhere else?", answer: "Yes — anywhere with a pontoon. Tell us at booking. We've docked at Mandarin Oriental, Il Sereno, Passalacqua, Villa Pliniana on request." },
+          { question: "Is the dinner cost included?", answer: "No — we don't add restaurant margin. You pay the restaurant directly, like any other table. Our €750 covers the boat + skipper + reservation + waiting time only." },
+        ],
+      },
+      it: {
+        metaTitle: "Cena in barca · Lago di Como · 4 ore privato con ristorante sul lago",
+        metaDesc: "Cena in barca sul Lago di Como — 4 ore privato con crociera al tramonto e cena al ristorante (Crotto dei Platani, La Punta Bellagio). Da €750.",
+        headline: "Cena in <em>barca.</em>",
+        kicker: "Da Como · Tramonto + cena sul lago",
+        body: [
+          { type: "p", text: "Le migliori cene del Lago di Como sono in ristoranti che si raggiungono davvero solo dall'acqua — Crotto dei Platani a Brienno, Il Gatto Nero affacciato su Cernobbio, La Punta in cima a Bellagio. Il nostro Dinner Tour combina la crociera al tramonto con la cena a uno di questi, e la barca aspetta al pontile per riportarti a casa." },
+          { type: "p", text: "Partenza 90 minuti prima del tramonto da Como, crociera lenta del primo bacino, momento tramonto in acqua aperta, attracco al ristorante per cena di 2 ore. Lo skipper aspetta — quando finite, rientro a Como sotto le stelle." },
+          { type: "p", text: "Meglio di una cena in hotel a Como. Prenotazione gestita da noi. Dress code: elegante ma comodo — è ancora una barca all'inizio e un tavolo sul lago alla fine." },
+        ],
+        included: ["Barca privata con skipper 4 ore", "Prenotazione ristorante a scelta", "Prosecco al tramonto a bordo", "Plaid in cashmere se rinfresca", "Acqua, asciugamani, USB"],
+        notIncluded: ["Costo cena (€70-150/ospite)", "Pick-up fuori primo bacino (+€100)"],
+        itinerary: [
+          { time: "T-90 min", place: "Como · partenza", note: "Imbarco, prosecco." },
+          { time: "T-60 min", place: "Cernobbio + Villa d'Este", note: "Passaggio nell'ora dorata." },
+          { time: "T-0", place: "Tramonto · acqua aperta", note: "Skipper si ferma per foto." },
+          { time: "T+30 min", place: "Attracco al ristorante", note: "Crotto dei Platani di default — skipper aspetta." },
+          { time: "T+2h30", place: "Imbarco per rientro", note: "" },
+          { time: "T+3h30", place: "Rientro a Como", note: "Sotto le stelle." },
+        ],
+        faqs: [
+          { question: "Quale ristorante?", answer: "Quattro di riferimento: Crotto dei Platani (Brienno, lago tradizionale), Il Gatto Nero (Cernobbio, vista su Villa d'Este, giacca richiesta), La Punta (Bellagio, vista tramonto), La Cucina della Marianna (Cadenabbia, casual)." },
+          { question: "Si può scegliere altrove?", answer: "Sì — ovunque ci sia un pontile. Dicci tu in fase di prenotazione. Abbiamo attraccato a Mandarin Oriental, Il Sereno, Passalacqua, Villa Pliniana su richiesta." },
+          { question: "Il costo cena è incluso?", answer: "No — non aggiungiamo margine sul ristorante. Paghi direttamente, come a un tavolo normale. I €750 coprono barca + skipper + prenotazione + attesa." },
+        ],
+      },
+      ru: {
+        metaTitle: "Ужин на лодке · Озеро Комо · 4 часа с рестораном на берегу",
+        metaDesc: "Ужин на лодке на озере Комо — 4 часа частной прогулки с закатом и ужином в ресторане (Crotto dei Platani, La Punta Bellagio). От €750.",
+        headline: "Ужин на <em>лодке.</em>",
+        kicker: "Из Комо · Закат + ужин у воды",
+        body: [
+          { type: "p", text: "Лучшие ужины на озере Комо — в ресторанах, до которых нормально дойти только водой: Crotto dei Platani (Brienno), Il Gatto Nero (Cernobbio), La Punta (Bellagio). Наш Dinner Tour сочетает закатную прогулку с ужином в одном из них, лодка ждёт у причала." },
+          { type: "p", text: "Отплытие за 90 минут до заката, медленная прогулка по первому бассейну, момент заката на воде, причал у ресторана на 2 часа ужина. Капитан ждёт — потом обратно под звёздами." },
+        ],
+        included: ["Частная лодка с капитаном 4ч", "Бронь ресторана на выбор", "Просекко", "Плед, вода, USB"],
+        notIncluded: ["Стоимость ужина (€70-150/гостя)", "Подача вне первого бассейна (+€100)"],
+        itinerary: [
+          { time: "T-90 мин", place: "Como", note: "Посадка, просекко." },
+          { time: "T-60 мин", place: "Cernobbio + Villa d'Este", note: "Золотой час." },
+          { time: "T-0", place: "Закат · открытая вода", note: "Фото." },
+          { time: "T+30 мин", place: "Причал у ресторана", note: "Crotto dei Platani по умолчанию." },
+          { time: "T+2ч30", place: "Возврат на лодку", note: "" },
+          { time: "T+3ч30", place: "Возврат в Comо", note: "Под звёздами." },
+        ],
+        faqs: [
+          { question: "Какой ресторан?", answer: "Четыре основных: Crotto dei Platani, Il Gatto Nero, La Punta, La Cucina della Marianna." },
+          { question: "Можно другой?", answer: "Да — где есть причал." },
+          { question: "Ужин включён?", answer: "Нет — платите напрямую ресторану." },
+        ],
+      },
+      ar: {
+        metaTitle: "عشاء على القارب · بحيرة كومو · 4 ساعات مع مطعم على البحيرة",
+        metaDesc: "عشاء على القارب على بحيرة كومو — 4 ساعات قارب خاص مع غروب وعشاء في مطعم (Crotto dei Platani، La Punta Bellagio). من €750.",
+        headline: "عشاء على <em>القارب.</em>",
+        kicker: "من كومو · غروب + عشاء على البحيرة",
+        body: [
+          { type: "p", text: "أفضل عشاءات بحيرة كومو في مطاعم لا تصل إليها إلا بقارب — Crotto dei Platani في Brienno، Il Gatto Nero فوق Cernobbio، La Punta في رأس Bellagio. جولتنا تجمع رحلة الغروب مع عشاء في أحدها، والقارب ينتظر عند الرصيف." },
+          { type: "p", text: "الانطلاق قبل الغروب بـ 90 دقيقة، رحلة بطيئة في الحوض الأول، الغروب على الماء، رسو عند المطعم لساعتي عشاء. القبطان ينتظر، ثم العودة إلى كومو تحت النجوم." },
+        ],
+        included: ["قارب خاص مع قبطان 4س", "حجز مطعم", "بروسيكو", "غطاء، مياه، USB"],
+        notIncluded: ["كلفة العشاء (€70-150/ضيف)", "إقلال خارج الحوض الأول (+€100)"],
+        itinerary: [
+          { time: "T-90د", place: "كومو", note: "صعود، بروسيكو." },
+          { time: "T-60د", place: "تشيرنوبيو + فيلا ديستي", note: "الساعة الذهبية." },
+          { time: "T-0", place: "الغروب · مياه مفتوحة", note: "صور." },
+          { time: "T+30د", place: "رسو عند المطعم", note: "Crotto dei Platani افتراضياً." },
+          { time: "T+2س30", place: "العودة للقارب", note: "" },
+          { time: "T+3س30", place: "العودة إلى كومو", note: "تحت النجوم." },
+        ],
+        faqs: [
+          { question: "أي مطعم؟", answer: "أربعة رئيسية: Crotto dei Platani، Il Gatto Nero، La Punta، La Cucina della Marianna." },
+          { question: "هل يمكن مكان آخر؟", answer: "نعم — أينما يوجد رصيف." },
+          { question: "هل العشاء مشمول؟", answer: "لا — تدفعون مباشرة للمطعم." },
+        ],
+      },
+    },
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  // Tour 11 — Photo Shoot Tour, by-the-hour
+  // ─────────────────────────────────────────────────────────────
+  {
+    slug: "photoshoot-tour",
+    baseIndex: 9,
+    hero: "/images/experiences/photoshoots.jpg",
+    durationMinutes: 120,
+    priceEUR: 700,
+    pins: ["cernobbio", "balbianello", "carlotta", "oleandra"],
+    copy: {
+      en: {
+        metaTitle: "Lake Como photo shoot boat tour · pre-wedding, editorial, fashion",
+        metaDesc: "Private boat for photo shoots on Lake Como — pre-wedding, editorials, fashion, commercial. Iconic villas as backdrops. From €350/hour.",
+        headline: "Photo shoot <em>tour.</em>",
+        kicker: "By-the-hour · From €350/hour",
+        body: [
+          { type: "p", text: "Lake Como's villas, light and water are why this is where the world comes for wedding albums, fashion editorials and luxury campaigns. Our boat is the moving set — a classic mahogany motorboat or the Venetian water-taxi — and our captain reads the light and the wind so your photographer can focus on the shot." },
+          { type: "p", text: "We book by the hour with a 2-hour minimum. Routes are tailored to your shot list: Villa d'Este, Villa del Balbianello, Villa Carlotta, Villa Erba as backdrops; the open water off Laglio for the most cinematic frames; the morning blue hour or the evening golden hour as needed." },
+          { type: "p", text: "On request we arrange a professional Lake Como photographer with the boat — six photographers we work with regularly, all comfortable on water." },
+        ],
+        included: ["Private boat with skipper", "Route built around your shot list", "Captain's local light/wind expertise", "Towels, water, prosecco", "Outfit changes onboard (the cabin has a curtained space)"],
+        notIncluded: ["Photographer fee if you book through us (€600-1,500 half-day)", "Hair & makeup", "FAI/Carlotta dock fees if shooting from villa pontoons", "Permits for commercial productions (we can advise)"],
+        itinerary: [
+          { time: "0:00", place: "Como · pickup or your hotel pier", note: "Brief with captain on shot list and timing." },
+          { time: "0:30", place: "Backdrop 1", note: "e.g. Villa d'Este facade · 30-45 minutes." },
+          { time: "1:15", place: "Backdrop 2", note: "e.g. Villa del Balbianello angle · open water." },
+          { time: "2:00", place: "Wrap or extend", note: "Most shoots run 2-4 hours total. Extension at €350/hour." },
+        ],
+        faqs: [
+          { question: "Can you arrange the photographer?", answer: "Yes — we work with six Lake Como photographers, all experienced shooting from boats. We send three quotes that fit your brief; you pick. Half-day rates start around €600." },
+          { question: "What about permits for commercial productions?", answer: "FAI Balbianello and Villa d'Este require specific permits for commercial use. We can introduce you to a local production fixer who handles them — typically 7-14 days lead time." },
+          { question: "Best time of day?", answer: "Blue hour (45 min before sunrise) and golden hour (90 min before sunset) are the photographer-favourites. Mid-day works for fashion editorials where the colour palette wants the saturation." },
+        ],
+      },
+      it: {
+        metaTitle: "Servizio fotografico in barca · Lago di Como · pre-wedding, editoriale",
+        metaDesc: "Barca privata per servizi fotografici sul Lago di Como — pre-wedding, editoriali, moda, commerciale. Ville iconiche come sfondo. Da €350/ora.",
+        headline: "Servizio fotografico in <em>barca.</em>",
+        kicker: "A ore · Da €350/ora",
+        body: [
+          { type: "p", text: "Le ville, la luce e l'acqua del Lago di Como sono il motivo per cui il mondo viene qui per album di matrimonio, editoriali di moda e campagne luxury. La nostra barca è il set in movimento — motoscafo classico in mogano o taxi-boat veneziano — e lo skipper legge luce e vento perché il tuo fotografo si concentri sull'inquadratura." },
+          { type: "p", text: "Prenotiamo a ore con minimo 2 ore. Percorsi su misura per la tua shot list: Villa d'Este, Villa del Balbianello, Villa Carlotta, Villa Erba come sfondi; acqua aperta verso Laglio per le inquadrature più cinematografiche; ora blu del mattino o ora dorata della sera secondo necessità." },
+          { type: "p", text: "Su richiesta organizziamo un fotografo professionista Lake Como con la barca — sei fotografi con cui lavoriamo regolarmente, tutti a loro agio sull'acqua." },
+        ],
+        included: ["Barca privata con skipper", "Percorso su misura per shot list", "Conoscenza locale di luce e vento", "Asciugamani, acqua, prosecco", "Cambi d'abito a bordo (cabina con tenda)"],
+        notIncluded: ["Compenso fotografo se prenotato tramite noi (€600-1.500 mezza giornata)", "Hair & makeup", "Diritti di attracco FAI/Carlotta se scatti dai pontili villa", "Permessi per produzioni commerciali (consigliamo)"],
+        itinerary: [
+          { time: "0:00", place: "Como · pickup o pontile dell'hotel", note: "Briefing con skipper su shot list e timing." },
+          { time: "0:30", place: "Sfondo 1", note: "Es. facciata Villa d'Este · 30-45 minuti." },
+          { time: "1:15", place: "Sfondo 2", note: "Es. inquadratura Villa del Balbianello · acqua aperta." },
+          { time: "2:00", place: "Chiusura o estensione", note: "La maggior parte degli shoot dura 2-4 ore. Estensione €350/ora." },
+        ],
+        faqs: [
+          { question: "Organizzate voi il fotografo?", answer: "Sì — lavoriamo con sei fotografi locali abituati a scattare dalla barca. Ti mandiamo tre preventivi che corrispondono al tuo brief; scegli tu. Tariffa mezza giornata da €600." },
+          { question: "Permessi per produzioni commerciali?", answer: "FAI Balbianello e Villa d'Este richiedono permessi specifici per uso commerciale. Ti presentiamo un fixer locale che li gestisce — tipicamente 7-14 giorni di anticipo." },
+          { question: "Migliore ora del giorno?", answer: "Ora blu (45 min prima dell'alba) e ora dorata (90 min prima del tramonto) sono le preferite. Mezzogiorno funziona per editoriali di moda dove la palette vuole saturazione." },
+        ],
+      },
+      ru: {
+        metaTitle: "Фотосессия на лодке · Озеро Комо · pre-wedding, редакционные",
+        metaDesc: "Частная лодка для фотосессий на озере Комо — pre-wedding, редакционные, мода, коммерческое. Виллы как фон. От €350/час.",
+        headline: "Фотосессия на <em>лодке.</em>",
+        kicker: "Почасово · от €350/час",
+        body: [
+          { type: "p", text: "Виллы, свет и вода озера Комо — причина, по которой мир приезжает сюда за свадебными альбомами, редакционными съёмками и luxury-кампаниями. Наша лодка — движущийся сет, классический махагон или венецианский такси, капитан читает свет и ветер." },
+          { type: "p", text: "Бронируем почасово, минимум 2 часа. Маршруты под shot list: Villa d'Este, Balbianello, Carlotta, Villa Erba как фоны; открытая вода у Laglio для кинематографичных кадров." },
+        ],
+        included: ["Частная лодка с капитаном", "Маршрут под shot list", "Локальная экспертиза по свету и ветру", "Полотенца, вода, просекко", "Смена нарядов в каюте"],
+        notIncluded: ["Гонорар фотографа (€600-1.500)", "Стиль/макияж", "Разрешения для коммерческих съёмок"],
+        itinerary: [
+          { time: "0:00", place: "Como · подача или причал отеля", note: "Брифинг." },
+          { time: "0:30", place: "Фон 1", note: "Villa d'Este · 30-45 минут." },
+          { time: "1:15", place: "Фон 2", note: "Villa del Balbianello." },
+          { time: "2:00", place: "Завершение или продление", note: "Продление €350/час." },
+        ],
+        faqs: [
+          { question: "Подбираете фотографа?", answer: "Да — шесть локальных, опыт съёмки с воды." },
+          { question: "Разрешения для коммерции?", answer: "Через местного fixer-а, 7-14 дней." },
+          { question: "Лучшее время?", answer: "Синий час и золотой час." },
+        ],
+      },
+      ar: {
+        metaTitle: "جلسة تصوير على قارب · بحيرة كومو · ما قبل الزفاف، تحريري",
+        metaDesc: "قارب خاص لجلسات تصوير على بحيرة كومو — ما قبل الزفاف، تحريري، أزياء، تجاري. فلل أيقونية كخلفية. من €350/ساعة.",
+        headline: "جلسة تصوير على <em>القارب.</em>",
+        kicker: "بالساعة · من €350/ساعة",
+        body: [
+          { type: "p", text: "فلل بحيرة كومو وضوءها ومياهها هي السبب الذي يجعل العالم يأتي إلى هنا لألبومات الأعراس وأعمال الأزياء والحملات الفاخرة. قاربنا هو الموقع المتحرك — موتور خشبي كلاسيكي أو تاكسي فينيسي — والقبطان يقرأ الضوء والريح ليتفرّغ مصوّركم للقطة." },
+          { type: "p", text: "نحجز بالساعة بحد أدنى ساعتان. مسارات تُفصَّل وفق shot list: فيلا ديستي وبالبيانيلو وكارلوتا وفيلا إربا كخلفيات؛ المياه المفتوحة قرب لاليو للقطات الأكثر سينمائية." },
+        ],
+        included: ["قارب خاص مع قبطان", "مسار وفق shot list", "خبرة محلية بالضوء والريح", "مناشف، مياه، بروسيكو", "تبديل ملابس على المتن"],
+        notIncluded: ["أجر المصوّر (€600-1.500)", "تصفيف وماكياج", "تصاريح الإنتاج التجاري"],
+        itinerary: [
+          { time: "0:00", place: "كومو · إقلال أو رصيف الفندق", note: "تنسيق." },
+          { time: "0:30", place: "خلفية 1", note: "فيلا ديستي · 30-45 دقيقة." },
+          { time: "1:15", place: "خلفية 2", note: "فيلا بالبيانيلو." },
+          { time: "2:00", place: "إنهاء أو تمديد", note: "تمديد €350/ساعة." },
+        ],
+        faqs: [
+          { question: "هل تنسّقون المصوّر؟", answer: "نعم — ستة محليّين مع خبرة تصوير من القوارب." },
+          { question: "تصاريح تجارية؟", answer: "عبر fixer محلي، 7-14 يوم." },
+          { question: "أفضل وقت؟", answer: "الساعة الزرقاء والذهبية." },
         ],
       },
     },

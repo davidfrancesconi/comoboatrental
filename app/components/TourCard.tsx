@@ -81,22 +81,32 @@ export function TourCard({
 }
 
 /** Map: attractions.ts toursThatVisit slug → index in translations.ts tours.items.
- * Both arrays are 4 entries in the same order (content/tours.ts baseIndex
- * matches translations.ts index), so the slug→index mapping is just by
- * slug position in TOUR_SLUGS. */
+ * 11 entries since the May 2026 expansion to match competitor SKU coverage. */
 export const TOUR_SLUG_TO_INDEX: Record<string, number> = {
   "highlights-1h": 0,
-  "balbianello-nesso": 1,
-  "top-villas-half-day": 2,
-  "bespoke-full-day": 3,
+  "cernobbio-2h": 1,
+  "balbianello-nesso": 2,
+  "boat-palace-4h": 3,
+  "top-villas-half-day": 4,
+  "first-basin-5h": 5,
+  "centre-lake-6h": 6,
+  "sunset-cruise": 7,
+  "dinner-tour": 8,
+  "photoshoot-tour": 9,
+  "bespoke-full-day": 10,
 };
 
-/** Image paths for each homepage tour card, by slug. Mirrors TOUR_IMGS in
- * HomePage.tsx — kept here so the attraction detail page can render the
- * same cards without importing from HomePage.tsx. */
+/** Image paths for each homepage tour card, by slug. */
 export const TOUR_CARD_IMAGES: Record<string, string> = {
   "highlights-1h": "/images/hero-1.jpg",
+  "cernobbio-2h": "/images/attractions/cernobbio.jpg",
   "balbianello-nesso": "/images/balbianello.jpg",
-  "top-villas-half-day": "/images/bellagio.jpg",
+  "boat-palace-4h": "/images/attractions/villa-del-balbianello.jpg",
+  "top-villas-half-day": "/images/attractions/bellagio.jpg",
+  "first-basin-5h": "/images/attractions/villa-del-balbianello.jpg",
+  "centre-lake-6h": "/images/attractions/bellagio.jpg",
+  "sunset-cruise": "/images/hero-sunset.jpg",
+  "dinner-tour": "/images/luxury-cruise.jpg",
+  "photoshoot-tour": "/images/experiences/photoshoots.jpg",
   "bespoke-full-day": "/images/luxury-cruise.jpg",
 };
