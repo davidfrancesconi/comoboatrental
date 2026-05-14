@@ -3,16 +3,23 @@
 Sito di marketing per **comoboatrental.it** — presentazione
 multilingue dell'attività di tour privati in barca sul Lago di Como.
 
+> 📈 **Per capire tutto quello che è stato fatto per posizionare il
+> sito su Google (in italiano, senza tecnicismi):**
+> leggi [`docs/SEO.md`](./docs/SEO.md). Spiega le 96 pagine, le 4
+> lingue, lo schema.org JSON-LD, la strategia di link e cosa devi
+> fare tu off-site per spostare l'ago.
+
 Live: deployato su Vercel da questo repo. Vercel rileva automaticamente
 la config `output: "export"` e pubblica la cartella `out/`.
 
-Questo README è il documento di handoff. Tutto ciò che serve a uno
-sviluppatore front-end per clonare, far girare, modificare e
-spedire il sito è qui sotto. Per la roadmap completa SEO + canali
-off-site (Google Business Profile, GetYourGuide, Tripadvisor, Bokun,
-hotel concierge, stampa) leggi [`docs/HANDOFF.md`](./docs/HANDOFF.md).
-Per il riassunto operativo per Loris (in italiano, con focus su
-azioni da fare lui) leggi [`docs/PER-LORIS.md`](./docs/PER-LORIS.md).
+Questo README è il documento di handoff per lo **sviluppatore**.
+Tutto ciò che serve a uno sviluppatore front-end per clonare, far
+girare, modificare e spedire il sito è qui sotto. Per la roadmap
+completa tecnica + canali off-site (Google Business Profile,
+GetYourGuide, Tripadvisor, Bokun, hotel concierge, stampa) leggi
+[`docs/HANDOFF.md`](./docs/HANDOFF.md). Per il riassunto operativo
+per Loris (in italiano, con focus su azioni da fare lui) leggi
+[`docs/PER-LORIS.md`](./docs/PER-LORIS.md).
 
 ---
 
