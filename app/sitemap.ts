@@ -15,6 +15,7 @@ import type { MetadataRoute } from "next";
 import { locales, type Locale } from "./translations";
 import { TOUR_SLUGS } from "./content/tours";
 import { ATTRACTION_SLUGS } from "./content/attractions";
+import { EXPERIENCE_SLUGS } from "./content/experiences";
 import { BLOG_SLUGS } from "./content/blog";
 import { localeUrl, alternateLanguages, LOCALE_BCP47 } from "./seo";
 
@@ -55,6 +56,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
   out.push(...entry("/attractions", "monthly", 0.85));
   for (const slug of ATTRACTION_SLUGS) {
     out.push(...entry(`/attractions/${slug}`, "monthly", 0.7));
+  }
+
+  // Experience subpages (weddings · photoshoots · captains · private-tours)
+  for (const slug of EXPERIENCE_SLUGS) {
+    out.push(...entry(`/experiences/${slug}`, "monthly", 0.7));
   }
 
   // FAQ + Reviews + About

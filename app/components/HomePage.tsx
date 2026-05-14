@@ -16,6 +16,7 @@ import {
 import { localePath, RENT_POLICY_URL, PRIVACY_POLICY_URL, COOKIE_POLICY_URL } from "../seo";
 import { linkify } from "../lib/linkify";
 import { attractions, ORBIT_PIN_IDS } from "../content/attractions";
+import { EXPERIENCE_SLUGS } from "../content/experiences";
 import { TourCard, TOUR_CARD_IMAGES } from "./TourCard";
 import BookingForm from "./BookingForm";
 
@@ -965,22 +966,39 @@ export default function HomePage({ locale }: { locale: Locale }) {
             <h2 className="display"><RichText text={t.experiences.title} /></h2>
           </div>
           <div className="exp-row">
-            {t.experiences.items.map((exp, i) => (
-              <article key={i} className={`exp-card reveal ${i > 0 ? `reveal-delay-${i}` : ""}`}>
-                <div className="exp-img">
-                  <img
-                    src={EXPERIENCE_IMGS[i] ?? "/images/hero-sunset.jpg"}
-                    alt={exp.title.replace(/<[^>]+>/g, "")}
-                    loading="lazy"
-                    width="800"
-                    height="600"
-                  />
-                </div>
-                <div className="num">{String(i + 1).padStart(2, "0")} /</div>
-                <h3><RichText text={exp.title} /></h3>
-                <p>{exp.desc}</p>
-              </article>
-            ))}
+            {t.experiences.items.map((exp, i) => {
+              // Match each homepage card to its experiences-content
+              // slug by index. The 4 entries in t.experiences.items
+              // mirror EXPERIENCE_SLUGS order
+              // (weddings · photoshoots · captains · private-tours).
+              const expSlug = EXPERIENCE_SLUGS[i];
+              const href = expSlug ? localePath(locale, `/experiences/${expSlug}`) : undefined;
+              const content = (
+                <>
+                  <div className="exp-img">
+                    <img
+                      src={EXPERIENCE_IMGS[i] ?? "/images/hero-sunset.jpg"}
+                      alt={exp.title.replace(/<[^>]+>/g, "")}
+                      loading="lazy"
+                      width="800"
+                      height="600"
+                    />
+                  </div>
+                  <div className="num">{String(i + 1).padStart(2, "0")} /</div>
+                  <h3><RichText text={exp.title} /></h3>
+                  <p>{exp.desc}</p>
+                </>
+              );
+              return (
+                <article key={i} className={`exp-card reveal ${i > 0 ? `reveal-delay-${i}` : ""}`}>
+                  {href ? (
+                    <a href={href} style={{ display: "contents", color: "inherit", textDecoration: "none" }}>
+                      {content}
+                    </a>
+                  ) : content}
+                </article>
+              );
+            })}
           </div>
         </div>
       </section>
