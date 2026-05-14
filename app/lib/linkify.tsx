@@ -1,13 +1,18 @@
 // linkify — server-renderable helper that turns plain attraction copy
-// and blog text into rich React nodes with three kinds of links:
+// and blog text into rich React nodes with four kinds of links:
 //
 //   1. Internal cross-links to other /<locale>/attractions/<slug>/
 //      pages. The first occurrence of each attraction's known aliases
 //      becomes an anchor.
-//   2. Authority outbound links for well-known entities mentioned in
+//   2. Self-references on an attraction's OWN page link out to that
+//      attraction's primary external authority (FAI for Balbianello,
+//      villacarlotta.it for Carlotta, etc.). Linking internally back
+//      to ourselves adds no value; sending the anchor to an
+//      authoritative source is a clean SEO win.
+//   3. Authority outbound links for well-known entities mentioned in
 //      body copy ("FAI", "Navigazione Laghi", "Funicolare di Como").
 //      Open in a new tab.
-//   3. The existing markup primitives the site already supports —
+//   4. The existing markup primitives the site already supports —
 //      <em>…</em> for gold italic accents and <br/> line breaks —
 //      preserved verbatim so this helper is a strict superset of
 //      renderRich() in InnerPage.tsx.
@@ -20,7 +25,7 @@
 
 import type { ReactNode } from "react";
 import type { Locale } from "../translations";
-import { attractions } from "../content/attractions";
+import { attractions, EXTERNAL_LINKS_BY_SLUG } from "../content/attractions";
 import { localePath } from "../seo";
 
 type Alias = {
@@ -142,7 +147,6 @@ export function linkify(
       let bestLen = 0;
       for (const alias of aliases) {
         if (used.has(alias.pattern)) continue;
-        if (alias.attractionSlug === opts.currentSlug) continue;
         const re = new RegExp(`\\b${escapeRe(alias.pattern)}\\b`, "i");
         const m = chunk.slice(cursor).match(re);
         if (!m || m.index === undefined) continue;
@@ -162,15 +166,44 @@ export function linkify(
       if (bestIdx > cursor) out.push(chunk.slice(cursor, bestIdx));
       const matchedText = chunk.slice(bestIdx, bestIdx + bestLen);
       used.add(bestAlias.pattern);
-      if (bestAlias.external) {
+
+      // Self-reference handling: when the matched alias is an
+      // attraction whose own page we're rendering, internal-linking
+      // back to ourselves adds nothing. Better SEO move: send the
+      // anchor OUT to the attraction's primary external authority
+      // (official site > Wikipedia). This is the "Villa del
+      // Balbianello → FAI" case on the Balbianello page itself.
+      let useHref = bestAlias.href;
+      let useExternal = bestAlias.external;
+      if (
+        bestAlias.attractionSlug &&
+        bestAlias.attractionSlug === opts.currentSlug
+      ) {
+        const ext = EXTERNAL_LINKS_BY_SLUG[bestAlias.attractionSlug] ?? [];
+        const primary =
+          ext.find((l) => l.type === "official") ??
+          ext.find((l) => l.type === "wiki");
+        if (!primary) {
+          // No external authority for this attraction — fall back
+          // to suppressing the link entirely, then continue past
+          // the matched range so we don't re-match it.
+          out.push(matchedText);
+          cursor = bestIdx + bestLen;
+          continue;
+        }
+        useHref = primary.url;
+        useExternal = true;
+      }
+
+      if (useExternal) {
         out.push(
-          <a key={key++} href={bestAlias.href} target="_blank" rel="noopener noreferrer">
+          <a key={key++} href={useHref} target="_blank" rel="noopener noreferrer">
             {matchedText}
           </a>,
         );
       } else {
         out.push(
-          <a key={key++} href={bestAlias.href}>
+          <a key={key++} href={useHref}>
             {matchedText}
           </a>,
         );
