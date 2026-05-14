@@ -2666,6 +2666,46 @@ html[dir="rtl"] nav.top.inner .logo.back-link:hover .back-arrow { transform: sca
   letter-spacing: 0;
 }
 
+/* Inline links produced by the linkify helper (attraction
+ * cross-links + authority outbound links in body copy). Subtle
+ * gold underline so readers know the word is clickable without
+ * the link colour competing with the editorial layout. External
+ * links get a small ↗ glyph appended — the universal cue that
+ * the click leaves the site. */
+.linkified {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease, text-decoration-color 0.15s ease,
+              text-decoration-thickness 0.15s ease;
+}
+.linkified:hover,
+.linkified:focus-visible {
+  color: var(--gold-deep);
+  text-decoration-color: var(--gold-deep);
+  text-decoration-thickness: 2px;
+}
+.linkified-external::after {
+  content: " ↗";
+  font-size: 0.75em;
+  margin-left: 1px;
+  vertical-align: 1px;
+  text-decoration: none;
+  display: inline-block;
+  opacity: 0.65;
+}
+.linkified-external:hover::after,
+.linkified-external:focus-visible::after {
+  opacity: 1;
+}
+/* RTL: flip the external-link arrow so it still points "out and
+ * away" relative to reading direction. */
+html[dir="rtl"] .linkified-external::after {
+  content: " ↖";
+}
+
 /* Useful-links sidebar panel — sits between the quick-facts card
  * and the gold side CTA on attraction detail pages. Lightweight
  * list of authority outbound links (FAI, Wikipedia, Google Maps,

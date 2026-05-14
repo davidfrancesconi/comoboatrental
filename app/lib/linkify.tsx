@@ -221,15 +221,24 @@ export function linkify(
         useExternal = true;
       }
 
+      // Class names let globals.css give linked words a subtle gold
+      // underline so readers know they're clickable. External links
+      // also get a tiny ↗ glyph appended via CSS ::after.
       if (useExternal) {
         out.push(
-          <a key={key++} href={useHref} target="_blank" rel="noopener noreferrer">
+          <a
+            key={key++}
+            className="linkified linkified-external"
+            href={useHref}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {matchedText}
           </a>,
         );
       } else {
         out.push(
-          <a key={key++} href={useHref}>
+          <a key={key++} className="linkified linkified-internal" href={useHref}>
             {matchedText}
           </a>,
         );
