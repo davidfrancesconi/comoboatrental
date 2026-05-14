@@ -14,6 +14,7 @@ import {
   type Variant,
 } from "../copy-variants";
 import { localePath, RENT_POLICY_URL, PRIVACY_POLICY_URL, COOKIE_POLICY_URL } from "../seo";
+import { linkify } from "../lib/linkify";
 import { attractions, ORBIT_PIN_IDS } from "../content/attractions";
 import { TourCard, TOUR_CARD_IMAGES } from "./TourCard";
 import BookingForm from "./BookingForm";
@@ -743,7 +744,7 @@ export default function HomePage({ locale }: { locale: Locale }) {
         <div className="container-x">
           <div className="eyebrow reveal">{t.intro.eyebrow}</div>
           <h2 className="reveal reveal-delay-1"><RichText text={t.intro.title} /></h2>
-          <p className="body-text reveal reveal-delay-2">{t.intro.body}</p>
+          <p className="body-text reveal reveal-delay-2">{linkify(t.intro.body, locale)}</p>
         </div>
       </section>
 

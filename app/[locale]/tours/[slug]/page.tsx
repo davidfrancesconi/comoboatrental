@@ -128,6 +128,12 @@ export default async function TourPage({
     faqPageJsonLd(c.faqs, localeUrl(locale, `/tours/${slug}`)),
   ]);
 
+  // Shared `used` Set caps each entity at one anchor across the
+  // whole tour page (body, itinerary, included/not-included, FAQ
+  // answers). Reset per request — render is purely server-side so
+  // this is per-page-load fresh.
+  const used = new Set<string>();
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }} />
@@ -163,10 +169,10 @@ export default async function TourPage({
             if (b.type === "h") return <h2 key={i} className="display" style={{ marginTop: 40, marginBottom: 16, fontSize: 28 }}>{b.text}</h2>;
             if (b.type === "list") return (
               <ul key={i} style={{ paddingLeft: 24, marginBottom: 24 }}>
-                {b.items.map((it, k) => <li key={k} style={{ marginBottom: 8 }}>{it}</li>)}
+                {b.items.map((it, k) => <li key={k} style={{ marginBottom: 8 }}>{linkify(it, locale, { used })}</li>)}
               </ul>
             );
-            return <p key={i} style={{ marginBottom: 20, fontSize: 17, lineHeight: 1.7 }}>{b.text}</p>;
+            return <p key={i} style={{ marginBottom: 20, fontSize: 17, lineHeight: 1.7 }}>{linkify(b.text, locale, { used })}</p>;
           })}
         </article>
 
@@ -202,28 +208,21 @@ export default async function TourPage({
           <h2 className="display" style={{ fontSize: 32, marginBottom: 24 }}>
             {locale === "it" ? "Itinerario" : locale === "ru" ? "Маршрут" : locale === "ar" ? "المسار" : "Itinerary"}
           </h2>
-          {(() => {
-            // Shared `used` so each attraction name links at most
-            // once across the itinerary.
-            const used = new Set<string>();
-            return (
-              <div style={{ borderTop: "1px solid var(--rule)" }}>
-                {c.itinerary.map((step, i) => (
-                  <div key={i} style={{ display: "grid", gridTemplateColumns: "120px 1fr", padding: "20px 0", borderBottom: "1px solid var(--rule)" }}>
-                    <div style={{ fontFamily: "var(--mono)", fontSize: 12, letterSpacing: "0.12em", color: "var(--ink-mute)" }}>{step.time}</div>
-                    <div>
-                      <div style={{ fontFamily: "var(--display)", fontSize: 20, marginBottom: 4 }}>
-                        {linkify(step.place, locale, { used })}
-                      </div>
-                      <div style={{ color: "var(--ink-soft)", fontSize: 15 }}>
-                        {linkify(step.note, locale, { used })}
-                      </div>
-                    </div>
+          <div style={{ borderTop: "1px solid var(--rule)" }}>
+            {c.itinerary.map((step, i) => (
+              <div key={i} style={{ display: "grid", gridTemplateColumns: "120px 1fr", padding: "20px 0", borderBottom: "1px solid var(--rule)" }}>
+                <div style={{ fontFamily: "var(--mono)", fontSize: 12, letterSpacing: "0.12em", color: "var(--ink-mute)" }}>{step.time}</div>
+                <div>
+                  <div style={{ fontFamily: "var(--display)", fontSize: 20, marginBottom: 4 }}>
+                    {linkify(step.place, locale, { used })}
                   </div>
-                ))}
+                  <div style={{ color: "var(--ink-soft)", fontSize: 15 }}>
+                    {linkify(step.note, locale, { used })}
+                  </div>
+                </div>
               </div>
-            );
-          })()}
+            ))}
+          </div>
         </section>
 
         {/* Included / Not included */}
@@ -236,7 +235,7 @@ export default async function TourPage({
               {c.included.map((it, i) => (
                 <li key={i} style={{ padding: "8px 0", borderBottom: "1px solid var(--rule)", display: "flex", gap: 12 }}>
                   <span style={{ color: "var(--gold)" }}>✓</span>
-                  <span>{it}</span>
+                  <span>{linkify(it, locale, { used })}</span>
                 </li>
               ))}
             </ul>
@@ -249,7 +248,7 @@ export default async function TourPage({
               {c.notIncluded.map((it, i) => (
                 <li key={i} style={{ padding: "8px 0", borderBottom: "1px solid var(--rule)", display: "flex", gap: 12 }}>
                   <span style={{ color: "var(--ink-mute)" }}>·</span>
-                  <span>{it}</span>
+                  <span>{linkify(it, locale, { used })}</span>
                 </li>
               ))}
             </ul>
@@ -264,7 +263,7 @@ export default async function TourPage({
           {c.faqs.map((f, i) => (
             <details key={i} style={{ borderBottom: "1px solid var(--rule)", padding: "16px 0" }}>
               <summary style={{ cursor: "pointer", fontFamily: "var(--display)", fontSize: 19, listStyle: "none" }}>{f.question}</summary>
-              <p style={{ marginTop: 12, color: "var(--ink-soft)", lineHeight: 1.7 }}>{f.answer}</p>
+              <p style={{ marginTop: 12, color: "var(--ink-soft)", lineHeight: 1.7 }}>{linkify(f.answer, locale, { used })}</p>
             </details>
           ))}
         </section>

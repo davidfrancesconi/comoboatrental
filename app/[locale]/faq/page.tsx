@@ -10,6 +10,7 @@ import { type Locale } from "../../translations";
 import {
   InnerPageShell,
 } from "../../components/InnerPage";
+import { linkify } from "../../lib/linkify";
 import {
   alternateLanguages,
   localeUrl,
@@ -105,14 +106,21 @@ export default async function FaqPage({ params }: { params: Promise<{ locale: st
              locale === "ar" ? "الأسئلة التي تطرحونها كثيراً" :
              "The questions we hear most"}
           </h1>
-          <div>
-            {faqs.map((f, i) => (
-              <details key={i} style={{ borderBottom: "1px solid var(--rule)", padding: "20px 0" }} open={i < 3}>
-                <summary style={{ cursor: "pointer", fontFamily: "var(--display)", fontSize: 22, listStyle: "none" }}>{f.question}</summary>
-                <p style={{ marginTop: 12, color: "var(--ink-soft)", lineHeight: 1.7, fontSize: 16 }}>{f.answer}</p>
-              </details>
-            ))}
-          </div>
+          {(() => {
+            // Shared `used` across all 12 FAQ answers — each entity
+            // gets at most one anchor across the whole FAQ page.
+            const used = new Set<string>();
+            return (
+              <div>
+                {faqs.map((f, i) => (
+                  <details key={i} style={{ borderBottom: "1px solid var(--rule)", padding: "20px 0" }} open={i < 3}>
+                    <summary style={{ cursor: "pointer", fontFamily: "var(--display)", fontSize: 22, listStyle: "none" }}>{f.question}</summary>
+                    <p style={{ marginTop: 12, color: "var(--ink-soft)", lineHeight: 1.7, fontSize: 16 }}>{linkify(f.answer, locale, { used })}</p>
+                  </details>
+                ))}
+              </div>
+            );
+          })()}
           <div style={{ marginTop: 60, padding: 32, background: "var(--bg-alt)", borderRadius: 4 }}>
             <p style={{ fontFamily: "var(--display)", fontSize: 22, fontStyle: "italic", color: "var(--ink-soft)", marginBottom: 16 }}>
               {locale === "it" ? "Non trovate la vostra domanda? Scriveteci." :

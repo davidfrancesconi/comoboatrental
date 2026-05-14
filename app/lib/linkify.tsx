@@ -41,14 +41,40 @@ type Alias = {
 
 /** Authority entities that appear repeatedly in our copy — these get
  *  fixed outbound links regardless of which page is rendering. Keep
- *  the list short; every new entry is a vote that the entity is
- *  worth signalling to Google as a "we know this is authoritative"
- *  endorsement. */
+ *  the list focused on Lake Como entities Google considers
+ *  authoritative for travel queries; each new entry is a vote that
+ *  the entity is worth endorsing.
+ *
+ *  Order is irrelevant — the helper sorts by descending pattern
+ *  length so "Grand Hotel Villa Serbelloni" matches before
+ *  "Villa Serbelloni" before "Serbelloni". */
 const AUTHORITY_ALIASES: { pattern: string; href: string }[] = [
+  // Institutions
   { pattern: "FAI",                href: "https://www.fondoambiente.it" },
   { pattern: "Navigazione Laghi",  href: "https://www.navigazionelaghi.it" },
   { pattern: "Funicolare di Como", href: "https://www.funicolarecomo.it" },
-  { pattern: "Funicolare",         href: "https://www.funicolarecomo.it" }, // shorter fallback
+  { pattern: "Funicolare",         href: "https://www.funicolarecomo.it" },
+  { pattern: "Duomo di Como",      href: "https://www.cattedraledicomo.it" },
+  { pattern: "Cattedrale di Como", href: "https://www.cattedraledicomo.it" },
+  { pattern: "Tempio Voltiano",    href: "https://en.wikipedia.org/wiki/Tempio_Voltiano" },
+
+  // Public landmarks (also Maps-grade entities)
+  { pattern: "Villa Olmo",         href: "https://www.villaolmocomo.it" },
+  { pattern: "Villa Melzi",        href: "https://www.giardinidivillamelzi.it" },
+  { pattern: "Villa Monastero",    href: "https://www.villamonastero.eu" },
+  { pattern: "Castello di Vezio",  href: "https://www.castellodivezio.it" },
+
+  // Hotels (Lake Como luxury cluster — these are also a partner
+  // network Loris cultivates, so signalling them is doubly useful)
+  { pattern: "Mandarin Oriental",            href: "https://www.mandarinoriental.com/lake-como" },
+  { pattern: "Grand Hotel Tremezzo",         href: "https://www.grandhoteltremezzo.com" },
+  { pattern: "Grand Hotel Villa Serbelloni", href: "https://www.villaserbelloni.com" },
+  { pattern: "Villa Serbelloni",             href: "https://www.villaserbelloni.com" },
+  { pattern: "Villa Passalacqua",            href: "https://www.passalacqua.it" },
+  { pattern: "Passalacqua",                  href: "https://www.passalacqua.it" },
+  { pattern: "Il Sereno",                    href: "https://www.serenohotels.com" },
+  { pattern: "Villa d'Este",                 href: "https://www.villadeste.com" },
+
   // Movie + Star Wars references are intentionally NOT linked — film
   // databases add no SEO weight for a boat-tour business.
 ];

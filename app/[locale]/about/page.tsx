@@ -17,6 +17,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { Locale } from "../../translations";
 import { InnerPageShell } from "../../components/InnerPage";
+import { linkify } from "../../lib/linkify";
 import {
   alternateLanguages,
   localeUrl,
@@ -178,9 +179,12 @@ export default async function AboutPage({
                   i % 2 === 1 ? <em key={i}>{part}</em> : <span key={i}>{part}</span>,
                 )}
               </h1>
-              {a.body.map((p, i) => (
-                <p key={i}>{p}</p>
-              ))}
+              {(() => {
+                const used = new Set<string>();
+                return a.body.map((p, i) => (
+                  <p key={i}>{linkify(p, locale, { used })}</p>
+                ));
+              })()}
               <div className="about-cta">
                 <p>{a.ctaLine}</p>
                 <a className="btn primary primary-gold" href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
