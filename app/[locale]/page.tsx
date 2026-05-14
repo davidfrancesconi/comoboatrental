@@ -16,6 +16,7 @@ import {
 } from "../jsonld";
 import { FAQS } from "../content/faq";
 import { TOUR_SLUGS } from "../content/tours";
+import { ATTRACTION_SLUGS } from "../content/attractions";
 import { localeUrl, SITE_NAME } from "../seo";
 
 const VALID_LOCALES: Locale[] = ["en", "it", "ru", "ar"];
@@ -31,8 +32,13 @@ export default async function LocaleHomePage({
 
   // Build a single @graph with all relevant schema types so Google
   // sees one consistent block per page.
+  // `mentions` on localBusiness lists every attraction page URL —
+  // an explicit "this business covers these 13 places" signal.
+  const attractionUrls = ATTRACTION_SLUGS.map((slug) =>
+    localeUrl(locale, `/attractions/${slug}`),
+  );
   const graph = combine([
-    localBusinessJsonLd(locale),
+    localBusinessJsonLd(locale, { mentions: attractionUrls }),
     websiteJsonLd(locale),
     breadcrumbsJsonLd([{ name: SITE_NAME, url: localeUrl(locale, "/") }]),
     ...reviewsJsonLd(locale),

@@ -389,6 +389,54 @@ Implementato tutto dal bundle Claude Design **eccetto**:
   home; la versione unified Claude Design usava una SVG statica
   che è meno cinematografica.
 
+### E-sexies. SEO link strategy (maggio 2026)
+
+Dopo un'analisi del competitor `lakecomoboattour.it` (dense outbound
++ internal linking è la loro arma SEO principale) abbiamo aggiunto:
+
+**Per ogni attrazione:** pannello "Useful links" in sidebar con
+3-5 URL curati — Wikipedia, sito ufficiale (FAI, villacarlotta.it,
+funicolarecomo.it…), Google Maps con coordinate, e dove ha senso
+Navigazione Laghi o ente turismo locale.
+
+I dati vivono in **`EXTERNAL_LINKS_BY_SLUG`** in
+`app/content/attractions.ts` — una tabella `Record<slug,
+ExternalLink[]>` separata dalle `attractions[]`, così la copy del
+contenuto resta pulita.
+
+**Aggiungere link a un'attrazione nuova:** appendi un'entry al
+record. Tipi disponibili: `official` / `maps` / `wiki` / `transport`
+/ `tourism`. Almeno una `maps` per ogni nuova entry; ideale anche
+una `wiki`. Le etichette restano nella lingua originale (Italian
+institutions are recognised by their original names — stessa logica
+dei toponimi).
+
+**Auto-linkifier interno:** il helper `app/lib/linkify.tsx` scansiona
+qualunque stringa di body copy e trasforma la PRIMA occorrenza di
+ogni nome di attrazione (Bellagio, Villa del Balbianello, Carlotta,
+ecc.) in un link `<a>` verso la pagina attrazione corrispondente. Si
+applica a:
+- paragrafi e bullet "Good to know" delle pagine attrazione
+- step itinerario delle pagine tour
+- body del blog
+- whitelist di entità autorevoli ("FAI", "Navigazione Laghi",
+  "Funicolare di Como") che ottengono link esterno fisso
+
+Il helper rispetta `<em>` e `<br/>` (è un superset di `renderRich`).
+Skippa self-link (un'attrazione non linka sé stessa).
+
+**JSON-LD:** `placeJsonLd()` ora emette `sameAs` (Wikipedia + sito
+ufficiale per ogni attrazione) e `subjectOf`. Sul homepage,
+`localBusinessJsonLd()` accetta `mentions` — passiamo i 13 URL
+delle pagine attrazione per dire esplicitamente "questa attività
+copre questi luoghi".
+
+**Cosa NON è ancora linkato:**
+- Tag film (Casino Royale / Star Wars per Balbianello) — saltato
+  perché link a IMDb non aiutano SEO di un'attività turistica
+- Cross-network di brand siblings (il competitor punta a Amalfi /
+  Maggiore) — niente brand sibling da puntare oggi
+
 ### F. Cadenza blog
 
 Il blog ha un solo articolo seed. Aggiungere articoli è meccanico:
@@ -477,7 +525,10 @@ Vincite veloci rimaste:
    `goodToKnow[]`
 4. Imposta `toursThatVisit` con gli slug dei tour che visitano
    l'attrazione (cross-link sulla pagina dettaglio)
-5. `bun run build` — la pagina dettaglio, l'entry nella lista
+5. Aggiungi un'entry a `EXTERNAL_LINKS_BY_SLUG` (stesso file) con
+   3-5 link autorevoli — almeno una `maps` e una `wiki` quando
+   esistono; vedi sezione E-sexies sopra per il pattern completo
+6. `bun run build` — la pagina dettaglio, l'entry nella lista
    `/attractions/`, la card nello strip homepage e la voce in
    sitemap.xml si generano automaticamente
 

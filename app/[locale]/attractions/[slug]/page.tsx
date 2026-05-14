@@ -10,11 +10,13 @@
 
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { attractions, ATTRACTION_SLUGS } from "../../../content/attractions";
+import { attractions, ATTRACTION_SLUGS, EXTERNAL_LINKS_BY_SLUG } from "../../../content/attractions";
 import { translations, type Locale } from "../../../translations";
 import { InnerPageShell, renderRich } from "../../../components/InnerPage";
 import { TourCard, TOUR_SLUG_TO_INDEX, TOUR_CARD_IMAGES } from "../../../components/TourCard";
 import { MiniLakeMap } from "../../../components/MiniLakeMap";
+import { UsefulLinks } from "../../../components/UsefulLinks";
+import { linkify } from "../../../lib/linkify";
 import {
   GEO_LAT,
   GEO_LNG,
@@ -91,6 +93,15 @@ export default async function AttractionDetailPage({
   // Find pin coordinates for the place schema
   const pin = t.map.pins.find((p) => p.id === attraction.pinId);
 
+  // sameAs ← only the "canonical web identity" types (Wikipedia +
+  // the entity's own official site). Maps / tourism / transport are
+  // useful links for humans but shouldn't be claimed as the same
+  // entity in schema terms.
+  const externalLinks = EXTERNAL_LINKS_BY_SLUG[attraction.slug] ?? [];
+  const sameAs = externalLinks
+    .filter((l) => l.type === "wiki" || l.type === "official")
+    .map((l) => l.url);
+
   const place = pin
     ? placeJsonLd({
         id: attraction.slug,
@@ -101,6 +112,7 @@ export default async function AttractionDetailPage({
         type: pin.type as "port" | "villa" | "town" | "nature",
         url: localeUrl(locale, `/attractions/${slug}`),
         image: `${SITE_URL}${attraction.image}`,
+        sameAs,
       })
     : null;
 
@@ -217,29 +229,40 @@ export default async function AttractionDetailPage({
             quick-facts + side CTA) on the right. */}
         <article className="attr-article">
           <div className="attr-main">
-            {c.paragraphs.map((p, i) => (
-              <p key={i}>{p}</p>
-            ))}
+            {(() => {
+              // One shared `used` set across all paragraphs + bullets
+              // so each entity (e.g. "Bellagio") gets at most one
+              // in-body link per page — denser than that would feel
+              // keyword-stuffed.
+              const used = new Set<string>();
+              return (
+                <>
+                  {c.paragraphs.map((p, i) => (
+                    <p key={i}>{linkify(p, locale, { currentSlug: attraction.slug, used })}</p>
+                  ))}
 
-            <h2 className="display" style={{ fontSize: "clamp(26px, 2.4vw, 34px)", margin: "44px 0 14px" }}>
-              {locale === "it" ? "Buono a sapersi." : locale === "ru" ? "Полезно знать." : locale === "ar" ? "معلومات مفيدة." : "Good to know."}
-            </h2>
-            <ul style={{ listStyle: "none", padding: 0, borderTop: "1px solid var(--rule)" }}>
-              {c.goodToKnow.map((g, i) => (
-                <li key={i} style={{
-                  padding: "12px 0",
-                  borderBottom: "1px solid var(--rule)",
-                  display: "flex",
-                  gap: 14,
-                  fontSize: 15.5,
-                  lineHeight: 1.5,
-                  color: "var(--ink-soft)",
-                }}>
-                  <span style={{ color: "var(--gold)", flex: "none", fontWeight: 700 }}>·</span>
-                  <span>{g}</span>
-                </li>
-              ))}
-            </ul>
+                  <h2 className="display" style={{ fontSize: "clamp(26px, 2.4vw, 34px)", margin: "44px 0 14px" }}>
+                    {locale === "it" ? "Buono a sapersi." : locale === "ru" ? "Полезно знать." : locale === "ar" ? "معلومات مفيدة." : "Good to know."}
+                  </h2>
+                  <ul style={{ listStyle: "none", padding: 0, borderTop: "1px solid var(--rule)" }}>
+                    {c.goodToKnow.map((g, i) => (
+                      <li key={i} style={{
+                        padding: "12px 0",
+                        borderBottom: "1px solid var(--rule)",
+                        display: "flex",
+                        gap: 14,
+                        fontSize: 15.5,
+                        lineHeight: 1.5,
+                        color: "var(--ink-soft)",
+                      }}>
+                        <span style={{ color: "var(--gold)", flex: "none", fontWeight: 700 }}>·</span>
+                        <span>{linkify(g, locale, { currentSlug: attraction.slug, used })}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              );
+            })()}
           </div>
 
           <aside className="attr-aside">
@@ -288,6 +311,13 @@ export default async function AttractionDetailPage({
                 </span>
               </div>
             </div>
+
+            {/* Useful links — curated outbound authority links per
+                attraction (FAI, official villa site, Wikipedia,
+                Google Maps, Navigazione Laghi, etc.). Data lives in
+                EXTERNAL_LINKS_BY_SLUG in content/attractions.ts and
+                also feeds JSON-LD `sameAs` / `subjectOf` below. */}
+            <UsefulLinks links={EXTERNAL_LINKS_BY_SLUG[attraction.slug] ?? []} t={t} />
 
             {/* Single consolidated CTA — replaces the old "Add to a tour"
                 + 3-row contact stack (WhatsApp / email / phone). Sends

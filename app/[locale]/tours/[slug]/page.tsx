@@ -13,6 +13,7 @@ import {
   InnerPageShell,
   renderRich,
 } from "../../../components/InnerPage";
+import { linkify } from "../../../lib/linkify";
 import { translations, type Locale } from "../../../translations";
 import {
   alternateLanguages,
@@ -201,17 +202,28 @@ export default async function TourPage({
           <h2 className="display" style={{ fontSize: 32, marginBottom: 24 }}>
             {locale === "it" ? "Itinerario" : locale === "ru" ? "Маршрут" : locale === "ar" ? "المسار" : "Itinerary"}
           </h2>
-          <div style={{ borderTop: "1px solid var(--rule)" }}>
-            {c.itinerary.map((step, i) => (
-              <div key={i} style={{ display: "grid", gridTemplateColumns: "120px 1fr", padding: "20px 0", borderBottom: "1px solid var(--rule)" }}>
-                <div style={{ fontFamily: "var(--mono)", fontSize: 12, letterSpacing: "0.12em", color: "var(--ink-mute)" }}>{step.time}</div>
-                <div>
-                  <div style={{ fontFamily: "var(--display)", fontSize: 20, marginBottom: 4 }}>{step.place}</div>
-                  <div style={{ color: "var(--ink-soft)", fontSize: 15 }}>{step.note}</div>
-                </div>
+          {(() => {
+            // Shared `used` so each attraction name links at most
+            // once across the itinerary.
+            const used = new Set<string>();
+            return (
+              <div style={{ borderTop: "1px solid var(--rule)" }}>
+                {c.itinerary.map((step, i) => (
+                  <div key={i} style={{ display: "grid", gridTemplateColumns: "120px 1fr", padding: "20px 0", borderBottom: "1px solid var(--rule)" }}>
+                    <div style={{ fontFamily: "var(--mono)", fontSize: 12, letterSpacing: "0.12em", color: "var(--ink-mute)" }}>{step.time}</div>
+                    <div>
+                      <div style={{ fontFamily: "var(--display)", fontSize: 20, marginBottom: 4 }}>
+                        {linkify(step.place, locale, { used })}
+                      </div>
+                      <div style={{ color: "var(--ink-soft)", fontSize: 15 }}>
+                        {linkify(step.note, locale, { used })}
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            );
+          })()}
         </section>
 
         {/* Included / Not included */}

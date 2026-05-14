@@ -114,6 +114,17 @@ export type Translation = {
     pageHeadline: string;
     pageIntro: string;
     readMore: string;
+    /** Sidebar "Useful links" panel on each attraction detail page —
+     *  panel heading + per-type small labels. URLs and link labels
+     *  live in EXTERNAL_LINKS_BY_SLUG in content/attractions.ts. */
+    usefulLinksHeading: string;
+    usefulLinkTypes: {
+      official: string;
+      maps: string;
+      wiki: string;
+      transport: string;
+      tourism: string;
+    };
   };
   experiences: {
     indexLabel: string;
@@ -392,6 +403,8 @@ export const translations: Record<Locale, Translation> = {
       pageIntro:
         "Lake Como is a 46-kilometre lake with two arms, more than a hundred villas along its shores, and a handful of postcard-perfect villages clinging to mountain slopes. These are the thirteen places worth arriving at by boat — the ones a private cruise from Como is built around. Tap any to read the full guide.",
       readMore: "Read more",
+      usefulLinksHeading: "Useful links",
+      usefulLinkTypes: { official: "Official", maps: "Map", wiki: "Wikipedia", transport: "Ferry", tourism: "Tourism" },
     },
     experiences: {
       indexLabel: "(05) — Beyond a Tour",
@@ -637,6 +650,8 @@ export const translations: Record<Locale, Translation> = {
       pageIntro:
         "Il Lago di Como è un lago di 46 chilometri con due rami, più di cento ville lungo le sponde e un pugno di borghi da cartolina aggrappati ai pendii delle montagne. Queste sono le tredici tappe che meritano l'arrivo in barca — quelle attorno a cui si costruisce un tour privato da Como. Toccatene una per leggere la guida completa.",
       readMore: "Scopri di più",
+      usefulLinksHeading: "Link utili",
+      usefulLinkTypes: { official: "Sito ufficiale", maps: "Mappa", wiki: "Wikipedia", transport: "Traghetti", tourism: "Turismo" },
     },
     experiences: {
       indexLabel: "(05) — Oltre il Tour",
@@ -882,6 +897,8 @@ export const translations: Record<Locale, Translation> = {
       pageIntro:
         "Озеро Комо — это 46-километровое озеро с двумя рукавами, более ста вилл вдоль берегов и горстка идеальных деревень на горных склонах. Вот тринадцать мест, к которым стоит подойти на лодке — то, вокруг чего строится частный тур из Комо. Нажмите на любое, чтобы прочитать полный гид.",
       readMore: "Узнать больше",
+      usefulLinksHeading: "Полезные ссылки",
+      usefulLinkTypes: { official: "Официально", maps: "Карта", wiki: "Википедия", transport: "Паромы", tourism: "Туризм" },
     },
     experiences: {
       indexLabel: "(05) — Больше чем тур",
@@ -1127,6 +1144,8 @@ export const translations: Record<Locale, Translation> = {
       pageIntro:
         "بحيرة كومو بطول 46 كيلومتراً ولها ذراعان، وأكثر من مئة فيلا على ضفافها، وحفنة من القرى البطاقة-البريدية المتشبّثة بالمنحدرات الجبلية. هذه هي الوجهات الثلاث عشرة التي تستحقّ الوصول إليها بالقارب — التي تُبنى حولها جولة خاصة من كومو. انقر على أي منها لقراءة الدليل الكامل.",
       readMore: "اقرأ المزيد",
+      usefulLinksHeading: "روابط مفيدة",
+      usefulLinkTypes: { official: "الموقع الرسمي", maps: "خريطة", wiki: "ويكيبيديا", transport: "العبّارات", tourism: "السياحة" },
     },
     experiences: {
       indexLabel: "(05) — أكثر من جولة",

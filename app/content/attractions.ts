@@ -1207,3 +1207,110 @@ export const ORBIT_PIN_IDS = [
   "bellagio",
   "varenna",
 ];
+
+// ─── External "Useful links" registry ────────────────────────────────
+//
+// Each attraction gets 3-5 curated outbound links surfaced in the
+// sidebar of its detail page AND fed into the page's JSON-LD as
+// `sameAs` / `subjectOf`. The label stays in its original language
+// (Italian institutions are recognised by their original names; same
+// rule as our toponym policy) — locale-aware UI strings ("Useful
+// links" / "Link utili") live in translations.ts.
+//
+// Adding a new attraction? Append a new entry below keyed by slug and
+// include at least: { type: "wiki" }, { type: "maps" }. The site
+// degrades gracefully if a slug has no entry (sidebar panel simply
+// renders nothing).
+
+export type ExternalLinkType =
+  | "official"   // The attraction's own official site
+  | "maps"       // Google Maps pin
+  | "wiki"       // Wikipedia (en for the EN locale; same URL for all)
+  | "transport"  // Ferry / funicular / public transport operator
+  | "tourism";   // Town tourism board or museum
+
+export type ExternalLink = {
+  label: string;
+  url: string;
+  type: ExternalLinkType;
+};
+
+/** Build a Google Maps "Search by name" URL anchored on lat/lng so
+ *  the pin lands on the right spot regardless of the visitor's Maps
+ *  locale. Coords come from PIN_BASE in translations.ts. */
+const gmap = (name: string, lat: number, lng: number) =>
+  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name)}&query_place_id=&center=${lat},${lng}`;
+
+export const EXTERNAL_LINKS_BY_SLUG: Record<string, ExternalLink[]> = {
+  como: [
+    { type: "official", label: "Funicolare di Como", url: "https://www.funicolarecomo.it" },
+    { type: "official", label: "Cattedrale di Como", url: "https://www.cattedraledicomo.it" },
+    { type: "wiki",     label: "Wikipedia · Como",   url: "https://en.wikipedia.org/wiki/Como" },
+    { type: "maps",     label: "Google Maps",        url: gmap("Como Italy", 45.808, 9.085) },
+    { type: "transport",label: "Navigazione Laghi", url: "https://www.navigazionelaghi.it" },
+  ],
+  bellagio: [
+    { type: "tourism",  label: "Bellagio Lake Como",         url: "https://www.bellagiolakecomo.com" },
+    { type: "official", label: "Giardini di Villa Melzi",    url: "https://www.giardinidivillamelzi.it" },
+    { type: "official", label: "Grand Hotel Villa Serbelloni", url: "https://www.villaserbelloni.com" },
+    { type: "wiki",     label: "Wikipedia · Bellagio",       url: "https://en.wikipedia.org/wiki/Bellagio,_Lombardy" },
+    { type: "maps",     label: "Google Maps",                url: gmap("Bellagio Lake Como", 45.987, 9.260) },
+  ],
+  "villa-del-balbianello": [
+    { type: "official", label: "FAI — Villa del Balbianello", url: "https://www.fondoambiente.it/luoghi/villa-del-balbianello" },
+    { type: "wiki",     label: "Wikipedia · Villa del Balbianello", url: "https://en.wikipedia.org/wiki/Villa_del_Balbianello" },
+    { type: "maps",     label: "Google Maps",                 url: gmap("Villa del Balbianello", 45.971, 9.197) },
+  ],
+  varenna: [
+    { type: "official", label: "Villa Monastero",   url: "https://www.villamonastero.eu" },
+    { type: "official", label: "Castello di Vezio", url: "https://www.castellodivezio.it" },
+    { type: "wiki",     label: "Wikipedia · Varenna", url: "https://en.wikipedia.org/wiki/Varenna" },
+    { type: "transport",label: "Navigazione Laghi · ferries", url: "https://www.navigazionelaghi.it" },
+    { type: "maps",     label: "Google Maps",       url: gmap("Varenna Lake Como", 46.013, 9.284) },
+  ],
+  "villa-carlotta": [
+    { type: "official", label: "Villa Carlotta",   url: "https://www.villacarlotta.it" },
+    { type: "wiki",     label: "Wikipedia · Villa Carlotta", url: "https://en.wikipedia.org/wiki/Villa_Carlotta" },
+    { type: "maps",     label: "Google Maps",      url: gmap("Villa Carlotta Tremezzo", 45.988, 9.222) },
+  ],
+  "isola-comacina": [
+    { type: "wiki", label: "Wikipedia · Isola Comacina", url: "https://en.wikipedia.org/wiki/Isola_Comacina" },
+    { type: "maps", label: "Google Maps",                url: gmap("Isola Comacina", 45.965, 9.171) },
+  ],
+  "villa-la-cassinella": [
+    // Cassinella is a private estate with no public-facing official
+    // site and no Wikipedia article — keep the entry but surface only
+    // a Maps pin so the sidebar still has at least one anchor.
+    { type: "maps", label: "Google Maps", url: gmap("Villa La Cassinella", 45.972, 9.202) },
+  ],
+  cernobbio: [
+    { type: "official", label: "Villa d'Este",        url: "https://www.villadeste.com" },
+    { type: "tourism",  label: "Cernobbio tourism",   url: "https://www.cernobbio.net" },
+    { type: "wiki",     label: "Wikipedia · Cernobbio", url: "https://en.wikipedia.org/wiki/Cernobbio" },
+    { type: "maps",     label: "Google Maps",         url: gmap("Cernobbio Lake Como", 45.844, 9.082) },
+  ],
+  "blevio-torno": [
+    { type: "wiki", label: "Wikipedia · Blevio",          url: "https://en.wikipedia.org/wiki/Blevio" },
+    { type: "wiki", label: "Wikipedia · Torno",           url: "https://en.wikipedia.org/wiki/Torno,_Lombardy" },
+    { type: "maps", label: "Google Maps · Blevio / Torno", url: gmap("Blevio Torno Lake Como", 45.834, 9.108) },
+  ],
+  "moltrasio-laglio": [
+    { type: "wiki", label: "Wikipedia · Laglio (Villa Oleandra)", url: "https://en.wikipedia.org/wiki/Laglio" },
+    { type: "maps", label: "Google Maps · Laglio",                url: gmap("Laglio Lake Como", 45.864, 9.106) },
+  ],
+  nesso: [
+    { type: "wiki", label: "Wikipedia · Nesso",          url: "https://en.wikipedia.org/wiki/Nesso" },
+    { type: "maps", label: "Google Maps · Orrido di Nesso", url: gmap("Orrido di Nesso", 45.871, 9.158) },
+  ],
+  menaggio: [
+    { type: "tourism",   label: "Menaggio tourism",  url: "https://www.menaggio.com" },
+    { type: "transport", label: "Navigazione Laghi · Menaggio hub", url: "https://www.navigazionelaghi.it" },
+    { type: "wiki",      label: "Wikipedia · Menaggio", url: "https://en.wikipedia.org/wiki/Menaggio" },
+    { type: "maps",      label: "Google Maps",       url: gmap("Menaggio Lake Como", 46.022, 9.241) },
+  ],
+  lecco: [
+    { type: "official", label: "Musei di Lecco (Manzoni)", url: "https://www.museilecco.org" },
+    { type: "wiki",     label: "Wikipedia · Lecco",        url: "https://en.wikipedia.org/wiki/Lecco" },
+    { type: "maps",     label: "Google Maps",              url: gmap("Lecco Italy", 45.853, 9.394) },
+  ],
+};

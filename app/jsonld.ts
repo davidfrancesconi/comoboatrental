@@ -41,7 +41,16 @@ function plain(s: string): string {
 // The "primary entity" of the business. Carries hours, contact, geo,
 // price band, founders, aggregate rating and same-as social links. Goes
 // on every page (with @id stable so Google deduplicates).
-export function localBusinessJsonLd(locale: Locale = "en") {
+export function localBusinessJsonLd(
+  locale: Locale = "en",
+  opts: {
+    /** URLs of related entities this business covers — typically the
+     *  13 attraction detail pages. Emitted as `mentions` so Google
+     *  understands "this business serves these places". Pass from
+     *  homepage only; inner pages omit to avoid noise. */
+    mentions?: string[];
+  } = {},
+) {
   const t = translations[locale];
   return {
     "@context": "https://schema.org",
@@ -94,6 +103,9 @@ export function localBusinessJsonLd(locale: Locale = "en") {
       worstRating: "1",
     },
     sameAs: [INSTAGRAM_URL],
+    ...(opts.mentions && opts.mentions.length > 0
+      ? { mentions: opts.mentions.map((url) => ({ "@type": "Place", url })) }
+      : {}),
   };
 }
 
@@ -255,6 +267,11 @@ export function placeJsonLd(opts: {
   type: "port" | "villa" | "town" | "nature";
   url: string;
   image?: string;
+  /** Authoritative external URLs that describe this same entity —
+   *  Wikipedia article, official site, FAI page. Fed to Google as
+   *  `sameAs` so the entity gets linked to its canonical web
+   *  identity. Pulled from EXTERNAL_LINKS_BY_SLUG. */
+  sameAs?: string[];
 }) {
   const schemaType =
     opts.type === "villa"
@@ -271,6 +288,8 @@ export function placeJsonLd(opts: {
     geo: { "@type": "GeoCoordinates", latitude: opts.lat, longitude: opts.lng },
     url: opts.url,
     ...(opts.image ? { image: opts.image } : {}),
+    ...(opts.sameAs && opts.sameAs.length > 0 ? { sameAs: opts.sameAs } : {}),
+    subjectOf: { "@type": "WebPage", url: opts.url },
   };
 }
 

@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { blog, BLOG_SLUGS } from "../../../content/blog";
 import { type Locale } from "../../../translations";
+import { linkify } from "../../../lib/linkify";
 import {
   InnerPageShell,
   renderRich,
@@ -105,13 +106,29 @@ export default async function BlogPostPage({
             {renderRich(post.title)}
           </h1>
           <img src={post.hero} alt={post.metaTitle} style={{ width: "100%", marginBottom: 40, borderRadius: 4 }} loading="eager" />
-          <div>
-            {post.body.map((b, i) => {
-              if (b.type === "h") return <h2 key={i} className="display" style={{ marginTop: 32, marginBottom: 16, fontSize: 28 }}>{b.text}</h2>;
-              if (b.type === "list") return <ul key={i} style={{ paddingLeft: 24, marginBottom: 24 }}>{b.items.map((it, k) => <li key={k} style={{ marginBottom: 8 }}>{it}</li>)}</ul>;
-              return <p key={i} style={{ marginBottom: 20, fontSize: 17, lineHeight: 1.7 }}>{b.text}</p>;
-            })}
-          </div>
+          {(() => {
+            // One shared `used` set across the entire post — each
+            // attraction name links at most once, even across many
+            // paragraphs. Headings are NOT linkified (anchors inside
+            // h2s look strange and Google sometimes treats them as
+            // navigational rather than contextual links).
+            const used = new Set<string>();
+            return (
+              <div>
+                {post.body.map((b, i) => {
+                  if (b.type === "h") return <h2 key={i} className="display" style={{ marginTop: 32, marginBottom: 16, fontSize: 28 }}>{b.text}</h2>;
+                  if (b.type === "list") return (
+                    <ul key={i} style={{ paddingLeft: 24, marginBottom: 24 }}>
+                      {b.items.map((it, k) => (
+                        <li key={k} style={{ marginBottom: 8 }}>{linkify(it, locale, { used })}</li>
+                      ))}
+                    </ul>
+                  );
+                  return <p key={i} style={{ marginBottom: 20, fontSize: 17, lineHeight: 1.7 }}>{linkify(b.text, locale, { used })}</p>;
+                })}
+              </div>
+            );
+          })()}
         </article>
       </InnerPageShell>
     </>
