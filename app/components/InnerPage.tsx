@@ -71,7 +71,7 @@ export function InnerPageNav({ locale }: { locale: Locale }) {
         aria-label={`${homeLabel} — Como Boat Rental`}
       >
         <span className="back-arrow" aria-hidden>←</span>
-        <span className="wordmark">Como Boat Rental</span>
+        <img src="/images/logo-flag.png" alt="" className="logo-flag" width="56" height="56" />
       </a>
       <div className="links">
         <a href={localePath(locale, "/")}>{homeLabel}</a>
@@ -111,7 +111,10 @@ export function InnerPageFooter({ locale }: { locale: Locale }) {
       <div className="container-x" style={{ display: "flex", flexDirection: "column", gap: 24 }}>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 24, justifyContent: "space-between" }}>
           <div>
-            <div style={{ fontFamily: "var(--display)", fontSize: 28, marginBottom: 8 }}>Como Boat Rental</div>
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
+              <img src="/images/logo-flag.png" alt="" width="48" height="48" style={{ display: "block" }} />
+              <div style={{ fontFamily: "var(--display)", fontSize: 28 }}>Como Boat Rental</div>
+            </div>
             <p style={{ opacity: 0.75, maxWidth: 360, fontSize: 14 }}>{t.intro.body.slice(0, 200)}…</p>
           </div>
           <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>

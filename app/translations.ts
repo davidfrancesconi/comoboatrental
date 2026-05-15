@@ -301,7 +301,7 @@ export const translations: Record<Locale, Translation> = {
       priceTier: "From €220 · 1-hour tour up to €1,400 · full-day charter",
     },
     intro: {
-      eyebrow: "Como Boat Rental, Est. on the Lake",
+      eyebrow: "Como Boat Rental, Est. 2010 on the Lake",
       title: "Cruise Lake Como aboard hand-built wooden boats, <em>la dolce vita</em>, on the water.",
       body: "From the first basin and George Clooney's Villa Oleandra to the cinematic gardens of Villa del Balbianello and the hidden waterfall at Nesso, every itinerary is shaped around you, your guests and the rhythm of the lake.",
     },
@@ -827,7 +827,7 @@ export const translations: Record<Locale, Translation> = {
       priceTier: "От €220 · тур на 1 час до €1,400 · чартер на целый день",
     },
     intro: {
-      eyebrow: "Como Boat Rental, На озере",
+      eyebrow: "Como Boat Rental, на озере с 2010",
       title: "Прогулки по озеру Комо на деревянных лодках ручной работы, <em>la dolce vita</em>, на воде.",
       body: "От первого бассейна и Виллы Олеандры Джорджа Клуни до кинематографичных садов Виллы дель Бальбьянелло и скрытого водопада в Нессо, каждый маршрут построен под вас, ваших гостей и ритм озера.",
     },
@@ -1090,7 +1090,7 @@ export const translations: Record<Locale, Translation> = {
       priceTier: "من €220 · جولة لمدة ساعة وحتى €1,400 · يوم كامل خاص",
     },
     intro: {
-      eyebrow: "Como Boat Rental, على البحيرة",
+      eyebrow: "Como Boat Rental, على البحيرة منذ 2010",
       title: "أبحر في بحيرة كومو على قوارب خشبية مصنوعة يدوياً, <em>الدولتشي فيتا</em>، على الماء.",
       body: "من الحوض الأول وفيلا أوليندرا لجورج كلوني إلى حدائق فيلا ديل بالبيانيلو السينمائية والشلال الخفي في نيسو, كل مسار مصمم حولك وحول ضيوفك وإيقاع البحيرة.",
     },

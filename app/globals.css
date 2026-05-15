@@ -252,6 +252,20 @@ nav.top .logo .mark::after {
   border-radius: 50%;
   opacity: 0.55;
 }
+/* Flag burgee — replaces the text wordmark in the nav. Sized so the
+ * brand has presence without overpowering the link row. The inner-
+ * page nav also uses this rule via the shared .logo class. */
+nav.top .logo .logo-flag {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  display: block;
+}
+@media (max-width: 720px) {
+  nav.top .logo .logo-flag { width: 38px; height: 38px; }
+}
+/* Inner-page nav sits on a cream background — no filters needed. */
+nav.top.inner .logo .logo-flag { filter: none; }
 nav.top .links { display: flex; gap: 36px; }
 nav.top .links a {
   color: var(--cream);
@@ -2517,6 +2531,23 @@ html[dir="rtl"] nav.top.inner .logo.back-link:hover .back-arrow { transform: sca
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+.home-footer-bar .footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 4px;
+}
+.home-footer-bar .footer-brand img {
+  width: 56px;
+  height: 56px;
+  display: block;
+}
+.home-footer-bar .footer-brand-wordmark {
+  font-family: var(--display);
+  font-size: 24px;
+  color: var(--bg);
+  letter-spacing: 0.02em;
 }
 .home-footer-bar .footer-bottom {
   display: flex;

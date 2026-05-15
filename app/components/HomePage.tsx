@@ -466,8 +466,8 @@ export default function HomePage({ locale }: { locale: Locale }) {
   return (
     <>
       <nav className={`top ${scrolled ? "scrolled" : ""} ${menuOpen ? "menu-open" : ""}`} id="topnav">
-        <a href={localePath(locale, "/")} className="logo">
-          <span className="mark"></span>Como Boat Rental
+        <a href={localePath(locale, "/")} className="logo" aria-label="Como Boat Rental">
+          <img src="/images/logo-flag.png" alt="" className="logo-flag" width="56" height="56" />
         </a>
         <div className="links">
           <a href="#tours">{t.nav.tours}</a>
@@ -913,6 +913,13 @@ export default function HomePage({ locale }: { locale: Locale }) {
           is maintained on the legacy host. */}
       <section className="home-footer-bar">
         <div className="container-x footer-bar-inner">
+          {/* Flag + wordmark sit on top of the footer so the brand
+              identity is present once you've scrolled to the bottom
+              of the page. Mirrors the inner-page footer treatment. */}
+          <div className="footer-brand">
+            <img src="/images/logo-flag.png" alt="" width="56" height="56" />
+            <span className="footer-brand-wordmark">Como Boat Rental</span>
+          </div>
           <div className="footer-policies">
             <h4>{t.policies.label}</h4>
             <p>{t.policies.body}</p>

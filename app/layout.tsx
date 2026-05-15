@@ -57,10 +57,15 @@ export const metadata: Metadata = {
   publisher: SITE_NAME,
   manifest: "/manifest.webmanifest",
   icons: {
-    // The bundled .ico is multi-resolution (16, 32) and serves all
-    // major browsers. Better PNG variants (icon-192, icon-512,
-    // apple-touch-icon-180) are pending — see docs/HANDOFF.md.
-    icon: [{ url: "/favicon.ico" }],
+    // Multi-resolution favicon set generated from the Como Boat
+    // Rental burgee (red-cross-on-white over the blue pennant).
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/icon-192.png", sizes: "192x192" }],
   },
   robots: {
     index: true,
