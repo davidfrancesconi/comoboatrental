@@ -467,7 +467,7 @@ export default function HomePage({ locale }: { locale: Locale }) {
     <>
       <nav className={`top ${scrolled ? "scrolled" : ""} ${menuOpen ? "menu-open" : ""}`} id="topnav">
         <a href={localePath(locale, "/")} className="logo" aria-label="Como Boat Rental">
-          <img src="/images/logo-flag.png" alt="" className="logo-flag" width="56" height="56" />
+          <img src="/images/logo-flag-wide.png" alt="" className="logo-flag" width="56" height="56" />
         </a>
         <div className="links">
           <a href="#tours">{t.nav.tours}</a>
@@ -917,7 +917,7 @@ export default function HomePage({ locale }: { locale: Locale }) {
               identity is present once you've scrolled to the bottom
               of the page. Mirrors the inner-page footer treatment. */}
           <div className="footer-brand">
-            <img src="/images/logo-flag.png" alt="" width="56" height="56" />
+            <img src="/images/logo-flag-wide.png" alt="" width="56" height="56" />
             <span className="footer-brand-wordmark">Como Boat Rental</span>
           </div>
           <div className="footer-policies">

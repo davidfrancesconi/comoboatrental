@@ -252,27 +252,31 @@ nav.top .logo .mark::after {
   border-radius: 50%;
   opacity: 0.55;
 }
-/* Flag burgee — replaces the text wordmark in the nav. Sized so the
- * brand has presence without overpowering the link row. The inner-
- * page nav also uses this rule via the shared .logo class.
- * `flex: none` is critical: the .logo container is a flexbox and
- * without it the image gets squashed horizontally next to the back
- * arrow / link row on narrow viewports. */
+/* Flag burgee — replaces the text wordmark in the nav. The source
+ * PNG (logo-flag-wide.png) is the natural ~3.2:1 pennant ratio, so
+ * we set height only and let width follow. `flex: none` is critical:
+ * the .logo container is a flexbox and without it the image gets
+ * pinched horizontally next to the back arrow / link row on narrow
+ * viewports. */
 nav.top .logo .logo-flag {
-  width: 44px;
-  height: 44px;
+  height: 36px;
+  width: auto;
   object-fit: contain;
   display: block;
   flex: none;
 }
 @media (max-width: 720px) {
-  nav.top .logo .logo-flag { width: 38px; height: 38px; }
+  nav.top .logo .logo-flag { height: 30px; }
 }
 /* Inner-page nav sits on a cream background — no filters needed. */
 nav.top.inner .logo .logo-flag { filter: none; }
 /* The .home-footer-bar flag also needs flex:none to avoid getting
  * pinched by adjacent text/buttons in the footer brand row. */
-.home-footer-bar .footer-brand img { flex: none; }
+.home-footer-bar .footer-brand img {
+  flex: none;
+  width: auto !important;
+  height: 44px !important;
+}
 nav.top .links { display: flex; gap: 36px; }
 nav.top .links a {
   color: var(--cream);
