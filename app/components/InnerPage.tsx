@@ -110,12 +110,9 @@ export function InnerPageFooter({ locale }: { locale: Locale }) {
     >
       <div className="container-x" style={{ display: "flex", flexDirection: "column", gap: 24 }}>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 24, justifyContent: "space-between" }}>
-          <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
-              <img src="/images/logo-flag.png" alt="" width="48" height="48" style={{ display: "block" }} />
-              <div style={{ fontFamily: "var(--display)", fontSize: 28 }}>Como Boat Rental</div>
-            </div>
-            <p style={{ opacity: 0.75, maxWidth: 360, fontSize: 14 }}>{t.intro.body.slice(0, 200)}…</p>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <img src="/images/logo-flag.png" alt="" width="48" height="48" style={{ display: "block", flex: "none" }} />
+            <div style={{ fontFamily: "var(--display)", fontSize: 28 }}>Como Boat Rental</div>
           </div>
           <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
             <a className="btn primary primary-gold" href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
