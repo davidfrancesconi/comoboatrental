@@ -24,13 +24,16 @@ import {
 import type { Locale, Translation } from "../translations";
 import { renderRich } from "./InnerPage";
 
-// 4 tour slugs + their display name + price come from translations so
-// they stay in sync with the homepage tour grid.
-const TOUR_KEYS: Array<{ slug: string; index: 0 | 1 | 2 | 3 }> = [
-  { slug: "highlights-1h", index: 0 },
-  { slug: "balbianello-nesso", index: 1 },
-  { slug: "top-villas-half-day", index: 2 },
-  { slug: "bespoke-full-day", index: 3 },
+// Four tour radio options shown in the booking form — span the 1h /
+// 3h / 4h / 8h ladder so the typical buyer sees their commitment
+// tier without scrolling past every SKU. Indices map to positions in
+// translations.ts t.tours.items (8 entries: 0=1h, 1=2h, 2=3h, 3=4h,
+// 4=5h, 5=6h, 6=8h, 7=sunset).
+const TOUR_KEYS: Array<{ slug: string; index: number }> = [
+  { slug: "highlights-1h",       index: 0 },  // 1-hour
+  { slug: "balbianello-nesso",   index: 2 },  // 3-hour
+  { slug: "top-villas-half-day", index: 3 },  // 4-hour
+  { slug: "full-day-8h",         index: 6 },  // 8-hour
 ];
 
 export default function BookingForm({ t, locale }: { t: Translation; locale: Locale }) {

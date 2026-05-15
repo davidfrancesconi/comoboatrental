@@ -74,7 +74,7 @@ export const attractions: Attraction[] = [
     slug: "como",
     pinId: "como",
     image: "/images/attractions/como.jpg",
-    toursThatVisit: ["highlights-1h", "balbianello-nesso", "top-villas-half-day", "bespoke-full-day"],
+    toursThatVisit: ["highlights-1h", "balbianello-nesso", "top-villas-half-day", "full-day-8h"],
     copy: {
       en: {
         name: "Como",
@@ -160,7 +160,7 @@ export const attractions: Attraction[] = [
     slug: "bellagio",
     pinId: "bellagio",
     image: "/images/attractions/bellagio.jpg",
-    toursThatVisit: ["top-villas-half-day", "bespoke-full-day"],
+    toursThatVisit: ["top-villas-half-day", "full-day-8h"],
     copy: {
       en: {
         name: "Bellagio",
@@ -246,7 +246,7 @@ export const attractions: Attraction[] = [
     slug: "villa-del-balbianello",
     pinId: "balbianello",
     image: "/images/attractions/villa-del-balbianello.jpg",
-    toursThatVisit: ["balbianello-nesso", "top-villas-half-day", "bespoke-full-day"],
+    toursThatVisit: ["balbianello-nesso", "top-villas-half-day", "full-day-8h"],
     copy: {
       en: {
         name: "Villa del Balbianello",
@@ -332,7 +332,7 @@ export const attractions: Attraction[] = [
     slug: "varenna",
     pinId: "varenna",
     image: "/images/attractions/varenna.jpg",
-    toursThatVisit: ["top-villas-half-day", "bespoke-full-day"],
+    toursThatVisit: ["top-villas-half-day", "full-day-8h"],
     copy: {
       en: {
         name: "Varenna",
@@ -418,7 +418,7 @@ export const attractions: Attraction[] = [
     slug: "villa-carlotta",
     pinId: "carlotta",
     image: "/images/attractions/carlotta.jpg",
-    toursThatVisit: ["top-villas-half-day", "bespoke-full-day"],
+    toursThatVisit: ["top-villas-half-day", "full-day-8h"],
     copy: {
       en: {
         name: "Villa Carlotta",
@@ -504,7 +504,7 @@ export const attractions: Attraction[] = [
     slug: "isola-comacina",
     pinId: "isola_comacina",
     image: "/images/attractions/isola-comacina.jpg",
-    toursThatVisit: ["top-villas-half-day", "bespoke-full-day"],
+    toursThatVisit: ["top-villas-half-day", "full-day-8h"],
     copy: {
       en: {
         name: "Isola Comacina",
@@ -590,7 +590,7 @@ export const attractions: Attraction[] = [
     slug: "villa-la-cassinella",
     pinId: "cassinella",
     image: "/images/attractions/cassinella.jpg",
-    toursThatVisit: ["top-villas-half-day", "bespoke-full-day"],
+    toursThatVisit: ["top-villas-half-day", "full-day-8h"],
     copy: {
       en: {
         name: "Villa La Cassinella",
@@ -676,7 +676,7 @@ export const attractions: Attraction[] = [
     slug: "cernobbio",
     pinId: "cernobbio",
     image: "/images/attractions/cernobbio.jpg",
-    toursThatVisit: ["highlights-1h", "balbianello-nesso", "top-villas-half-day", "bespoke-full-day"],
+    toursThatVisit: ["highlights-1h", "balbianello-nesso", "top-villas-half-day", "full-day-8h"],
     copy: {
       en: {
         name: "Cernobbio",
@@ -762,7 +762,7 @@ export const attractions: Attraction[] = [
     slug: "blevio-torno",
     pinId: "blevio_torno",
     image: "/images/attractions/blevio.jpg",
-    toursThatVisit: ["bespoke-full-day"],
+    toursThatVisit: ["full-day-8h"],
     copy: {
       en: {
         name: "Blevio & Torno",
@@ -852,7 +852,7 @@ export const attractions: Attraction[] = [
     // ferry (CC-BY-SA, credit in /images/attractions/CREDITS.md).
     pinId: "oleandra",
     image: "/images/attractions/villa-oleandra.jpg",
-    toursThatVisit: ["highlights-1h", "balbianello-nesso", "top-villas-half-day", "bespoke-full-day"],
+    toursThatVisit: ["highlights-1h", "balbianello-nesso", "top-villas-half-day", "full-day-8h"],
     copy: {
       en: {
         name: "Moltrasio, Carate Urio, Laglio",
@@ -938,7 +938,7 @@ export const attractions: Attraction[] = [
     slug: "nesso",
     pinId: "nesso",
     image: "/images/attractions/nesso.jpg",
-    toursThatVisit: ["balbianello-nesso", "bespoke-full-day"],
+    toursThatVisit: ["balbianello-nesso", "full-day-8h"],
     copy: {
       en: {
         name: "Orrido di Nesso",
@@ -1024,7 +1024,7 @@ export const attractions: Attraction[] = [
     slug: "menaggio",
     pinId: "menaggio",
     image: "/images/attractions/menaggio.jpg",
-    toursThatVisit: ["bespoke-full-day"],
+    toursThatVisit: ["full-day-8h"],
     copy: {
       en: {
         name: "Menaggio",
@@ -1110,7 +1110,7 @@ export const attractions: Attraction[] = [
     slug: "lecco",
     pinId: "lecco",
     image: "/images/attractions/lecco.jpg",
-    toursThatVisit: ["bespoke-full-day"],
+    toursThatVisit: ["full-day-8h"],
     copy: {
       en: {
         name: "Lecco",

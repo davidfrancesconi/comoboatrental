@@ -14,6 +14,7 @@ import { attractions, ATTRACTION_SLUGS, EXTERNAL_LINKS_BY_SLUG } from "../../../
 import { translations, type Locale } from "../../../translations";
 import { InnerPageShell, renderRich } from "../../../components/InnerPage";
 import { TourCard, TOUR_SLUG_TO_INDEX, TOUR_CARD_IMAGES } from "../../../components/TourCard";
+import { ClientCarousel } from "../../../components/Carousel";
 import { MiniLakeMap } from "../../../components/MiniLakeMap";
 import { UsefulLinks } from "../../../components/UsefulLinks";
 import { linkify } from "../../../lib/linkify";
@@ -375,11 +376,13 @@ export default async function AttractionDetailPage({
                       : "Tours that include this attraction"}
               </h2>
               {/* Horizontal scroller — same .tours-grid class as the
-                  homepage carousel so cards have identical sizing,
-                  snap and scrollbar behaviour. Static export, so no
-                  arrows / dots client widget here; native scroll +
-                  drag is the interaction. */}
-              <div className="tours-grid attraction-tours-scroller" aria-label="Tours that visit this attraction">
+                  homepage carousel, wrapped in <ClientCarousel> so
+                  attraction pages get the same arrows + dot
+                  indicators visitors expect. */}
+              <ClientCarousel
+                count={visitingTourIndices.length}
+                label={locale === "it" ? "Tour" : locale === "ru" ? "Туры" : locale === "ar" ? "جولات" : "Tours"}
+              >
                 {visitingTourIndices.map(({ slug: tourSlug, idx }) => {
                   const tour = t.tours.items[idx];
                   if (!tour) return null;
@@ -394,7 +397,7 @@ export default async function AttractionDetailPage({
                     />
                   );
                 })}
-              </div>
+              </ClientCarousel>
             </div>
           </section>
         )}

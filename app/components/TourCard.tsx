@@ -81,19 +81,17 @@ export function TourCard({
 }
 
 /** Map: attractions.ts toursThatVisit slug → index in translations.ts tours.items.
- * 11 entries since the May 2026 expansion to match competitor SKU coverage. */
+ * 8 entries — the May 2026 menu mirroring lakecomoboattour.it minus the
+ * four excluded SKUs (tailor made, dinner, photoshoot, boat & palace). */
 export const TOUR_SLUG_TO_INDEX: Record<string, number> = {
   "highlights-1h": 0,
   "cernobbio-2h": 1,
   "balbianello-nesso": 2,
-  "boat-palace-4h": 3,
-  "top-villas-half-day": 4,
-  "first-basin-5h": 5,
-  "centre-lake-6h": 6,
+  "top-villas-half-day": 3,
+  "first-basin-5h": 4,
+  "centre-lake-6h": 5,
+  "full-day-8h": 6,
   "sunset-cruise": 7,
-  "dinner-tour": 8,
-  "photoshoot-tour": 9,
-  "bespoke-full-day": 10,
 };
 
 /** Image paths for each homepage tour card, by slug. */
@@ -101,12 +99,9 @@ export const TOUR_CARD_IMAGES: Record<string, string> = {
   "highlights-1h": "/images/hero-1.jpg",
   "cernobbio-2h": "/images/attractions/cernobbio.jpg",
   "balbianello-nesso": "/images/balbianello.jpg",
-  "boat-palace-4h": "/images/attractions/villa-del-balbianello.jpg",
   "top-villas-half-day": "/images/attractions/bellagio.jpg",
   "first-basin-5h": "/images/attractions/villa-del-balbianello.jpg",
   "centre-lake-6h": "/images/attractions/bellagio.jpg",
+  "full-day-8h": "/images/luxury-cruise.jpg",
   "sunset-cruise": "/images/hero-sunset.jpg",
-  "dinner-tour": "/images/luxury-cruise.jpg",
-  "photoshoot-tour": "/images/experiences/photoshoots.jpg",
-  "bespoke-full-day": "/images/luxury-cruise.jpg",
 };

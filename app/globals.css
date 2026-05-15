@@ -898,12 +898,54 @@ html[dir="rtl"] .tour-card .itinerary .stop:not(:last-child)::after { content: "
 .fleet .section-head .title h3 em    { color: var(--gold-light); }
 .fleet .section-head .title p        { color: rgba(245, 239, 228, 0.7); }
 
+/* Fleet — horizontally-scrollable carousel mirroring .tours-grid.
+ * Two cards on desktop, but on narrow viewports each card sits at
+ * ~85% of the viewport with a peek of the next card. The
+ * .scroller-frame wrapper holds the arrows + dots. */
 .fleet-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: clamp(28px, 4vw, 56px);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: clamp(20px, 3vw, 40px);
+  overflow-x: auto;
+  overflow-y: visible;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 24px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 8px;
 }
-@media (max-width: 900px) { .fleet-grid { grid-template-columns: 1fr; } }
+.fleet-grid::-webkit-scrollbar { display: none; }
+.fleet-grid > .boat-card {
+  flex: 0 0 calc((100% - clamp(20px, 3vw, 40px)) / 2);
+  scroll-snap-align: center;
+  min-width: 0;
+}
+@media (max-width: 900px) {
+  .fleet-grid > .boat-card {
+    /* Peek the next card by leaving ~15% on the right */
+    flex: 0 0 85%;
+  }
+}
+@media (max-width: 540px) {
+  .fleet-grid > .boat-card {
+    flex: 0 0 88%;
+  }
+}
+/* Frame around the carousel for the absolute-positioned arrows */
+.fleet-frame { position: relative; }
+/* Dark-section variants of arrows + dots — Fleet lives on .ink bg */
+.fleet-frame .scroll-arrow {
+  background: var(--bg);
+  color: var(--ink);
+}
+.fleet-frame .scroll-arrow:hover:not(:disabled) {
+  background: var(--gold-light);
+  color: var(--ink);
+}
+.fleet-frame .carousel-dot { background: var(--bg); opacity: 0.35; }
+.fleet-frame .carousel-dot:hover { opacity: 0.7; }
+.fleet-frame .carousel-dot.active { opacity: 1; background: var(--gold-light); }
 
 .boat-card {
   display: flex; flex-direction: column;

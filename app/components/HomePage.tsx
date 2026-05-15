@@ -17,6 +17,7 @@ import { localePath, RENT_POLICY_URL, PRIVACY_POLICY_URL, COOKIE_POLICY_URL } fr
 import { linkify } from "../lib/linkify";
 import { attractions, ORBIT_PIN_IDS } from "../content/attractions";
 import { EXPERIENCE_SLUGS } from "../content/experiences";
+import { ScrollArrows, CarouselDots } from "./Carousel";
 import { TourCard, TOUR_CARD_IMAGES } from "./TourCard";
 import BookingForm from "./BookingForm";
 
@@ -102,201 +103,6 @@ function RichText({ text }: { text: string }) {
   return <>{parts}</>;
 }
 
-// Left/right arrows that scroll a horizontal carousel by ~80% of its visible
-// width. The arrows hide themselves when there's no more content to scroll
-// to in that direction. Reused for both the Tours carousel and the
-// Attractions strip.
-function ScrollArrows({
-  scrollerRef,
-  label,
-}: {
-  scrollerRef: React.RefObject<HTMLDivElement | null>;
-  label: string;
-}) {
-  const [canLeft, setCanLeft] = useState(false);
-  const [canRight, setCanRight] = useState(true);
-
-  useEffect(() => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    const update = () => {
-      setCanLeft(el.scrollLeft > 4);
-      setCanRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
-    };
-    update();
-    el.addEventListener("scroll", update, { passive: true });
-    const ro = new ResizeObserver(update);
-    ro.observe(el);
-    return () => {
-      el.removeEventListener("scroll", update);
-      ro.disconnect();
-    };
-  }, [scrollerRef]);
-
-  const scroll = (dir: 1 | -1) => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    el.scrollBy({ left: dir * el.clientWidth * 0.8, behavior: "smooth" });
-  };
-
-  return (
-    <>
-      <button
-        type="button"
-        className="scroll-arrow scroll-arrow-left"
-        onClick={() => scroll(-1)}
-        disabled={!canLeft}
-        aria-label={`${label} — scroll left`}
-      >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-          <polyline points="15 18 9 12 15 6" />
-        </svg>
-      </button>
-      <button
-        type="button"
-        className="scroll-arrow scroll-arrow-right"
-        onClick={() => scroll(1)}
-        disabled={!canRight}
-        aria-label={`${label} — scroll right`}
-      >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-          <polyline points="9 18 15 12 9 6" />
-        </svg>
-      </button>
-    </>
-  );
-}
-
-// Dot indicators under a horizontal scroller — like the bottom of the
-// Il Medeghino carousel screenshot. Tracks which card is currently
-// closest to centre via a scroll listener, lets the user jump to any
-// card by clicking the matching dot.
-//
-// When `autoAdvanceMobile` is true and the viewport is mobile-sized
-// (≤720px), the carousel auto-advances one card every 2 seconds.
-// Any user interaction (touchstart, mousedown, wheel) pauses the
-// auto-advance for 5 seconds so it doesn't fight the visitor.
-function CarouselDots({
-  scrollerRef,
-  count,
-  autoAdvanceMobile = false,
-}: {
-  scrollerRef: React.RefObject<HTMLDivElement | null>;
-  count: number;
-  autoAdvanceMobile?: boolean;
-}) {
-  const [activeIdx, setActiveIdx] = useState(0);
-  const activeIdxRef = useRef(0);
-  const lastUserInteractionRef = useRef(0);
-  useEffect(() => { activeIdxRef.current = activeIdx; }, [activeIdx]);
-
-  // Find the card whose centre is closest to the scroller's viewport
-  // centre, and mark its dot active.
-  useEffect(() => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    const update = () => {
-      const containerCenter = el.scrollLeft + el.clientWidth / 2;
-      let bestIdx = 0;
-      let bestDist = Infinity;
-      const cards = el.children;
-      for (let i = 0; i < cards.length; i++) {
-        const card = cards[i] as HTMLElement;
-        const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-        const dist = Math.abs(cardCenter - containerCenter);
-        if (dist < bestDist) {
-          bestDist = dist;
-          bestIdx = i;
-        }
-      }
-      setActiveIdx(bestIdx);
-    };
-    update();
-    el.addEventListener("scroll", update, { passive: true });
-    const ro = new ResizeObserver(update);
-    ro.observe(el);
-    return () => {
-      el.removeEventListener("scroll", update);
-      ro.disconnect();
-    };
-  }, [scrollerRef, count]);
-
-  // Track user interaction so auto-advance can pause politely.
-  useEffect(() => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    const mark = () => {
-      lastUserInteractionRef.current = Date.now();
-    };
-    el.addEventListener("touchstart", mark, { passive: true });
-    el.addEventListener("mousedown", mark);
-    el.addEventListener("wheel", mark, { passive: true });
-    return () => {
-      el.removeEventListener("touchstart", mark);
-      el.removeEventListener("mousedown", mark);
-      el.removeEventListener("wheel", mark);
-    };
-  }, [scrollerRef]);
-
-  // Auto-advance every 2s on mobile only.
-  useEffect(() => {
-    if (!autoAdvanceMobile) return;
-    if (typeof window === "undefined") return;
-    const mql = window.matchMedia("(max-width: 720px)");
-    let intervalId: number | undefined;
-    const tick = () => {
-      // Pause for 5s after any user interaction.
-      if (Date.now() - lastUserInteractionRef.current < 5000) return;
-      const el = scrollerRef.current;
-      if (!el) return;
-      const next = (activeIdxRef.current + 1) % count;
-      const card = el.children[next] as HTMLElement | undefined;
-      if (!card) return;
-      const target = card.offsetLeft - (el.clientWidth - card.offsetWidth) / 2;
-      el.scrollTo({ left: target, behavior: "smooth" });
-    };
-    const setup = (isMobile: boolean) => {
-      if (intervalId !== undefined) {
-        window.clearInterval(intervalId);
-        intervalId = undefined;
-      }
-      if (isMobile) intervalId = window.setInterval(tick, 2000);
-    };
-    setup(mql.matches);
-    const onChange = () => setup(mql.matches);
-    mql.addEventListener("change", onChange);
-    return () => {
-      mql.removeEventListener("change", onChange);
-      if (intervalId !== undefined) window.clearInterval(intervalId);
-    };
-  }, [autoAdvanceMobile, count, scrollerRef]);
-
-  const goTo = (idx: number) => {
-    lastUserInteractionRef.current = Date.now();
-    const el = scrollerRef.current;
-    if (!el) return;
-    const card = el.children[idx] as HTMLElement | undefined;
-    if (!card) return;
-    const target = card.offsetLeft - (el.clientWidth - card.offsetWidth) / 2;
-    el.scrollTo({ left: target, behavior: "smooth" });
-  };
-
-  return (
-    <div className="carousel-dots" role="tablist" aria-label="Carousel position">
-      {Array.from({ length: count }).map((_, i) => (
-        <button
-          key={i}
-          type="button"
-          role="tab"
-          className={`carousel-dot ${i === activeIdx ? "active" : ""}`}
-          aria-label={`Go to slide ${i + 1}`}
-          aria-selected={i === activeIdx}
-          onClick={() => goTo(i)}
-        />
-      ))}
-    </div>
-  );
-}
 
 // === Lake Como map — interactive Leaflet with CartoDB Voyager tiles ===
 type Pin = { id: string; name: string; note: string; type: string; lat: number; lng: number };
@@ -553,6 +359,7 @@ export default function HomePage({ locale }: { locale: Locale }) {
   const mapSectionRef = useRef<HTMLElement>(null);
   const destListRef = useRef<HTMLDivElement>(null);
   const toursScrollRef = useRef<HTMLDivElement>(null);
+  const fleetScrollRef = useRef<HTMLDivElement>(null);
 
   // Apply variant copy override on top of the active locale. Variant copy
   // is English-only.
@@ -765,13 +572,24 @@ export default function HomePage({ locale }: { locale: Locale }) {
           <div className="scroller-frame">
             <div className="tours-grid" ref={toursScrollRef} aria-label="Lake Como private boat tours">
             {t.tours.items.map((tour, i) => {
-              const slugs = ["highlights-1h", "balbianello-nesso", "top-villas-half-day", "bespoke-full-day"];
+              // The 8 t.tours.items entries map 1:1 to TOUR_SLUGS
+              // order in content/tours.ts.
+              const slugs = [
+                "highlights-1h",       // 0 — 1h
+                "cernobbio-2h",        // 1 — 2h
+                "balbianello-nesso",   // 2 — 3h
+                "top-villas-half-day", // 3 — 4h
+                "first-basin-5h",      // 4 — 5h
+                "centre-lake-6h",      // 5 — 6h
+                "full-day-8h",         // 6 — 8h
+                "sunset-cruise",       // 7 — sunset
+              ];
               return (
                 <TourCard
                   key={i}
                   tour={tour}
                   slug={slugs[i]}
-                  image={TOUR_IMGS[i]}
+                  image={TOUR_CARD_IMAGES[slugs[i]] ?? TOUR_IMGS[i % TOUR_IMGS.length]}
                   t={t}
                   locale={locale}
                 />
@@ -926,34 +744,42 @@ export default function HomePage({ locale }: { locale: Locale }) {
             </div>
           </div>
 
-          <div className="fleet-grid">
-            {t.fleet.items.map((boat, i) => (
-              <article key={i} className="boat-card reveal">
-                <div className="boat-img">
-                  <img src={FLEET_IMGS[i]} alt={`${boat.name.replace(/<[^>]+>/g, "")} — Como Boat Rental fleet`} loading="lazy" width="1200" height="800" />
-                  <span className="badge">{boat.cornerLabel}</span>
-                </div>
-                <h3><RichText text={boat.name} /></h3>
-                <p>{boat.desc}</p>
-                <div className="boat-specs">
-                  {boat.specs.map((spec, k) => (
-                    <div key={k} className="spec">
-                      <span className="k">{spec.label}</span>
-                      <span className="v">{spec.value}</span>
-                    </div>
-                  ))}
-                </div>
-                <div className="boat-foot">
-                  <div className="boat-price">
-                    <span className="label">{fromLabel}</span>
-                    <span className="v">{boat.price}</span>
+          {/* Horizontally-scrollable boats grid — same scroller-frame
+              pattern as the homepage tours carousel: arrows on the
+              sides, dot indicators underneath, peek of the adjacent
+              card on the right when squeezed narrow. */}
+          <div className="scroller-frame fleet-frame">
+            <div ref={fleetScrollRef} className="fleet-grid">
+              {t.fleet.items.map((boat, i) => (
+                <article key={i} className="boat-card reveal">
+                  <div className="boat-img">
+                    <img src={FLEET_IMGS[i]} alt={`${boat.name.replace(/<[^>]+>/g, "")} — Como Boat Rental fleet`} loading="lazy" width="1200" height="800" />
+                    <span className="badge">{boat.cornerLabel}</span>
                   </div>
-                  <a className="btn ghost" href="#contact">
-                    {t.fleet.inquireCta} <span className="arrow">→</span>
-                  </a>
-                </div>
-              </article>
-            ))}
+                  <h3><RichText text={boat.name} /></h3>
+                  <p>{boat.desc}</p>
+                  <div className="boat-specs">
+                    {boat.specs.map((spec, k) => (
+                      <div key={k} className="spec">
+                        <span className="k">{spec.label}</span>
+                        <span className="v">{spec.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="boat-foot">
+                    <div className="boat-price">
+                      <span className="label">{fromLabel}</span>
+                      <span className="v">{boat.price}</span>
+                    </div>
+                    <a className="btn ghost" href="#contact">
+                      {t.fleet.inquireCta} <span className="arrow">→</span>
+                    </a>
+                  </div>
+                </article>
+              ))}
+            </div>
+            <ScrollArrows scrollerRef={fleetScrollRef} label="Fleet" />
+            <CarouselDots scrollerRef={fleetScrollRef} count={t.fleet.items.length} />
           </div>
         </div>
       </section>

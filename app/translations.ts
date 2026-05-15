@@ -315,61 +315,46 @@ export const translations: Record<Locale, Translation> = {
       factIdeal: "Best for",
       factFrom: "From",
       items: [
-        // 0
-        { duration: "1 hour", title: "Lake Como Highlights",
+        // 0 — highlights-1h
+        { duration: "1 hour", title: "1-Hour Private Tour",
           desc: "A short scenic loop of the first basin — the quickest way onto the water and into the lake's most photographed corners.",
           meta: "Couples · first-time", price: "from €220",
           stops: ["Como", "Cernobbio", "Villa d'Este", "Villa Oleandra"] },
-        // 1
-        { duration: "2 hours", title: "Cernobbio & Villa d'Este",
-          desc: "The celebrity coastline at the lake's southern tip — Villa d'Este, Villa Oleandra, Villa Passalacqua, with a quick swim stop.",
+        // 1 — cernobbio-2h
+        { duration: "2 hours", title: "2-Hour Private Tour",
+          desc: "Cernobbio, Villa d'Este, Villa Oleandra and Moltrasio's Belle Époque coastline — the celebrity riviera in one swim-stop circuit.",
           meta: "Couples · small groups", price: "from €400",
           stops: ["Como", "Villa d'Este", "Villa Oleandra", "Moltrasio"] },
-        // 2
-        { duration: "2.5 hours", title: "Balbianello & Nesso",
-          desc: "Iconic Villa del Balbianello from the water (Casino Royale set), with a stop at the Orrido di Nesso waterfall.",
+        // 2 — balbianello-nesso (3-hour positioning)
+        { duration: "3 hours", title: "3-Hour Private Tour",
+          desc: "Out to Villa del Balbianello (Casino Royale set), past Argegno, with a stop at the Orrido di Nesso waterfall on the way back.",
           meta: "Couples · small groups", price: "from €480",
           stops: ["Como", "Nesso", "Argegno", "Balbianello"] },
-        // 3
-        { duration: "4 hours", title: "Boat & Villa Tour",
-          desc: "Private cruise paired with a guided visit to Villa del Balbianello (FAI) or Villa Carlotta — entry ticket included.",
-          meta: "Architecture · culture", price: "from €450",
-          stops: ["Como", "Cernobbio", "Villa del Balbianello", "Visit"] },
-        // 4
-        { duration: "4 hours", title: "Half-Day Top Villas",
+        // 3 — top-villas-half-day (4-hour positioning)
+        { duration: "4 hours", title: "4-Hour Private Tour",
           desc: "Villa del Balbianello, Villa Carlotta and Villa Balbiano (House of Gucci) with a one-hour stop in Bellagio or Varenna.",
           meta: "Families · groups", price: "from €780",
           stops: ["Balbianello", "Carlotta", "Balbiano", "Bellagio"] },
-        // 5
-        { duration: "5 hours", title: "First Basin & Balbianello",
+        // 4 — first-basin-5h
+        { duration: "5 hours", title: "5-Hour Private Tour",
           desc: "The route we recommend most often — first basin, Orrido di Nesso, Isola Comacina swim and Villa del Balbianello, with a lakeside lunch.",
           meta: "First-time on the lake", price: "from €820",
           stops: ["Cernobbio", "Nesso", "Isola Comacina", "Balbianello"] },
-        // 6
-        { duration: "6 hours", title: "Bellagio, Varenna & Centre Lake",
-          desc: "The full classic — first basin, Balbianello, lunch in Bellagio, Varenna and Castello di Vezio from the lake.",
+        // 5 — centre-lake-6h
+        { duration: "6 hours", title: "6-Hour Private Tour",
+          desc: "Full classic — first basin, Balbianello, lunch in Bellagio, Varenna and Castello di Vezio from the lake.",
           meta: "The complete day", price: "from €950",
           stops: ["Balbianello", "Bellagio", "Varenna", "Menaggio"] },
-        // 7
+        // 6 — full-day-8h
+        { duration: "8 hours", title: "8-Hour Private Tour",
+          desc: "The full Lake Como day — all of the 6-hour route plus proper time in Varenna and a second swim stop on the way home.",
+          meta: "The full lake day", price: "from €1,200",
+          stops: ["Balbianello", "Bellagio", "Varenna", "Menaggio"] },
+        // 7 — sunset-cruise
         { duration: "1.5 hours", title: "Sunset Cruise",
           desc: "The lake at golden hour — prosecco on board, the captain stops where the light is best. The most-booked tour for proposals.",
           meta: "Romance · proposals", price: "from €350",
           stops: ["Como", "Villa d'Este", "Moltrasio", "Sunset"] },
-        // 8
-        { duration: "4 hours", title: "Dinner Tour",
-          desc: "Sunset cruise plus dinner at one of the lake's best pontoon-only restaurants — Crotto dei Platani, Il Gatto Nero or La Punta Bellagio.",
-          meta: "Evening · couples", price: "from €750",
-          stops: ["Sunset", "Crotto / La Punta", "Return under stars"] },
-        // 9
-        { duration: "By the hour", title: "Photo Shoot Tour",
-          desc: "Private boat as the moving set — pre-wedding, editorials, fashion, commercial. Iconic villa backdrops. Photographer on request.",
-          meta: "Pre-wedding · editorial", price: "from €350/hour",
-          stops: ["Villa d'Este", "Balbianello", "Carlotta", "Open water"] },
-        // 10
-        { duration: "6–8 hours", title: "Full-Day Bespoke",
-          desc: "Built around your day — hotel pick-up at Villa d'Este, Passalacqua or Mandarin Oriental, swimming, lakeside lunch, hidden gems.",
-          meta: "Exclusivity", price: "from €1,400",
-          stops: ["Pick-up", "Swim stop", "Lunch", "Sunset"] },
       ],
     },
     fleet: {
@@ -593,61 +578,46 @@ export const translations: Record<Locale, Translation> = {
       factIdeal: "Ideale per",
       factFrom: "Da",
       items: [
-        // 0
-        { duration: "1 ora", title: "Highlights del Lago",
+        // 0 — highlights-1h
+        { duration: "1 ora", title: "Tour Privato 1 Ora",
           desc: "Un breve giro panoramico del primo bacino — il modo più rapido per scendere sull'acqua e raggiungere gli angoli più fotografati del lago.",
           meta: "Coppie · prima visita", price: "da € 220",
           stops: ["Como", "Cernobbio", "Villa d'Este", "Villa Oleandra"] },
-        // 1
-        { duration: "2 ore", title: "Cernobbio e Villa d'Este",
-          desc: "La riviera delle celebrità a sud del lago — Villa d'Este, Villa Oleandra, Villa Passalacqua, con sosta bagno.",
+        // 1 — cernobbio-2h
+        { duration: "2 ore", title: "Tour Privato 2 Ore",
+          desc: "Cernobbio, Villa d'Este, Villa Oleandra e la costa Belle Époque di Moltrasio — la riviera delle celebrità con sosta bagno.",
           meta: "Coppie · piccoli gruppi", price: "da € 400",
           stops: ["Como", "Villa d'Este", "Villa Oleandra", "Moltrasio"] },
-        // 2
-        { duration: "2,5 ore", title: "Balbianello e Nesso",
-          desc: "L'iconica Villa del Balbianello vista dall'acqua (set di Casino Royale), con sosta all'Orrido di Nesso.",
+        // 2 — balbianello-nesso (3-hour positioning)
+        { duration: "3 ore", title: "Tour Privato 3 Ore",
+          desc: "Verso Villa del Balbianello (set di Casino Royale), oltre Argegno, con sosta all'Orrido di Nesso al ritorno.",
           meta: "Coppie · piccoli gruppi", price: "da € 480",
           stops: ["Como", "Nesso", "Argegno", "Balbianello"] },
-        // 3
-        { duration: "4 ore", title: "Barca e Villa",
-          desc: "Crociera privata abbinata a visita guidata a Villa del Balbianello (FAI) o Villa Carlotta — biglietto d'ingresso incluso.",
-          meta: "Architettura · cultura", price: "da € 450",
-          stops: ["Como", "Cernobbio", "Villa del Balbianello", "Visita"] },
-        // 4
-        { duration: "4 ore", title: "Mezza Giornata, Le Ville",
+        // 3 — top-villas-half-day (4-hour)
+        { duration: "4 ore", title: "Tour Privato 4 Ore",
           desc: "Villa del Balbianello, Villa Carlotta e Villa Balbiano (House of Gucci) con una sosta di un'ora a Bellagio o Varenna.",
           meta: "Famiglie · gruppi", price: "da € 780",
           stops: ["Balbianello", "Carlotta", "Balbiano", "Bellagio"] },
-        // 5
-        { duration: "5 ore", title: "Primo bacino e Balbianello",
+        // 4 — first-basin-5h
+        { duration: "5 ore", title: "Tour Privato 5 Ore",
           desc: "Il percorso che consigliamo più spesso — primo bacino, Orrido di Nesso, bagno all'Isola Comacina, Villa del Balbianello e pranzo sul lago.",
           meta: "Prima volta sul lago", price: "da € 820",
           stops: ["Cernobbio", "Nesso", "Isola Comacina", "Balbianello"] },
-        // 6
-        { duration: "6 ore", title: "Bellagio, Varenna e centro lago",
+        // 5 — centre-lake-6h
+        { duration: "6 ore", title: "Tour Privato 6 Ore",
           desc: "Il classico completo — primo bacino, Balbianello, pranzo a Bellagio, Varenna e il Castello di Vezio dal lago.",
           meta: "La giornata completa", price: "da € 950",
           stops: ["Balbianello", "Bellagio", "Varenna", "Menaggio"] },
-        // 7
+        // 6 — full-day-8h
+        { duration: "8 ore", title: "Tour Privato 8 Ore",
+          desc: "La giornata completa sul Lago di Como — tutto il percorso 6 ore con passeggiata a Varenna e seconda sosta bagno al rientro.",
+          meta: "Giornata intera", price: "da € 1.200",
+          stops: ["Balbianello", "Bellagio", "Varenna", "Menaggio"] },
+        // 7 — sunset-cruise
         { duration: "1,5 ore", title: "Crociera al Tramonto",
           desc: "Il lago all'ora dorata — prosecco a bordo, lo skipper si ferma dove la luce è migliore. Il più prenotato per proposte.",
           meta: "Romanticismo · proposte", price: "da € 350",
           stops: ["Como", "Villa d'Este", "Moltrasio", "Tramonto"] },
-        // 8
-        { duration: "4 ore", title: "Cena in Barca",
-          desc: "Crociera al tramonto e cena in uno dei migliori ristoranti del lago — Crotto dei Platani, Il Gatto Nero o La Punta Bellagio.",
-          meta: "Sera · coppie", price: "da € 750",
-          stops: ["Tramonto", "Crotto / La Punta", "Rientro sotto le stelle"] },
-        // 9
-        { duration: "A ore", title: "Servizio Fotografico",
-          desc: "Barca privata come set in movimento — pre-wedding, editoriali, moda, commerciale. Sfondi villa iconici. Fotografo su richiesta.",
-          meta: "Pre-wedding · editoriale", price: "da € 350/ora",
-          stops: ["Villa d'Este", "Balbianello", "Carlotta", "Acqua aperta"] },
-        // 10
-        { duration: "6–8 ore", title: "Giornata Intera Su Misura",
-          desc: "Costruito intorno alla tua giornata — pick-up a Villa d'Este, Passalacqua o Mandarin Oriental, bagno, pranzo a riva, gemme nascoste.",
-          meta: "Esclusività", price: "da € 1.400",
-          stops: ["Pick-up", "Sosta bagno", "Pranzo", "Tramonto"] },
       ],
     },
     fleet: {
@@ -871,61 +841,46 @@ export const translations: Record<Locale, Translation> = {
       factIdeal: "Идеально для",
       factFrom: "От",
       items: [
-        // 0
-        { duration: "1 час", title: "Главные виды Комо",
+        // 0 — highlights-1h
+        { duration: "1 час", title: "Частный тур 1 час",
           desc: "Короткая живописная петля по первому бассейну — самый быстрый выход на воду и в самые фотографируемые уголки озера.",
           meta: "Пары · первое посещение", price: "от € 220",
           stops: ["Комо", "Чернобьо", "Вилла д'Эсте", "Вилла Олеандра"] },
-        // 1
-        { duration: "2 часа", title: "Cernobbio и Villa d'Este",
-          desc: "Побережье знаменитостей у южного конца озера — Villa d'Este, Villa Oleandra, Villa Passalacqua, с купанием.",
+        // 1 — cernobbio-2h
+        { duration: "2 часа", title: "Частный тур 2 часа",
+          desc: "Чернобьо, Вилла д'Эсте, Вилла Олеандра и Belle Époque-побережье Молтразио — побережье знаменитостей с купанием.",
           meta: "Пары · небольшие группы", price: "от € 400",
           stops: ["Комо", "Villa d'Este", "Villa Oleandra", "Молтразио"] },
-        // 2
-        { duration: "2,5 часа", title: "Бальбьянелло и Нессо",
-          desc: "Легендарная Вилла дель Бальбьянелло с воды (Casino Royale), с остановкой у Орридо ди Нессо.",
+        // 2 — balbianello-nesso (3-hour)
+        { duration: "3 часа", title: "Частный тур 3 часа",
+          desc: "К Вилле дель Бальбьянелло (Casino Royale), мимо Ардженьо, с остановкой у Орридо ди Нессо на обратном пути.",
           meta: "Пары · небольшие группы", price: "от € 480",
           stops: ["Комо", "Нессо", "Ардженьо", "Бальбьянелло"] },
-        // 3
-        { duration: "4 часа", title: "Лодка + Вилла",
-          desc: "Частная прогулка + экскурсия по Villa del Balbianello (FAI) или Villa Carlotta — билет включён.",
-          meta: "Архитектура · культура", price: "от € 450",
-          stops: ["Комо", "Cernobbio", "Villa del Balbianello", "Экскурсия"] },
-        // 4
-        { duration: "4 часа", title: "Полдня, Главные Виллы",
+        // 3 — top-villas-half-day (4-hour)
+        { duration: "4 часа", title: "Частный тур 4 часа",
           desc: "Вилла дель Бальбьянелло, Вилла Карлотта и Вилла Бальбьяно (Дом Gucci) с часовой остановкой в Белладжо или Варенне.",
           meta: "Семьи · группы", price: "от € 780",
           stops: ["Бальбьянелло", "Карлотта", "Бальбьяно", "Белладжо"] },
-        // 5
-        { duration: "5 часов", title: "Первый бассейн и Бальбьянелло",
+        // 4 — first-basin-5h
+        { duration: "5 часов", title: "Частный тур 5 часов",
           desc: "Самый рекомендуемый маршрут — первый бассейн, Орридо ди Нессо, купание у Isola Comacina, Villa del Balbianello и обед.",
           meta: "Первый раз на озере", price: "от € 820",
           stops: ["Чернобьо", "Нессо", "Isola Comacina", "Бальбьянелло"] },
-        // 6
-        { duration: "6 часов", title: "Bellagio, Varenna и центр озера",
+        // 5 — centre-lake-6h
+        { duration: "6 часов", title: "Частный тур 6 часов",
           desc: "Полный классический — первый бассейн, Бальбьянелло, обед в Bellagio, Varenna и Castello di Vezio с воды.",
           meta: "Полный день", price: "от € 950",
           stops: ["Бальбьянелло", "Bellagio", "Varenna", "Menaggio"] },
-        // 7
+        // 6 — full-day-8h
+        { duration: "8 часов", title: "Частный тур 8 часов",
+          desc: "Полный день на озере Комо — весь маршрут 6 часов плюс время в Varenna и второе купание на обратном пути.",
+          meta: "Целый день", price: "от € 1 200",
+          stops: ["Бальбьянелло", "Bellagio", "Varenna", "Menaggio"] },
+        // 7 — sunset-cruise
         { duration: "1,5 часа", title: "Закатная прогулка",
           desc: "Озеро в золотой час — просекко на борту, капитан останавливается там, где свет лучший. Самый популярный для предложений.",
           meta: "Романтика · предложения", price: "от € 350",
           stops: ["Комо", "Villa d'Este", "Молтразио", "Закат"] },
-        // 8
-        { duration: "4 часа", title: "Ужин на лодке",
-          desc: "Закатная прогулка плюс ужин в одном из лучших ресторанов на воде — Crotto dei Platani, Il Gatto Nero или La Punta Bellagio.",
-          meta: "Вечер · пары", price: "от € 750",
-          stops: ["Закат", "Crotto / La Punta", "Возврат под звёздами"] },
-        // 9
-        { duration: "Почасово", title: "Фотосессия на лодке",
-          desc: "Частная лодка как движущийся сет — pre-wedding, редакционные, мода, коммерческое. Виллы как фон. Фотограф по запросу.",
-          meta: "Pre-wedding · редакционное", price: "от € 350/час",
-          stops: ["Villa d'Este", "Бальбьянелло", "Карлотта", "Открытая вода"] },
-        // 10
-        { duration: "6–8 часов", title: "Полный День На Заказ",
-          desc: "Построен вокруг вашего дня — трансфер от Villa d'Este, Passalacqua или Mandarin Oriental, купание, обед на берегу, скрытые жемчужины.",
-          meta: "Эксклюзивность", price: "от € 1 400",
-          stops: ["Трансфер", "Купание", "Обед", "Закат"] },
       ],
     },
     fleet: {
@@ -1149,61 +1104,46 @@ export const translations: Record<Locale, Translation> = {
       factIdeal: "مناسب لـ",
       factFrom: "من",
       items: [
-        // 0
-        { duration: "ساعة واحدة", title: "أبرز معالم كومو",
+        // 0 — highlights-1h
+        { duration: "ساعة واحدة", title: "جولة خاصة ساعة واحدة",
           desc: "جولة قصيرة خلابة في الحوض الأول — أسرع طريقة للوصول إلى الماء والزوايا الأكثر تصويراً للبحيرة.",
           meta: "للأزواج · زيارة أولى", price: "من 220 €",
           stops: ["كومو", "تشيرنوبيو", "فيلا ديستي", "فيلا أوليندرا"] },
-        // 1
-        { duration: "ساعتان", title: "تشيرنوبيو وفيلا ديستي",
-          desc: "ساحل المشاهير في الطرف الجنوبي — فيلا ديستي وفيلا أوليندرا وفيلا باسالاكوا مع توقف للسباحة.",
+        // 1 — cernobbio-2h
+        { duration: "ساعتان", title: "جولة خاصة ساعتان",
+          desc: "تشيرنوبيو وفيلا ديستي وفيلا أوليندرا وساحل مولتراسيو الـBelle Époque — ساحل المشاهير مع توقف للسباحة.",
           meta: "للأزواج · مجموعات صغيرة", price: "من 400 €",
           stops: ["كومو", "فيلا ديستي", "فيلا أوليندرا", "مولتراسيو"] },
-        // 2
-        { duration: "2.5 ساعة", title: "بالبيانيلو ونيسو",
-          desc: "فيلا ديل بالبيانيلو الأيقونية من الماء (موقع كازينو رويال)، مع توقف عند شلال أوريدو دي نيسو.",
+        // 2 — balbianello-nesso (3-hour)
+        { duration: "3 ساعات", title: "جولة خاصة 3 ساعات",
+          desc: "حتى فيلا بالبيانيلو (موقع كازينو رويال)، مروراً بأرجينيو، مع توقف عند أوريدو دي نيسو في الطريق عودة.",
           meta: "للأزواج · مجموعات صغيرة", price: "من 480 €",
           stops: ["كومو", "نيسو", "أرجينيو", "بالبيانيلو"] },
-        // 3
-        { duration: "4 ساعات", title: "قارب وفيلا",
-          desc: "جولة خاصة مع زيارة موجّهة لفيلا ديل بالبيانيلو (FAI) أو فيلا كارلوتا — تذكرة الدخول مشمولة.",
-          meta: "هندسة · ثقافة", price: "من 450 €",
-          stops: ["كومو", "تشيرنوبيو", "بالبيانيلو", "زيارة"] },
-        // 4
-        { duration: "4 ساعات", title: "نصف يوم · كبرى الفيلات",
-          desc: "فيلا ديل بالبيانيلو وفيلا كارلوتا وفيلا بالبيانو (بيت Gucci) مع توقف لمدة ساعة في بيلاجيو أو فارينا.",
+        // 3 — top-villas-half-day (4-hour)
+        { duration: "4 ساعات", title: "جولة خاصة 4 ساعات",
+          desc: "فيلا بالبيانيلو وفيلا كارلوتا وفيلا بالبيانو (بيت Gucci) مع توقف لمدة ساعة في بيلاجيو أو فارينا.",
           meta: "للعائلات · مجموعات", price: "من 780 €",
           stops: ["بالبيانيلو", "كارلوتا", "بالبيانو", "بيلاجيو"] },
-        // 5
-        { duration: "5 ساعات", title: "الحوض الأول وبالبيانيلو",
+        // 4 — first-basin-5h
+        { duration: "5 ساعات", title: "جولة خاصة 5 ساعات",
           desc: "المسار الأكثر توصية — الحوض الأول، أوريدو دي نيسو، سباحة عند إيزولا كوماتشينا، فيلا بالبيانيلو وغداء على البحيرة.",
           meta: "أول مرة على البحيرة", price: "من 820 €",
           stops: ["تشيرنوبيو", "نيسو", "إيزولا كوماتشينا", "بالبيانيلو"] },
-        // 6
-        { duration: "6 ساعات", title: "بيلاجيو وفارينا ومركز البحيرة",
+        // 5 — centre-lake-6h
+        { duration: "6 ساعات", title: "جولة خاصة 6 ساعات",
           desc: "الكلاسيكي الكامل — الحوض الأول، بالبيانيلو، غداء في بيلاجيو، فارينا وقلعة فيتسيو من البحيرة.",
           meta: "اليوم الكامل", price: "من 950 €",
           stops: ["بالبيانيلو", "بيلاجيو", "فارينا", "مناجيو"] },
-        // 7
+        // 6 — full-day-8h
+        { duration: "8 ساعات", title: "جولة خاصة 8 ساعات",
+          desc: "اليوم الكامل على بحيرة كومو — كامل مسار 6 ساعات مع وقت في فارينا وسباحة ثانية في طريق العودة.",
+          meta: "اليوم الكامل", price: "من 1.200 €",
+          stops: ["بالبيانيلو", "بيلاجيو", "فارينا", "مناجيو"] },
+        // 7 — sunset-cruise
         { duration: "1.5 ساعة", title: "جولة الغروب",
           desc: "البحيرة في الساعة الذهبية — بروسيكو على المتن، القبطان يتوقف حيث الضوء أفضل. الأكثر حجزاً لطلبات الزواج.",
           meta: "رومانسية · طلبات يد", price: "من 350 €",
           stops: ["كومو", "فيلا ديستي", "مولتراسيو", "غروب"] },
-        // 8
-        { duration: "4 ساعات", title: "عشاء على القارب",
-          desc: "جولة غروب وعشاء في أحد أفضل المطاعم على البحيرة — Crotto dei Platani أو Il Gatto Nero أو La Punta Bellagio.",
-          meta: "مساء · أزواج", price: "من 750 €",
-          stops: ["غروب", "Crotto / La Punta", "العودة تحت النجوم"] },
-        // 9
-        { duration: "بالساعة", title: "جلسة تصوير على القارب",
-          desc: "قارب خاص كموقع متحرّك — ما قبل الزفاف، تحريري، أزياء، تجاري. خلفيات فلل أيقونية. مصوّر بناءً على الطلب.",
-          meta: "ما قبل الزفاف · تحريري", price: "من 350 €/ساعة",
-          stops: ["فيلا ديستي", "بالبيانيلو", "كارلوتا", "مياه مفتوحة"] },
-        // 10
-        { duration: "6–8 ساعات", title: "يوم كامل مفصّل",
-          desc: "مصمَّم حول يومك — نقل من Villa d'Este أو Passalacqua أو Mandarin Oriental، سباحة، غداء على البحيرة، جواهر خفية.",
-          meta: "حصرية", price: "من 1.400 €",
-          stops: ["نقل", "سباحة", "غداء", "غروب"] },
       ],
     },
     fleet: {
