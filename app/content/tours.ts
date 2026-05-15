@@ -643,7 +643,7 @@ export const tours: TourEntry[] = [
       en: {
         metaTitle: "Lake Como 2-hour private boat tour · Cernobbio & Villa d'Este",
         metaDesc: "2-hour private boat tour from Como — Cernobbio, Villa d'Este, Villa Olmo and Moltrasio's celebrity coastline, with a local captain. From €400.",
-        headline: "Cernobbio &amp; <em>Villa d'Este,</em> 2 hours.",
+        headline: "Cernobbio & <em>Villa d'Este,</em> 2 hours.",
         kicker: "From Como · 2-hour private cruise",
         body: [
           { type: "p", text: "Two hours is the sweet spot for guests who want more than a teaser without committing to a half-day. From the Como pontoon we head along the celebrity coastline — Villa Olmo, Cernobbio with Villa d'Este's century-old plane trees on the water, then up to Villa Oleandra (George Clooney's place in Laglio) and Villa Passalacqua (Moltrasio)." },
@@ -755,7 +755,7 @@ export const tours: TourEntry[] = [
       en: {
         metaTitle: "Lake Como 5-hour private boat tour · First basin + Balbianello",
         metaDesc: "Five hours on Lake Como — Como, Cernobbio, Moltrasio, Nesso, Villa del Balbianello and Isola Comacina with swim stop and lakeside lunch. From €820.",
-        headline: "First basin &amp; <em>Balbianello,</em> 5 hours.",
+        headline: "First basin & <em>Balbianello,</em> 5 hours.",
         kicker: "From Como · 5-hour private cruise with lunch slot",
         body: [
           { type: "p", text: "Five hours is the route we recommend most often — long enough to cross out of the first basin and reach Villa del Balbianello, short enough that you're back in Como with time to dress for dinner. The classic Lake Como day on the water." },
@@ -875,7 +875,7 @@ export const tours: TourEntry[] = [
       en: {
         metaTitle: "Lake Como 6-hour boat tour · Bellagio, Varenna and centre lake",
         metaDesc: "Six hours on Lake Como — first basin, Villa del Balbianello, Bellagio, Varenna with lunch stop. The classic full-lake itinerary. From €950.",
-        headline: "Bellagio, Varenna &amp; <em>centre lake,</em> 6 hours.",
+        headline: "Bellagio, Varenna & <em>centre lake,</em> 6 hours.",
         kicker: "From Como · 6-hour cruise to the three-armed centre",
         body: [
           { type: "p", text: "The centre of Lake Como — where the three arms meet at the Punta Spartivento — is 45 minutes from Como by boat. Add the time to do the first basin properly on the way up and you're looking at a 6-hour day. The most complete lake itinerary we offer at a fixed price." },
