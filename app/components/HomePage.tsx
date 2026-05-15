@@ -18,6 +18,7 @@ import { linkify } from "../lib/linkify";
 import { attractions, ORBIT_PIN_IDS } from "../content/attractions";
 import { EXPERIENCE_SLUGS } from "../content/experiences";
 import { ScrollArrows, CarouselDots } from "./Carousel";
+import { BoatGallery } from "./BoatGallery";
 import { TourCard, TOUR_CARD_IMAGES } from "./TourCard";
 import BookingForm from "./BookingForm";
 
@@ -47,7 +48,27 @@ const TOUR_IMGS = [
   "/images/bellagio.jpg",
   "/images/luxury-cruise.jpg",
 ];
-const FLEET_IMGS = ["/images/taxi-boat.jpg", "/images/luxury-caddy.jpg"];
+// Per-boat photo galleries. Each boat gets 4 slots — the existing
+// real photos first, then placeholder slots for Loris to fill in.
+// Order is: hero, detail, on-water, ambient. Placeholders are
+// rendered as muted slot cards inside the carousel by BoatGallery.
+import type { BoatPhoto } from "./BoatGallery";
+const FLEET_GALLERIES: BoatPhoto[][] = [
+  // 0 — Venetian Wooden Taxi
+  [
+    { src: "/images/taxi-boat.jpg",     alt: "Venetian wooden taxi from above on Lake Como" },
+    { src: "/images/venetian-taxi.jpg", alt: "Venetian wooden taxi — side view at the pontoon" },
+    { src: null, alt: "Photo coming from Loris" },
+    { src: null, alt: "Photo coming from Loris" },
+  ],
+  // 1 — Luxury Caddy
+  [
+    { src: "/images/luxury-caddy.jpg",  alt: "Mahogany luxury caddy cruising Lake Como" },
+    { src: "/images/luxury-cruise.jpg", alt: "Mahogany caddy at speed, golden hour" },
+    { src: "/images/classic-boat-1.jpg", alt: "Classic Lake Como mahogany motorboat" },
+    { src: null, alt: "Photo coming from Loris" },
+  ],
+];
 
 // Experience photos for the "Beyond a Tour" strip — pulled from the
 // legacy comoboatrental.it (under "OUR BOAT EXPERIENCES"). One photo
@@ -752,10 +773,10 @@ export default function HomePage({ locale }: { locale: Locale }) {
             <div ref={fleetScrollRef} className="fleet-grid">
               {t.fleet.items.map((boat, i) => (
                 <article key={i} className="boat-card reveal">
-                  <div className="boat-img">
-                    <img src={FLEET_IMGS[i]} alt={`${boat.name.replace(/<[^>]+>/g, "")} — Como Boat Rental fleet`} loading="lazy" width="1200" height="800" />
-                    <span className="badge">{boat.cornerLabel}</span>
-                  </div>
+                  <BoatGallery
+                    photos={FLEET_GALLERIES[i] ?? FLEET_GALLERIES[0]}
+                    cornerLabel={boat.cornerLabel}
+                  />
                   <h3><RichText text={boat.name} /></h3>
                   <p>{boat.desc}</p>
                   <div className="boat-specs">

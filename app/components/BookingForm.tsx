@@ -24,17 +24,23 @@ import {
 import type { Locale, Translation } from "../translations";
 import { renderRich } from "./InnerPage";
 
-// Four tour radio options shown in the booking form — span the 1h /
-// 3h / 4h / 8h ladder so the typical buyer sees their commitment
-// tier without scrolling past every SKU. Indices map to positions in
-// translations.ts t.tours.items (8 entries: 0=1h, 1=2h, 2=3h, 3=4h,
-// 4=5h, 5=6h, 6=8h, 7=sunset).
-const TOUR_KEYS: Array<{ slug: string; index: number }> = [
-  { slug: "highlights-1h",       index: 0 },  // 1-hour
-  { slug: "balbianello-nesso",   index: 2 },  // 3-hour
-  { slug: "top-villas-half-day", index: 3 },  // 4-hour
-  { slug: "full-day-8h",         index: 6 },  // 8-hour
+// Full SKU ladder shown in the booking form's tour <select>. Every
+// entry in translations.ts t.tours.items is reachable, plus an
+// explicit "Custom / not sure yet" option for buyers who want to
+// describe their day in the message field instead.
+const TOUR_OPTIONS: Array<{ slug: string; index: number }> = [
+  { slug: "highlights-1h",       index: 0 },  // 1h
+  { slug: "cernobbio-2h",        index: 1 },  // 2h
+  { slug: "balbianello-nesso",   index: 2 },  // 3h
+  { slug: "top-villas-half-day", index: 3 },  // 4h
+  { slug: "first-basin-5h",      index: 4 },  // 5h
+  { slug: "centre-lake-6h",      index: 5 },  // 6h
+  { slug: "full-day-8h",         index: 6 },  // 8h
+  { slug: "sunset-cruise",       index: 7 },  // sunset
 ];
+// Sentinel value for the "Custom / not sure yet" option (must not
+// collide with any real index — using -1).
+const TOUR_CUSTOM = -1;
 
 export default function BookingForm({ t, locale }: { t: Translation; locale: Locale }) {
   const b = t.bookingForm;
@@ -50,9 +56,14 @@ export default function BookingForm({ t, locale }: { t: Translation; locale: Loc
     e.preventDefault();
     const form = e.currentTarget;
     const data = new FormData(form);
-    const tourIdx = parseInt((data.get("tour") as string) ?? "1", 10);
-    const tourName = t.tours.items[tourIdx]?.title.replace(/<[^>]+>/g, "") ?? "Unspecified";
-    const tourPrice = t.tours.items[tourIdx]?.price ?? "";
+    const tourIdx = parseInt((data.get("tour") as string) ?? "2", 10);
+    // -1 = "Custom / not sure yet" sentinel; otherwise we lookup the
+    // matching t.tours.items entry by index.
+    const isCustom = tourIdx === TOUR_CUSTOM;
+    const tourName = isCustom
+      ? b.tourCustom
+      : (t.tours.items[tourIdx]?.title.replace(/<[^>]+>/g, "") ?? "Unspecified");
+    const tourPrice = isCustom ? "—" : (t.tours.items[tourIdx]?.price ?? "");
     // Compose the mailto body in a readable email layout
     const body = [
       `${b.fieldDate}: ${data.get("date") || "—"}`,
@@ -109,31 +120,26 @@ export default function BookingForm({ t, locale }: { t: Translation; locale: Loc
             </div>
 
             <div className="field span-2">
-              <label>
+              <label htmlFor="b-tour">
                 {b.fieldTour} <span className="req">*</span>
               </label>
-              <div className="tour-radio">
-                {TOUR_KEYS.map((tk, i) => {
-                  const tour = t.tours.items[tk.index];
+              {/* Dropdown listing every tour SKU + a "Custom / not sure
+                  yet" sentinel. Defaults to the 3-hour Balbianello &
+                  Nesso (index 2) since that's our most-booked entry
+                  point. */}
+              <select id="b-tour" name="tour" defaultValue={2} required>
+                {TOUR_OPTIONS.map((opt) => {
+                  const tour = t.tours.items[opt.index];
+                  if (!tour) return null;
                   const title = tour.title.replace(/<[^>]+>/g, "");
-                  // Squeeze "from €220" out of price strings
                   return (
-                    <div key={tk.slug}>
-                      <input
-                        type="radio"
-                        id={`tour-${i}`}
-                        name="tour"
-                        value={i}
-                        defaultChecked={i === 1}
-                      />
-                      <label htmlFor={`tour-${i}`}>
-                        {title}
-                        <small>{tour.duration} · {tour.price}</small>
-                      </label>
-                    </div>
+                    <option key={opt.slug} value={opt.index}>
+                      {title} · {tour.duration} · {tour.price}
+                    </option>
                   );
                 })}
-              </div>
+                <option value={TOUR_CUSTOM}>{b.tourCustom}</option>
+              </select>
             </div>
 
             <div className="field">

@@ -221,6 +221,7 @@ export type Translation = {
     timeFull: string;
     timeUndecided: string;
     fieldTour: string;
+    tourCustom: string;        // "Custom / not sure yet" dropdown option
     fieldParty: string;
     partyHint: string;
     partyMore: string;
@@ -491,6 +492,7 @@ export const translations: Record<Locale, Translation> = {
       timeFull: "Full day (flexible)",
       timeUndecided: "Not sure yet",
       fieldTour: "Tour",
+      tourCustom: "Custom · I'll describe it below",
       fieldParty: "Party size",
       partyHint: "2 – 10 guests",
       partyMore: "More guests",
@@ -754,6 +756,7 @@ export const translations: Record<Locale, Translation> = {
       timeFull: "Tutto il giorno (flessibile)",
       timeUndecided: "Da decidere",
       fieldTour: "Tour",
+      tourCustom: "Su misura · te lo racconto sotto",
       fieldParty: "Numero ospiti",
       partyHint: "2 – 10 ospiti",
       partyMore: "Più ospiti",
@@ -1017,6 +1020,7 @@ export const translations: Record<Locale, Translation> = {
       timeFull: "Весь день (гибко)",
       timeUndecided: "Ещё не решил(а)",
       fieldTour: "Тур",
+      tourCustom: "По запросу · опишу ниже",
       fieldParty: "Количество гостей",
       partyHint: "2 – 10 гостей",
       partyMore: "Больше гостей",
@@ -1280,6 +1284,7 @@ export const translations: Record<Locale, Translation> = {
       timeFull: "اليوم كامل (مرن)",
       timeUndecided: "غير محدد بعد",
       fieldTour: "الجولة",
+      tourCustom: "مخصّصة · سأشرحها أسفله",
       fieldParty: "عدد الضيوف",
       partyHint: "2 – 10 ضيوف",
       partyMore: "ضيوف أكثر",
